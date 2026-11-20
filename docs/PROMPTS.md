@@ -19,7 +19,7 @@
 4. 双语：把小样的语言系统搬进 src/core/i18n.ts —— 只有 en（English）和 bi（English + 中文）两种模式，默认 bi；所有文字同时输出英文和中文两个 span，en 模式用 CSS 隐藏中文，切换不用重画；选择存在 localStorage；界面上的固定文字也移到 content/ui.json。
 5. 写 src/content/schema.ts（zod）和 scripts/validate-content.ts：kind 写错、缺少出处、坐标格式不对、某段文字缺 en 或 zh 时，报出清楚的中文错误（哪个文件、哪一项）。
 6. 写 scripts/count-esv.ts 和 npm run count:esv：统计用了多少节 ESV 经文（上限 500）和经文占全部文字的比例（参考 prototype/count-esv.mjs）。
-7. 仓库里已经有 .github/workflows/deploy.yml：现在它打包 prototype/ 并发布到 GitHub Pages。把它改成构建新的 Vite 工程并发布 dist/（Vite 的 base 设成 "./"，这样在 https://<用户名>.github.io/<仓库名>/ 下也能正常加载）；发布成功前不要删掉 prototype/。
+7. 仓库里已经有 .github/workflows/deploy.yml：现在它打包主页 home/（发布在网站最外层）和序章 prototype/（发布在 /prologue/）。新的 Vite 工程做好后，把序章那一部分换成构建 Vite 工程并发布到 /play/（Vite 的 base 设成 "./"），并把 content/timeline.json 里创世记的 play.url 改成 "./play/"；主页 home/ 保持不动。发布成功前不要删掉 prototype/。
 8. 写中文 README.md：怎么安装 Node.js、怎么运行、怎么在手机上测试。
 
 先列出你的计划（不超过 10 条），再开始改代码。

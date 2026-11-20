@@ -5,6 +5,7 @@
 游戏有两种语言模式：**English**（经文用 ESV）和 **English + 中文**（英文在上，中文在下，中文经文用和合本）。默认是双语；在标题页选，游戏里点右上角的地球按钮或按 `L` 键随时切换，会记住上次的选择。
 
 **在线试玩：** https://yiyangd.github.io/footprints-of-light/ （电脑和手机浏览器都能直接玩，不用安装）
+打开先看到主页“光之地图”：一张古代世界地图加一条时间之河，66 卷书是 66 盏灯，这就是游戏的目录。点创世记那盏灯进入序章《起初》。
 设计文档（可评论、可编辑）：https://claude.ai/artifact/TGNk2b8UR2LjTbkTbHRMxc
 
 ## 里面有什么
@@ -15,10 +16,13 @@
 | `docs/设计方案.md` | 完整的设计与开发方案（在线版有示意图） |
 | `docs/PROMPTS.md` | 一步步交给 Codex 的提示词（M0–M10），以及“章节策划提示词” |
 | `docs/CHANGELOG.md` | 更新记录 |
+| `content/timeline.json` | 全书时间线：12 季、66 卷书、41 张场景地图。主页直接读它，改了它主页就跟着变 |
+| `content/home-ui.json` | 主页界面上的文字（中英双语） |
 | `content/episodes/*.json` | 第 1、2 章的剧情、经文、陶片、信物、彩窗数据（中英双语） |
 | `content/README.md` | 这些 JSON 每个字段的意思 |
-| `.github/workflows/deploy.yml` | 自动发布：每次推送到 `main`，GitHub 自动打包小样并更新上面的网站 |
-| `prototype/src/` | 小样的源代码：`main.js`（游戏）、`content.js`（内容，中英双语）、`index.html`（界面） |
+| `home/` | 主页“光之地图”的源代码：`src/main.js`、`src/index.html`，底图 `src/basemap.json` |
+| `.github/workflows/deploy.yml` | 自动发布：每次推送到 `main`，GitHub 自动打包主页和序章并更新上面的网站 |
+| `prototype/src/` | 序章小样的源代码：`main.js`（游戏）、`content.js`（内容，中英双语）、`index.html`（界面） |
 | `CREDITS.md` | 授权说明，特别是 ESV 经文的使用条件 |
 
 ## 第一次怎么开始
@@ -36,7 +40,24 @@
 2. GitHub 会自动打包并发布（见 `.github/workflows/deploy.yml`），进度在仓库的 **Actions** 页面。
 3. 一般 1–2 分钟后，刷新在线试玩的网址就能看到新版本。
 
-如果 Actions 里出现红色的叉，点进去看是哪一步出错（最常见的是 `content.js` 里少了逗号或引号），改好再提交一次就行。
+如果 Actions 里出现红色的叉，点进去看是哪一步出错（最常见的是 `content.js` 或 `timeline.json` 里少了逗号或引号），改好再提交一次就行。
+
+## 想改主页（光之地图）？
+
+主页上的书卷、年代、地点都写在 `content/timeline.json` 里，不用碰代码：
+
+- 改一卷书的年代、挂在主线的哪里、走过哪些地方：找到那卷书的那一行改。`books` 的先后顺序就是时间之河上从左到右的顺序。
+- 一卷书做出了可以玩的部分：给它加上 `play`（照创世记那一条写），它的灯就会亮起来。
+- 改完在 `home/` 里运行 `npm run validate`，会检查有没有写错（例如地图名字拼错、少了中文）。`npm run build` 会打包出 `home/dist/index.html`，双击就能看。
+
+```bash
+cd home
+npm install
+npm run validate   # 检查 timeline.json
+npm run build      # 打包主页
+```
+
+年代用的是较传统的圣经纪年，都是约数。有几处需要牧者确认（出埃及的年代、十字架的年份、约伯记和约珥书放在哪里等），确认后只需要改 `timeline.json` 里对应的几行。
 
 ## 想在自己电脑上改小样？（在 Codex 做完 M0 之前）
 

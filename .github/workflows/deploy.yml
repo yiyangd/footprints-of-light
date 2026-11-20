@@ -1,6 +1,7 @@
 # 自动发布到 GitHub Pages
 # 每次有人把修改推送到 main 分支（包括在 GitHub 网页上直接改文件），
-# 这里就会自动打包小样（prototype/），并发布到 https://<用户名>.github.io/<仓库名>/
+# 这里就会自动打包主页（home/）和序章小样（prototype/），并发布到 https://<用户名>.github.io/<仓库名>/
+# 网站的结构：/ 是主页“光之地图”，/prologue/ 是序章《起初》。
 # 一般 1–2 分钟后网站就更新了。进度可以在仓库的 Actions 页面看。
 name: Deploy to GitHub Pages
 
@@ -29,21 +30,32 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: 安装依赖
+      - name: 安装依赖（序章）
         working-directory: prototype
         run: npm ci
       - name: 数一数 ESV 经文（上限 500 节）
         working-directory: prototype
         run: npm run count:esv
-      - name: 打包小样
+      - name: 打包序章
         working-directory: prototype
         run: npm run build
+      - name: 安装依赖（主页）
+        working-directory: home
+        run: npm ci
+      - name: 检查时间线数据，打包主页
+        working-directory: home
+        run: npm run build
+      - name: 拼成一个网站：主页在最外面，序章在 prologue/ 里
+        run: |
+          mkdir -p _site/prologue
+          cp home/dist/index.html _site/index.html
+          cp prototype/dist/index.html _site/prologue/index.html
       - name: 准备 Pages
         uses: actions/configure-pages@v5
       - name: 上传网站文件
         uses: actions/upload-pages-artifact@v4
         with:
-          path: prototype/dist
+          path: _site
 
   deploy:
     needs: build

@@ -53,3 +53,33 @@
 书卷缩写现在有 `Gen`（创世记）和 `Ps`（诗篇）；用到新书卷时，在 `prototype/src/content.js` 的 `BOOKS` 里加一行（例如 `Exod: { en: 'Exodus', zh: '出', zhFull: '出埃及记' }`）。
 
 小样里已经有的效果：`wind` `light` `sky` `land` `plants` `lights` `creatures` `animals` `humans` `rest` `evening` `openEden` `eden` `rivers` `naming` `sleep` `eve` `serpent` `end`。新的效果要请 Codex 在对应章节的代码里实现。
+
+## 全书时间线（content/timeline.json）
+
+主页“光之地图”读这个文件。里面有这几部分：
+
+- `seasons`：12 季的名字和年代。
+- `books`：66 卷书，一卷一条。**先后顺序就是时间之河上从左到右的顺序。**
+- `maps`：41 张场景地图，一张一条。
+- `jerusalemEras`：耶路撒冷的十个时代。
+- `seas`：写在地图水面上的海名。
+
+一卷书的字段：
+
+| 字段 | 意思 |
+| --- | --- |
+| `id` | 三个字母的代号，例如 `gen`、`1sa`。别处用它来指这卷书 |
+| `name`、`abbr` | 书名和简称，都是 `{ en, zh }` |
+| `type` | `trunk` 主线（带着时间往前走的历史书）、`parallel` 并行（同一段历史的另一个镜头）、`insert` 插入（挂在主线某一刻的话或信） |
+| `season` | 灯放在第几季。跨两季的主线书另外写 `parts` |
+| `start`、`end` | 年代，公元年份，主前写成负数。加 `"circa": true` 会显示“约” |
+| `when` | 年代说不清、需要一句话的时候写这个，写了就不用 `start`/`end` 拼 |
+| `anchor` | 挂在主线的哪里（主线书不写） |
+| `beside` | 并行卷贴着哪一卷主线书（例如历代志上贴着撒母耳记下） |
+| `maps` | 这卷书走过的地图，按先后写，主页会用脚踪把它们连起来 |
+| `size` | `L` 大卷（约 6–10 幕）、`M` 中卷（2–4 幕）、`S` 小卷（一幕） |
+| `play` | 这卷书已经能玩的部分：网址、一共几段、存档的名字。有 `play` 的灯才能进 |
+
+一张地图的字段：`name` 是地图的全名，`label` 是标在地图上的短名字，`modern` 是今天在哪里，`lat`/`lon` 是纬度和经度（伊甸位置不可考，写 `null`），`approx` 表示这是传统位置或大概位置，`also` 是同一张地图里的其他地点。`build` 是写给制作者看的备注（画面依据、别画错的地方），不显示给玩家。
+
+改完运行 `cd home && npm run validate`。

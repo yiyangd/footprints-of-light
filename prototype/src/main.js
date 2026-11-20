@@ -1214,6 +1214,11 @@ if (loadSave()) { $('btn-continue').hidden = false; $('btn-start').innerHTML = b
 for (const b of document.querySelectorAll('[data-lang]')) b.addEventListener('click', () => setLang(b.dataset.lang));
 $('btn-lang').addEventListener('click', () => setLang(LANG === 'en' ? 'bi' : 'en'));
 setLang(LANG);
+// 从主页“光之地图”进来的（网址带 ?from=map）才显示“回到地图”的按钮；单独打开这个文件时没有主页可回。
+// 回去之前先存档（还在标题页就不存，免得把旧存档盖掉）。
+if (new URLSearchParams(location.search).get('from') === 'map') {
+  for (const id of ['btn-map', 'title-map', 'end-map']) { $(id).hidden = false; $(id).addEventListener('click', () => { if ($('title-screen').hidden) persist(); location.href = '../'; }); }
+}
 if (DEBUG) {
   $('fps').hidden = false;
   window.__gzy = {

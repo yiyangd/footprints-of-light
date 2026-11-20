@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" class="lang-bi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Footprints of Light 光之踪迹 · Map of Light 光之地图</title>
+<!-- 语言：先读上次的选择（和序章共用同一个设置），避免页面一打开先闪一下中文 -->
+<script>try { if (localStorage.getItem('guangzhiyue-lang') === 'en') document.documentElement.className = 'lang-en'; } catch (e) {}</script>
+<!-- 标签页上的小图标：一盏灯（直接写在这里，不用另外的文件） -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2742%27 r=%2734%27 fill=%27%23ffcf7a%27 opacity=%27.35%27/%3E%3Cpath d=%27M50 20c7 9 8 15 0 25c-8-10-7-16 0-25z%27 fill=%27%23fff4d6%27/%3E%3Cpath d=%27M16 56c10 10 58 10 68 0c-2 15-15 24-34 24S18 71 16 56z%27 fill=%27%23b4683f%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* 视觉方向和序章一致：夜色里的一盏灯。深蓝的海、暗色的陆地、灯火金的海岸线和脚踪。
+   颜色变量照抄序章（prototype/src/index.html），两个页面看起来是同一个游戏。 */
+:root {
+  --ink: #f6efe1; --ink-dim: #c9bfae;
+  --panel: rgba(17, 15, 22, 0.66); --panel-solid: #17141c; --line: rgba(246, 239, 225, 0.16);
+  --lamp: #ffcf7a;
+  --k-scripture: #f2c96b; --k-history: #8fc8ff; --k-imagination: #bdb6ab; --k-reflection: #9fdc9a;
+  --zh-serif: "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", serif;
+  --zh-sans: "Noto Sans SC", "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-display: "EB Garamond", "Iowan Old Style", Georgia, "Noto Serif SC", "Songti SC", serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --river-h: 232px;   /* 时间之河的高度；矮屏幕上会变小（见最下面） */
+  --top-h: 54px; --river-total: 280px; /* 这两个由脚本量出来再写回，卡片靠它们避开顶栏和河 */
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; background: #05060b; color: var(--ink); font-family: var(--font-body); overflow: hidden; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, .pl:focus-visible { outline: 2px solid var(--lamp); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+/* 双语：和序章同一套写法。English 模式把 .zh 藏起来。 */
+.zh { font-family: var(--zh-sans); margin-left: .45em; opacity: .82; }
+.zh.blk { display: block; margin: .25em 0 0; }
+.lang-en .zh, .lang-en .zh-t { display: none !important; }
+h1 .zh, h2 .zh { font-family: var(--zh-serif); }
+
+#app { position: fixed; inset: 0; display: flex; flex-direction: column; }
+
+/* ---------- 顶栏 ---------- */
+#top { flex: none; display: flex; align-items: center; gap: 10px; padding: max(8px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) 8px max(14px, env(safe-area-inset-left)); background: linear-gradient(180deg, rgba(10,9,14,.96), rgba(10,9,14,.78)); border-bottom: 1px solid var(--line); z-index: 5; }
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 0 1 auto; overflow: hidden; }
+.brand > div { min-width: 0; }
+.brand svg { width: 36px; height: 36px; flex: none; }
+.brand h1 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 0 24px rgba(255,207,122,.3); }
+.brand h1 .zh { font-size: .68em; font-weight: 500; color: var(--lamp); letter-spacing: .2em; opacity: .9; }
+.brand .sub { font-size: 11px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--lamp); margin-top: 2px; white-space: nowrap; }
+.brand .sub .zh { letter-spacing: .3em; text-transform: none; font-weight: 500; }
+#top .sp { flex: 1; }
+#counts, #btn-lang { flex: none; }
+#counts { font-size: 12px; color: var(--ink-dim); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+#counts b { color: var(--lamp); font-weight: 800; }
+#counts .zh { margin-left: .25em; }
+#counts .sep { margin: 0 .6em; opacity: .4; }
+#counts i { display: inline-block; vertical-align: -1px; margin-right: 5px; }
+#counts .ic-lamp { width: 8px; height: 11px; border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%; background: var(--lamp); box-shadow: 0 0 6px rgba(255,207,122,.7); }
+#counts .ic-place { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--ink-dim); }
+.chip-btn { display: flex; align-items: center; gap: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px; font-size: 13px; font-weight: 700; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); white-space: nowrap; }
+.chip-btn:hover { border-color: rgba(255,207,122,.55); }
+.chip-btn svg { width: 16px; height: 16px; flex: none; }
+.chip-btn .zh { margin-left: .3em; font-weight: 500; }
+
+/* ---------- 地图 ---------- */
+#mapwrap { position: relative; flex: 1; min-height: 0; overflow: hidden; background: radial-gradient(ellipse at 60% 55%, #142440 0%, #0b1526 55%, #070c16 100%); }
+#map { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; --u: 1; }
+#map.drag { cursor: grabbing; }
+.land { fill: #1f1c26; stroke: rgba(255,207,122,.34); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.rivers { fill: none; stroke: #6a9fd1; stroke-opacity: .8; stroke-width: 1.4; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
+.lakes { fill: #6a9fd1; fill-opacity: .85; }
+.sea-name { font-family: var(--font-display); font-style: italic; fill: #9fc3ea; fill-opacity: .34; text-anchor: middle; pointer-events: none; }
+.sea-name .zh-t { font-family: var(--zh-serif); font-style: normal; }
+.route { fill: none; stroke: var(--lamp); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: .1 9; vector-effect: non-scaling-stroke; opacity: .9; filter: drop-shadow(0 0 3px rgba(255,207,122,.7)); }
+.route.dim { stroke: var(--ink-dim); opacity: .55; filter: none; }
+/* 地点：圆点的大小不随地图放大（靠 --u 反向缩放） */
+.pl, .sub { cursor: pointer; }
+.pl .hit { fill: transparent; }
+.pl .dot { fill: #0c1220; stroke: var(--ink-dim); stroke-width: 1.5; transition: fill .3s, stroke .3s; }
+.pl.approx .dot { stroke-dasharray: 2.2 2; }
+.pl.city .dot { stroke: var(--ink); stroke-width: 1.8; }
+.pl.walked .dot { fill: var(--lamp); stroke: #fff2c8; filter: drop-shadow(0 0 4px rgba(255,207,122,.9)); }
+.pl.hl .dot { stroke: var(--lamp); stroke-width: 2.2; fill: rgba(255,207,122,.28); }
+.pl .ring { fill: none; stroke: var(--lamp); stroke-width: 1.6; opacity: 0; }
+.pl.sel .ring { opacity: 1; animation: ring 1.9s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes ring { from { transform: scale(.7); opacity: .95; } to { transform: scale(2.1); opacity: 0; } }
+.pl text, .sub text { font: 700 12px var(--font-body); fill: var(--ink); paint-order: stroke; stroke: rgba(5,6,11,.88); stroke-width: 3.2px; stroke-linejoin: round; pointer-events: none; opacity: 0; transition: opacity .25s; }
+.pl text .zh-t, .sub text .zh-t { font-family: var(--zh-sans); font-weight: 500; }
+.pl.show text, .sub.show text { opacity: .96; }
+.pl.hl text, .pl.sel text { fill: #ffe7b3; }
+.pl { transition: opacity .3s; }
+#map.has-book .pl:not(.hl) { opacity: .45; }
+.sub { opacity: 0; transition: opacity .3s; pointer-events: none; }
+.sub.on { opacity: 1; }
+.sub circle { fill: var(--ink-dim); }
+.sub text { font-weight: 600; font-size: 11px; fill: var(--ink-dim); }
+
+#mapctl { position: absolute; left: max(12px, env(safe-area-inset-left)); bottom: 12px; display: flex; gap: 6px; flex-wrap: wrap; z-index: 3; max-width: calc(100% - 24px); }
+#mapctl .sq { padding: 7px 0; width: 34px; justify-content: center; font-size: 16px; line-height: 1; }
+#eden { position: absolute; left: max(12px, env(safe-area-inset-left)); top: 12px; z-index: 3; display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 8px; border-radius: 999px; border: 1px dashed rgba(246,239,225,.4); background: rgba(10,14,24,.6); font-size: 13px; font-weight: 700; }
+#eden i { width: 18px; height: 18px; border-radius: 50%; border: 1.5px dashed var(--ink-dim); display: grid; place-items: center; font-style: normal; font-size: 11px; color: var(--ink-dim); }
+#eden.walked i { background: var(--lamp); border: 0; color: #2a1a05; box-shadow: 0 0 10px rgba(255,207,122,.8); }
+#eden.hl, #eden.sel { border-color: var(--lamp); }
+
+/* ---------- 卡片（书卷或地点的说明） ---------- */
+#card { position: fixed; z-index: 6; right: max(12px, env(safe-area-inset-right)); top: calc(var(--top-h) + 12px); width: 372px; max-height: calc(100% - var(--top-h) - var(--river-total) - 24px); overflow: auto; overscroll-behavior: contain; background: rgba(20,17,26,.93); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 16px 48px rgba(0,0,0,.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 16px 18px 14px; scrollbar-width: thin; }
+#card .x { position: absolute; right: 10px; top: 10px; width: 30px; height: 30px; border-radius: 50%; background: transparent; border: 1px solid var(--line); color: var(--ink-dim); font-size: 16px; line-height: 1; }
+.c-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-right: 38px; }
+.c-tag { display: inline-flex; flex-wrap: wrap; gap: 0 6px; align-items: center; font-size: 12px; font-weight: 800; letter-spacing: .04em; padding: 3px 10px; border-radius: 999px; border: 1px solid currentColor; color: var(--lamp); }
+.c-tag.state { color: var(--ink-dim); border-style: dashed; font-weight: 700; }
+.c-tag.state.ready, .c-tag.state.started, .c-tag.state.kindled { color: #ffe7b3; border-style: solid; background: rgba(255,207,122,.14); }
+.c-toggle { display: none; }
+.c-toggle i { font-style: normal; transition: rotate .2s; }
+.c-note { margin: 12px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-dim); }
+.c-note .zh.blk { font-size: 13px; }
+.c-tag .zh { margin-left: .2em; font-weight: 500; }
+.c-tag.t-insert, .c-tag.t-place { color: var(--ink-dim); }
+.c-tag.t-parallel { color: var(--k-history); }
+#card h2 { margin: 10px 0 2px; font-family: var(--font-display); font-size: 30px; font-weight: 600; line-height: 1.15; text-wrap: balance; }
+#card h2 .zh { font-size: .64em; font-weight: 500; }
+.c-season { font-size: 12.5px; font-weight: 700; color: var(--ink-dim); letter-spacing: .03em; }
+.c-help { margin: 8px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-dim); }
+.c-help .zh.blk { font-size: 13px; }
+#card dl { margin: 12px 0 0; display: grid; gap: 10px; }
+#card dt { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-dim); }
+#card dt .zh { text-transform: none; letter-spacing: .15em; font-weight: 500; }
+#card dd { margin: 3px 0 0; font-size: 14.5px; line-height: 1.5; }
+#card dd .zh.blk { font-size: 13.5px; line-height: 1.6; }
+#card dd.hist { color: #dcecff; }
+#card dd small { display: block; margin-top: 3px; font-size: 12.5px; color: var(--ink-dim); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { background: rgba(255,255,255,.04); border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px; font-size: 13px; font-weight: 700; }
+.chip:hover { border-color: rgba(255,207,122,.6); }
+.chip .zh { margin-left: .3em; font-weight: 500; }
+.chip.lit { border-color: rgba(255,207,122,.6); color: #ffe7b3; }
+.eras { margin: 4px 0 0; padding-left: 20px; font-size: 13.5px; line-height: 1.5; }
+.eras li { margin-bottom: 5px; }
+.eras li small { display: block; color: var(--ink-dim); font-size: 12px; }
+.c-status { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); }
+.c-status p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-dim); }
+.bar { height: 5px; border-radius: 3px; background: rgba(255,255,255,.08); margin-top: 10px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--lamp); border-radius: 3px; }
+.primary { display: block; width: 100%; margin-top: 12px; background: var(--lamp); color: #2a1a05; border: 0; border-radius: 999px; padding: 11px 20px; font-weight: 800; font-size: 15.5px; box-shadow: 0 0 24px rgba(255,207,122,.35); }
+.primary .zh { font-weight: 500; }
+.c-foot { margin: 12px 0 0; font-size: 11.5px; line-height: 1.5; color: rgba(201,191,174,.7); }
+
+/* ---------- 时间之河 ---------- */
+#riverwrap { flex: none; position: relative; background: linear-gradient(180deg, #0b0d17, #06070c); border-top: 1px solid var(--line); z-index: 4; padding-bottom: env(safe-area-inset-bottom); }
+#seasonbar { display: flex; align-items: center; gap: 6px; padding: 7px max(12px, env(safe-area-inset-right)) 5px max(12px, env(safe-area-inset-left)); overflow-x: auto; scrollbar-width: none; }
+#seasonbar::-webkit-scrollbar { display: none; }
+.s-tab { flex: none; min-width: 28px; height: 28px; border-radius: 999px; border: 1px solid var(--line); background: transparent; font-size: 12.5px; font-weight: 800; color: var(--ink-dim); padding: 0 8px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.s-tab .nm { display: none; margin-left: 6px; font-weight: 700; }
+.s-tab .nm .zh { font-weight: 500; }
+.s-tab[aria-current="true"] { background: rgba(255,207,122,.16); color: var(--ink); border-color: rgba(255,207,122,.65); }
+.s-tab[aria-current="true"] .nm { display: inline; }
+.s-hint { margin-left: auto; padding-left: 18px; font-size: 12.5px; color: var(--ink-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#river { position: relative; overflow-x: auto; overflow-y: hidden; height: var(--river-h); cursor: grab; scrollbar-width: thin; scrollbar-color: rgba(255,207,122,.28) transparent; overscroll-behavior-x: contain; }
+#river.drag { cursor: grabbing; }
+#river-inner { position: relative; height: 100%; }
+#river-bg { position: absolute; left: 0; top: 0; height: 100%; pointer-events: none; }
+.band { fill: rgba(255,255,255,.022); }
+.band.dark { fill: rgba(0,0,0,.35); }
+.water { fill: none; stroke: rgba(106,159,209,.2); stroke-linecap: round; }
+.water.core { stroke: rgba(170,205,245,.5); stroke-width: 1.6; }
+.water.gold { stroke: var(--lamp); stroke-width: 3.2; stroke-dasharray: .1 8; opacity: .95; filter: drop-shadow(0 0 3px rgba(255,207,122,.8)); }
+.stem { stroke: rgba(246,239,225,.22); stroke-width: 1; }
+.star { fill: #dfe9ff; }
+.s-head { position: absolute; top: 5px; font-size: 11.5px; font-weight: 800; color: var(--ink-dim); white-space: nowrap; letter-spacing: .03em; pointer-events: none; }
+.s-head b { color: var(--lamp); font-weight: 800; margin-right: .4em; }
+.s-head .zh { font-weight: 500; }
+.s-head small { font-weight: 600; opacity: .7; margin-left: .7em; font-size: 11px; }
+.s-empty { position: absolute; transform: translate(-50%, -50%); font-family: var(--font-display); font-style: italic; font-size: 14px; color: rgba(201,191,174,.75); text-align: center; white-space: nowrap; pointer-events: none; }
+.s-empty .zh.blk { font-style: normal; font-size: 12.5px; }
+.g-brace { position: absolute; transform: translateX(-50%); font-size: 11px; font-weight: 700; color: var(--k-history); white-space: nowrap; pointer-events: none; opacity: .9; }
+.g-brace .zh { font-weight: 500; }
+
+.lamp { position: absolute; transform: translate(-50%, -50%); background: none; border: 0; padding: 0; width: var(--sz); height: var(--sz); border-radius: 50%; --sz: 30px; }
+.lamp svg { width: 100%; height: 100%; display: block; overflow: visible; pointer-events: none; }
+.lamp.trunk { --sz: 48px; } .lamp.parallel { --sz: 36px; } .lamp.cont { --sz: 16px; }
+.lamp .body { fill: #4a4553; stroke: rgba(246,239,225,.4); stroke-width: 1; }
+.lamp .glow { opacity: 0; transition: opacity .5s; }
+/* 没点着的灯：只画一圈火苗的轮廓 */
+.lamp .flame { fill: none; stroke: rgba(246,239,225,.3); stroke-width: 1; stroke-dasharray: 2 2; }
+.lamp.ready .body, .lamp.started .body, .lamp.kindled .body { fill: #b4683f; stroke: #e2a06f; }
+.lamp.ready .flame, .lamp.started .flame, .lamp.kindled .flame { fill: #fff4d6; stroke: none; }
+.lamp.ready .glow, .lamp.started .glow { opacity: .55; animation: breathe 2.4s ease-in-out infinite; }
+.lamp.kindled .glow { opacity: 1; }
+@keyframes breathe { 50% { opacity: .95; } }
+.lamp.cont { background: #2a2732; border: 1.5px solid rgba(246,239,225,.45); }
+.lamp.cont.kindled { background: #b4683f; border-color: #e2a06f; }
+.lamp::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1.5px solid var(--lamp); opacity: 0; transition: opacity .25s; }
+.lamp.hl::after { opacity: .45; border-style: dashed; }
+.lamp.sel::after { opacity: 1; box-shadow: 0 0 14px rgba(255,207,122,.45); }
+.lamp:hover::after { opacity: .7; }
+.lb { position: absolute; left: 50%; translate: -50% 0; white-space: nowrap; font-size: 11.5px; font-weight: 700; color: var(--ink-dim); text-align: center; line-height: 1.25; pointer-events: none; }
+.lamp.up .lb { bottom: calc(100% + 3px); }
+.lamp.down .lb, .lamp.mid .lb { top: calc(100% + 3px); }
+.lamp.cont .lb { font-size: 10.5px; font-weight: 600; }
+.lamp.trunk .lb { font-size: 13px; color: var(--ink); }
+.lamp.trunk .lb .zh { display: block; margin: 0; font-size: 12px; font-weight: 500; }
+.lamp .lb .zh { margin-left: .3em; font-weight: 500; }
+.lamp.sel .lb, .lamp.kindled .lb, .lamp.ready .lb, .lamp.started .lb { color: #ffe7b3; }
+
+/* ---------- 窄屏和矮屏 ---------- */
+@media (max-width: 1100px) { .s-hint { display: none; } }
+@media (max-width: 900px) { #counts .lbl { display: none; } }
+@media (max-width: 640px) {
+  :root { --river-h: 204px; }
+  .brand h1 { font-size: 18px; } .brand svg { width: 30px; height: 30px; } .brand .sub { font-size: 10px; }
+  #card { left: 8px; right: 8px; width: auto; top: auto; bottom: calc(var(--river-total) + 8px); max-height: min(50vh, calc(100% - var(--top-h) - var(--river-total) - 16px)); padding: 14px 16px 12px; }
+  #card h2 { font-size: 25px; }
+  #mapctl .txt .zh { display: none; }
+  #counts { padding: 6px 10px; } #counts .c2 { display: none; }
+  .chip-btn { padding: 6px 10px; }
+}
+/* 竖着拿的手机：卡片先只露出最要紧的几行，点“详情”再展开，免得把地图盖住 */
+@media (max-width: 640px) and (min-height: 501px) {
+  .c-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; font-size: 12.5px; font-weight: 700; color: var(--ink-dim); }
+  .c-toggle .zh { font-weight: 500; margin-left: .3em; }
+  #card.peek .c-more { display: none; }
+  #card:not(.peek) .c-toggle i { rotate: 180deg; }
+}
+@media (max-width: 480px) { .brand h1 { font-size: 16px; } .brand h1 .zh { display: none; } }
+/* 横着拿的手机：很矮，河和灯都缩小，卡片靠右、可以盖住河 */
+@media (max-height: 500px) {
+  :root { --river-h: 136px; }
+  #top { padding-top: max(5px, env(safe-area-inset-top)); padding-bottom: 5px; }
+  .brand svg { width: 28px; height: 28px; } .brand h1 { font-size: 17px; } .brand .sub { display: none; }
+  #seasonbar { padding-top: 4px; padding-bottom: 2px; } .s-tab { height: 24px; min-width: 24px; font-size: 11.5px; }
+  #card { left: auto; top: calc(var(--top-h) + 6px); bottom: 6px; right: max(6px, env(safe-area-inset-right)); width: 318px; max-height: none; padding: 12px 14px; }
+  #card h2 { font-size: 23px; margin-top: 8px; }
+  #mapctl { bottom: 6px; } #eden { top: 6px; padding: 4px 10px 4px 6px; font-size: 12px; }
+  .chip-btn { padding: 5px 10px; font-size: 12px; } #mapctl .sq { width: 28px; padding: 5px 0; }
+  .lamp { --sz: 20px; } .lamp.trunk { --sz: 32px; } .lamp.parallel { --sz: 24px; } .lamp.cont { --sz: 12px; }
+  .lb, .lamp.trunk .lb { font-size: 10.5px; } .lamp.trunk .lb .zh { display: inline; margin-left: .3em; font-size: 10.5px; }
+  .s-head { top: 2px; font-size: 10.5px; } .s-empty { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <header id="top">
+    <div class="brand">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <defs><radialGradient id="tg" cx="50%" cy="40%" r="50%"><stop offset="0" stop-color="#fff2c8"/><stop offset=".45" stop-color="#ffcf7a" stop-opacity=".7"/><stop offset="1" stop-color="#ffcf7a" stop-opacity="0"/></radialGradient></defs>
+        <circle cx="50" cy="40" r="36" fill="url(#tg)"/>
+        <path d="M50 22c6 8 7 13 0 22c-7-9-6-14 0-22z" fill="#fff4d6"/>
+        <path d="M18 56c10 10 54 10 64 0c-2 14-14 22-32 22S20 70 18 56z" fill="#b4683f"/>
+        <path d="M78 57c6-2 12-1 14 2c-5 2-9 4-14 4z" fill="#9c5634"/>
+      </svg>
+      <div>
+        <h1 id="t-title"></h1>
+        <div class="sub" id="t-sub"></div>
+      </div>
+    </div>
+    <div class="sp"></div>
+    <div id="counts" aria-live="polite"></div>
+    <button class="chip-btn" id="btn-lang" title="English / English + 中文 (L)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.6 3.6 5.6 3.6 8.5s-1 5.9-3.6 8.5M12 3.5C9.4 6.1 8.4 9.1 8.4 12s1 5.9 3.6 8.5"/></svg><span id="lang-text">EN + 中</span></button>
+  </header>
+
+  <main id="mapwrap">
+    <svg id="map" role="group"></svg>
+    <button id="eden"></button>
+    <div id="mapctl">
+      <button class="chip-btn txt" id="v-world"></button>
+      <button class="chip-btn txt" id="v-israel"></button>
+      <button class="chip-btn sq" id="v-in">+</button>
+      <button class="chip-btn sq" id="v-out">−</button>
+    </div>
+  </main>
+
+  <nav id="riverwrap">
+    <div id="seasonbar"></div>
+    <div id="river"><div id="river-inner"></div></div>
+  </nav>
+</div>
+
+<aside id="card" hidden></aside>
+
+<!--APP-->
+</body>
+</html>

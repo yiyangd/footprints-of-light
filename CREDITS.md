@@ -3,6 +3,12 @@
 ## 代码与工具
 - three.js 0.186.1 — MIT License，Copyright © 2010–2025 three.js authors（https://threejs.org）
 - esbuild — MIT License（只在打包时使用）
+- topojson-client — ISC License；world-atlas — ISC License（只在生成底图时使用）
+
+## 地图
+- 主页底图的海岸线来自 Natural Earth 1:5000 万陆地数据（公有领域，naturalearthdata.com），经 world-atlas 取得，裁剪并化简后存为 `home/src/basemap.json`。
+- 尼罗河、约旦河、底格里斯河、幼发拉底河、加利利海和死海是手工描的简化线，只作示意。
+- 地点的经纬度是按通行的圣经地图集整理的大概位置；标了 `approx` 的是传统位置或不确定的位置。
 
 ## 经文
 

@@ -1,0 +1,17 @@
+{
+  "name": "footprints-of-light-home",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "《光之踪迹》主页“光之地图”：古代世界地图 + 时间之河 + 66 盏灯（游戏目录）",
+  "scripts": {
+    "build": "node validate.mjs && node build.mjs",
+    "validate": "node validate.mjs",
+    "basemap": "node tools/make-basemap.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0",
+    "topojson-client": "3.1.0",
+    "world-atlas": "2.0.2"
+  }
+}

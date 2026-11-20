@@ -6,6 +6,8 @@
 <title>Footprints of Light 光之踪迹 · Prologue 序章</title>
 <!-- 语言：先读上次的选择，避免页面一打开先闪一下中文 -->
 <script>try { if (localStorage.getItem('guangzhiyue-lang') === 'en') document.documentElement.className = 'lang-en'; } catch (e) {}</script>
+<!-- 标签页上的小图标：一盏灯（直接写在这里，不用另外的文件） -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2742%27 r=%2734%27 fill=%27%23ffcf7a%27 opacity=%27.35%27/%3E%3Cpath d=%27M50 20c7 9 8 15 0 25c-8-10-7-16 0-25z%27 fill=%27%23fff4d6%27/%3E%3Cpath d=%27M16 56c10 10 58 10 68 0c-2 15-15 24-34 24S18 71 16 56z%27 fill=%27%23b4683f%27/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
@@ -278,6 +280,8 @@ body.in-story #hint { opacity: 0; }
   </div>
   <div id="topright">
     <div id="counts"></div>
+    <!-- “地图”和下面两个“回到光之地图”按钮：只有从主页进来（网址带 ?from=map）才显示 -->
+    <button class="chip-btn" id="btn-map" hidden aria-label="Back to the Map of Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6z"/><path d="M9 4v14M15 6v14"/></svg><span class="en">Map</span><span class="zh" lang="zh-CN">地图</span></button>
     <button class="chip-btn" id="btn-book" aria-label="Open journal (B)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5C4.7 20 4 19.3 4 18.5z"/><path d="M20 5.5C20 4.7 19.3 4 18.5 4H13v16h5.5c.8 0 1.5-.7 1.5-1.5z"/></svg><span class="en">Journal</span><span class="zh" lang="zh-CN">图鉴</span></button>
     <button class="chip-btn" id="btn-sound" aria-label="Sound on/off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10v4h4l5 4V6L8 10z"/><path id="snd-wave" d="M16 9a4 4 0 0 1 0 6"/></svg><span id="snd-text"><span class="en">Sound</span><span class="zh" lang="zh-CN">声音</span></span></button>
     <button class="chip-btn" id="btn-lang" aria-label="Language: English, or English + Chinese (L)" title="English / English + 中文 (L)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.6 3.6 5.6 3.6 8.5s-1 5.9-3.6 8.5M12 3.5C9.4 6.1 8.4 9.1 8.4 12s1 5.9 3.6 8.5"/></svg><span id="lang-text">EN + 中</span></button>
@@ -339,6 +343,7 @@ body.in-story #hint { opacity: 0; }
       <div class="end-actions">
         <button class="primary" id="end-book"><span class="en">Open Journal</span><span class="zh" lang="zh-CN">打开图鉴</span></button>
         <button class="ghost" id="end-continue"><span class="en">Keep walking in the garden</span><span class="zh" lang="zh-CN">继续在园子里走走</span></button>
+        <button class="ghost" id="end-map" hidden><span class="en">Back to the Map of Light</span><span class="zh" lang="zh-CN">回到光之地图</span></button>
       </div>
     </div>
   </div>
@@ -364,6 +369,7 @@ body.in-story #hint { opacity: 0; }
     <div class="actions">
       <button class="primary" id="btn-start"><span class="en">Begin the Journey</span><span class="zh" lang="zh-CN">开始旅程</span></button>
       <button class="ghost" id="btn-continue" hidden><span class="en">Continue</span><span class="zh" lang="zh-CN">继续上次的旅程</span></button>
+      <button class="ghost" id="title-map" hidden><span class="en">Back to the Map of Light</span><span class="zh" lang="zh-CN">回到光之地图</span></button>
     </div>
     <div class="help">
       <p><span class="en">Computer: <kbd>W A S D</kbd> or arrow keys to move, hold <kbd>Shift</kbd> to run, <kbd>Space</kbd> to jump (hold it in the air to glide), drag the mouse to look around, scroll to zoom, <kbd>B</kbd> opens the journal, <kbd>L</kbd> switches language.</span><span class="zh blk" lang="zh-CN">电脑：<kbd>W A S D</kbd> 或方向键移动，按住 <kbd>Shift</kbd> 奔跑，<kbd>空格</kbd> 跳跃（在空中按住滑翔），拖动鼠标看四周，滚轮拉近拉远，<kbd>B</kbd> 打开图鉴，<kbd>L</kbd> 切换语言。</span></p>

@@ -224,6 +224,9 @@ body.in-story #hint { opacity: 0; }
 #title-screen .credit { margin-top: 10px; font-size: 11px; line-height: 1.55; color: rgba(201,191,174,.7); }
 #title-screen .credit p { margin: 0 0 4px; }
 #title-screen .credit p.zh { margin: 0; }
+/* 从主页的地图进来时：大标题、经文、语言选择在封面上已经见过了，这里只留“序章 · 起初”、按钮和操作说明 */
+#title-screen.from-map h1, #title-screen.from-map .verse-line, #title-screen.from-map .lang-pick, #title-screen.from-map .lang-note { display: none; }
+#title-screen.from-map .sub { font-size: 17px; margin: 12px 0 22px; }
 #fade { position: fixed; inset: 0; background: #fff; opacity: 0; pointer-events: none; transition: opacity 1.2s ease; z-index: 15; }
 #fade.black { background: #000; }
 .end-hero { text-align: center; padding: 10px 6px 4px; }

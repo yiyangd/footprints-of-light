@@ -29,6 +29,8 @@ function setLang(v) {
   document.documentElement.className = 'lang-' + LANG;
   document.title = LANG === 'en' ? UI.docTitle.en : UI.docTitle.zh;
   $('lang-text').textContent = LANG === 'en' ? UI.langShort.en : UI.langShort.zh;
+  for (const b of document.querySelectorAll('[data-lang]')) b.setAttribute('aria-checked', b.dataset.lang === LANG);
+  $('c-langnote').textContent = LANG === 'en' ? UI.cover.langNote.en : UI.cover.langNote.zh;
   $('btn-lang').setAttribute('aria-label', `${UI.langLabel.en} ${UI.langLabel.zh}: ${LANG === 'en' ? UI.langName.en : UI.langName.zh}`);
   try { localStorage.setItem(LANG_KEY, LANG); } catch (e) { /* 存不了也没关系 */ }
   layoutLabels(); // 地名的宽度变了，重新排一下避免重叠
@@ -84,7 +86,7 @@ function renderMap() {
   h += T.seas.map(s => `<text class="sea-name" x="${X(s.lon)}" y="${Y(s.lat)}" font-size="${s.size}">${tspans(s.name)}</text>`).join(''); // 海的名字，淡淡地写在水面上
   h += '<path class="route" id="route" d=""/>';
   // 附属的小地点（例如“族长之路”上的示剑、伯特利）
-  h += '<g id="subs">' + T.maps.flatMap(m => (m.also || []).map((a, i) => `<g class="sub" data-parent="${m.id}" data-i="${i}" data-x="${X(a.lon)}" data-y="${Y(a.lat)}" ${at(a.lon, a.lat)}><circle r="2.4"/><text x="7" y="4">${tspans(a.name)}</text></g>`)).join('') + '</g>';
+  h += '<g id="subs">' + T.maps.flatMap(m => (m.also || []).map((a, i) => `<g class="also" data-parent="${m.id}" data-i="${i}" data-x="${X(a.lon)}" data-y="${Y(a.lat)}" ${at(a.lon, a.lat)}><circle r="2.4"/><text x="7" y="4">${tspans(a.name)}</text></g>`)).join('') + '</g>';
   // 41 张地图各一个点（伊甸位置不可考，不放在地图上，见左上角的按钮）
   // 耶路撒冷最后画，这样它总在最上面，点得到
   h += '<g id="places">' + T.maps.filter(m => m.lat != null).sort((a, b) => (a.id === 'jerusalem') - (b.id === 'jerusalem')).map(m => {
@@ -165,7 +167,7 @@ function layoutLabels() {
     const pri = m.id === selId ? 0 : hl.has(m.id) ? 1 : m.id === 'jerusalem' ? 2 : inIsrael(m) ? 4 : 3;
     items.push({ g, sx, sy, w: textW(mapLabel(m)), pri, r: 9 });
   }
-  for (const g of svg.querySelectorAll('.sub')) {
+  for (const g of svg.querySelectorAll('.also')) {
     const parent = g.dataset.parent, on = ppd > 70 || parent === selId || (hl.has(parent) && ppd > 26);
     g.classList.toggle('on', on); g.classList.remove('show');
     if (!on) continue;
@@ -392,7 +394,30 @@ function initCardInput() {
 }
 
 /* ============================================================================
-   6. 开始
+   6. 封面：一打开先看到封面，点“开始旅程”进入地图。
+      网址后面带 #map 表示“直接看地图”：从序章回来、或在地图上刷新页面时，就不再过一遍封面。
+   ========================================================================== */
+function showCover(on) {
+  $('cover').classList.toggle('gone', !on);
+  $('app').inert = on; $('card').inert = on; // 封面盖着的时候，后面的地图不能点、也不抢键盘焦点
+  try { history.replaceState(null, '', on ? location.pathname + location.search : '#map'); } catch (e) { /* 改不了网址也没关系 */ }
+  if (on) $('c-begin').focus({ preventScroll: true });
+}
+function initCover() {
+  const C = UI.cover;
+  $('c-title').innerHTML = bi(UI.title, 'blk'); $('c-sub').innerHTML = bi(C.sub); $('c-verse').innerHTML = bi(C.verse, 'blk'); $('c-begin').innerHTML = bi(C.begin);
+  $('c-credit').innerHTML = `<p>${bi(C.credit)}</p><p>${esc(C.notice.en)} <span class="site">${esc(C.site.en)}</span></p><p class="zh" lang="zh-CN">${esc(C.notice.zh)}</p>`;
+  const [en, both] = $('c-lang').children; en.textContent = UI.langName.en; both.textContent = UI.langName.zh;
+  $('c-lang').setAttribute('aria-label', UI.langLabel.en + ' ' + UI.langLabel.zh);
+  for (const b of $('c-lang').children) b.addEventListener('click', () => setLang(b.dataset.lang));
+  $('c-begin').addEventListener('click', () => showCover(false));
+  $('btn-cover').addEventListener('click', () => showCover(true));
+  $('btn-cover').setAttribute('aria-label', UI.backToCover.en + ' ' + UI.backToCover.zh);
+  showCover(location.hash !== '#map');
+}
+
+/* ============================================================================
+   7. 开始
    ========================================================================== */
 function measure() { // 量一下顶栏和河有多高，写进 CSS 变量，卡片靠它们定位
   document.documentElement.style.setProperty('--top-h', $('top').offsetHeight + 'px');
@@ -405,9 +430,9 @@ function init() {
   const eden = mapById.get('eden'); $('eden').innerHTML = `<i>?</i><span>${bi(mapLabel(eden))}</span>`; $('eden').title = `${eden.name.en} ${eden.name.zh}: ${UI.unknownSite.en} ${UI.unknownSite.zh}`;
   $('riverwrap').setAttribute('aria-label', UI.riverLabel.en + ' ' + UI.riverLabel.zh);
   renderMap(); renderRiver(); measure();
-  initMapInput(); initRiverInput(); initCardInput();
+  initMapInput(); initRiverInput(); initCardInput(); initCover();
   $('btn-lang').addEventListener('click', () => setLang(LANG === 'en' ? 'bi' : 'en'));
-  addEventListener('keydown', e => { if (e.key === 'Escape') select(null); else if ((e.key === 'l' || e.key === 'L') && !e.ctrlKey && !e.metaKey && !e.altKey) setLang(LANG === 'en' ? 'bi' : 'en'); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && $('cover').classList.contains('gone')) select(null); else if ((e.key === 'l' || e.key === 'L') && !e.ctrlKey && !e.metaKey && !e.altKey) setLang(LANG === 'en' ? 'bi' : 'en'); });
   let rt = 0, lastH = $('river').clientHeight;
   addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { measure(); if ($('river').clientHeight !== lastH) { lastH = $('river').clientHeight; renderRiver(); paint(); } view = clampView(view); applyView(); layoutLabels(); }, 120); });
   // 从序章回来时（包括按浏览器的“后退”），进度可能变了，重新读一遍

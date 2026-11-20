@@ -1215,9 +1215,10 @@ for (const b of document.querySelectorAll('[data-lang]')) b.addEventListener('cl
 $('btn-lang').addEventListener('click', () => setLang(LANG === 'en' ? 'bi' : 'en'));
 setLang(LANG);
 // 从主页“光之地图”进来的（网址带 ?from=map）才显示“回到地图”的按钮；单独打开这个文件时没有主页可回。
-// 回去之前先存档（还在标题页就不存，免得把旧存档盖掉）。
+// 回去之前先存档（还在标题页就不存，免得把旧存档盖掉）。回去的网址带 #map，主页就直接显示地图，不再过一遍封面。
 if (new URLSearchParams(location.search).get('from') === 'map') {
-  for (const id of ['btn-map', 'title-map', 'end-map']) { $(id).hidden = false; $(id).addEventListener('click', () => { if ($('title-screen').hidden) persist(); location.href = '../'; }); }
+  $('title-screen').classList.add('from-map');
+  for (const id of ['btn-map', 'title-map', 'end-map']) { $(id).hidden = false; $(id).addEventListener('click', () => { if ($('title-screen').hidden) persist(); location.href = '../#map'; }); }
 }
 if (DEBUG) {
   $('fps').hidden = false;

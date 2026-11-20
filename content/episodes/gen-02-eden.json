@@ -1,0 +1,510 @@
+{
+  "id": "gen-02-eden",
+  "title": {
+    "en": "The Garden of Eden",
+    "zh": "伊甸园"
+  },
+  "range": "Gen 2:4–3:1",
+  "era": {
+    "book": {
+      "en": "Genesis",
+      "zh": "创世记"
+    },
+    "label": {
+      "en": "A garden in the east",
+      "zh": "东方的园子"
+    },
+    "yearAM": 0
+  },
+  "scripture": {
+    "en": "ESV (English Standard Version, © Crossway)",
+    "zh": "和合本（新标点和合本，神版）"
+  },
+  "note": "所有给玩家看的文字都是 { en, zh }。at 是地图上的 [x, z] 坐标（x 向东，z 向南）；r 是触发半径；fx 是剧情效果名；kind: scripture 经文 / history 考据 / imagination 游戏想象 / reflection 思考；ref 写成 Gen 1:3",
+  "beats": [
+    {
+      "id": "e1",
+      "at": [
+        42,
+        -15
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Eden",
+          "zh": "伊甸园"
+        },
+        "sub": {
+          "en": "A garden in the east",
+          "zh": "东方的园子"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 2:8",
+          "text": {
+            "en": "And the LORD God planted a garden in Eden, in the east, and there he put the man whom he had formed.",
+            "zh": "耶和华神在东方的伊甸立了一个园子，把所造的人安置在那里。"
+          },
+          "fx": "eden"
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 2:9",
+          "text": {
+            "en": "And out of the ground the LORD God made to spring up every tree that is pleasant to the sight and good for food. The tree of life was in the midst of the garden, and the tree of the knowledge of good and evil.",
+            "zh": "耶和华神使各样的树从地里长出来，可以悦人的眼目，其上的果子好作食物。园子当中又有生命树和分别善恶的树。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "eden",
+          "i": 0
+        },
+        {
+          "type": "verse",
+          "ref": "Gen 2:9"
+        }
+      ]
+    },
+    {
+      "id": "e2",
+      "at": [
+        62,
+        -18
+      ],
+      "r": 5.2,
+      "hud": {
+        "label": {
+          "en": "Four Rivers",
+          "zh": "四道河"
+        },
+        "sub": {
+          "en": "The spring of Eden",
+          "zh": "伊甸的泉源"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 2:10",
+          "text": {
+            "en": "A river flowed out of Eden to water the garden, and there it divided and became four rivers.",
+            "zh": "有河从伊甸流出来滋润那园子，从那里分为四道："
+          }
+        },
+        {
+          "kind": "history",
+          "text": {
+            "en": "The first river is the Pishon, the second the Gihon, the third the Tigris, and the fourth the Euphrates (Genesis 2:11–14). The Tigris and the Euphrates still flow today, through Turkey, Syria and Iraq.",
+            "zh": "第一道叫比逊，第二道叫基训，第三道叫希底结，第四道就是伯拉河（创 2:11–14）。希底结就是底格里斯河，伯拉河就是幼发拉底河，今天仍在流淌。"
+          },
+          "fx": "rivers"
+        },
+        {
+          "kind": "imagination",
+          "text": {
+            "en": "They say a treasure is hidden by the Pishon (Genesis 2:12). The Pishon flows away to the northeast.",
+            "zh": "听说比逊河边藏着一样宝物（创 2:12）。比逊河往东北方流去。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "eden",
+          "i": 1
+        }
+      ]
+    },
+    {
+      "id": "e3",
+      "at": [
+        68.5,
+        -18
+      ],
+      "r": 3.2,
+      "hud": {
+        "label": {
+          "en": "In the Midst of the Garden",
+          "zh": "园子当中"
+        },
+        "sub": {
+          "en": "God’s command",
+          "zh": "神的吩咐"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 2:15",
+          "text": {
+            "en": "The LORD God took the man and put him in the garden of Eden to work it and keep it.",
+            "zh": "耶和华神将那人安置在伊甸园，使他修理看守。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 2:16–17",
+          "text": {
+            "en": "And the LORD God commanded the man, saying, “You may surely eat of every tree of the garden, but of the tree of the knowledge of good and evil you shall not eat, for in the day that you eat of it you shall surely die.”",
+            "zh": "耶和华神吩咐他说：“园中各样树上的果子，你可以随意吃，只是分别善恶树上的果子，你不可吃，因为你吃的日子必定死。”"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "eden",
+          "i": 2
+        },
+        {
+          "type": "verse",
+          "ref": "Gen 2:15"
+        }
+      ]
+    },
+    {
+      "id": "e4",
+      "at": [
+        48.5,
+        -20
+      ],
+      "r": 3.2,
+      "hud": {
+        "label": {
+          "en": "Naming",
+          "zh": "命名"
+        },
+        "sub": {
+          "en": "The man names the animals",
+          "zh": "那人给活物起名"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 2:18",
+          "text": {
+            "en": "Then the LORD God said, “It is not good that the man should be alone; I will make him a helper fit for him.”",
+            "zh": "耶和华神说：“那人独居不好，我要为他造一个配偶帮助他。”"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 2:19",
+          "text": {
+            "en": "Now out of the ground the LORD God had formed every beast of the field and every bird of the heavens and brought them to the man to see what he would call them. And whatever the man called every living creature, that was its name.",
+            "zh": "耶和华神用土所造成的野地各样走兽和空中各样飞鸟都带到那人面前，看他叫什么。那人怎样叫各样的活物，那就是它的名字。"
+          },
+          "fx": "naming"
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 2:20",
+          "text": {
+            "en": "The man gave names to all livestock and to the birds of the heavens and to every beast of the field. But for Adam there was not found a helper fit for him.",
+            "zh": "那人便给一切牲畜和空中飞鸟、野地走兽都起了名；只是那人没有遇见配偶帮助他。"
+          }
+        },
+        {
+          "kind": "history",
+          "text": {
+            "en": "We don’t know what language Adam spoke. The names above the animals are their names in biblical Hebrew.",
+            "zh": "我们不知道亚当说的是什么语言。动物头上显示的，是它们在圣经希伯来文里的名字。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "eden",
+          "i": 3
+        },
+        {
+          "type": "gesture",
+          "id": "name"
+        }
+      ]
+    },
+    {
+      "id": "e5",
+      "at": [
+        55.5,
+        -21
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Bone of My Bones",
+          "zh": "骨中的骨"
+        },
+        "sub": {
+          "en": "Eve",
+          "zh": "夏娃"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 2:21",
+          "text": {
+            "en": "So the LORD God caused a deep sleep to fall upon the man, and while he slept took one of his ribs and closed up its place with flesh.",
+            "zh": "耶和华神使他沉睡，他就睡了；于是取下他的一条肋骨，又把肉合起来。"
+          },
+          "fx": "sleep"
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 2:22",
+          "text": {
+            "en": "And the rib that the LORD God had taken from the man he made into a woman and brought her to the man.",
+            "zh": "耶和华神就用那人身上所取的肋骨造成一个女人，领她到那人跟前。"
+          },
+          "fx": "eve"
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 2:23",
+          "text": {
+            "en": "Then the man said, “This at last is bone of my bones and flesh of my flesh; she shall be called Woman, because she was taken out of Man.”",
+            "zh": "那人说：“这是我骨中的骨，肉中的肉，可以称她为女人，因为她是从男人身上取出来的。”"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "eden",
+          "i": 4
+        }
+      ]
+    },
+    {
+      "id": "e6",
+      "at": [
+        68.5,
+        -18
+      ],
+      "r": 3.2,
+      "hud": {
+        "label": {
+          "en": "In the Midst of the Garden",
+          "zh": "园子当中"
+        },
+        "sub": {
+          "en": "Coming next",
+          "zh": "下一章预告"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 3:1",
+          "text": {
+            "en": "Now the serpent was more crafty than any other beast of the field that the LORD God had made. He said to the woman, “Did God actually say, ‘You shall not eat of any tree in the garden’?”",
+            "zh": "耶和华神所造的，惟有蛇比田野一切的活物更狡猾。蛇对女人说：“神岂是真说不许你们吃园中所有树上的果子吗？”"
+          },
+          "fx": "serpent"
+        },
+        {
+          "kind": "imagination",
+          "text": {
+            "en": "This is the end of the prologue. The next chapter, “Where Are You?” (Genesis 3), is being made by all of us together.",
+            "zh": "序章到这里结束。下一章《你在哪里？》（创世记 3 章），正在由我们一起制作。"
+          },
+          "fx": "end"
+        }
+      ],
+      "rewards": []
+    }
+  ],
+  "cards": [
+    {
+      "id": "eden-name",
+      "kind": "history",
+      "title": {
+        "en": "What does “Eden” mean?",
+        "zh": "“伊甸”是什么意思？"
+      },
+      "text": {
+        "en": "The Hebrew עֵדֶן (Eden) carries the idea of “delight.” Some scholars connect it with the Sumerian word edin, meaning “plain” or “steppe.” The Greek Septuagint translated “garden” as paradeisos, which is where the English word “paradise” comes from.",
+        "zh": "希伯来文 עֵדֶן（Eden）有“喜乐、愉悦”的意思；也有学者认为它和苏美尔文 edin（平原、旷野）有关。“园子”在希腊文七十士译本里译作 paradeisos，英文“乐园”（paradise）就是从这里来的。"
+      },
+      "at": [
+        45,
+        -11
+      ]
+    },
+    {
+      "id": "tree-of-life",
+      "kind": "history",
+      "title": {
+        "en": "From tree of life to tree of life",
+        "zh": "从生命树到生命树"
+      },
+      "text": {
+        "en": "The tree of life appears in the first book of the Bible (Genesis 2:9) and in the last (Revelation 22:2). The Bible’s story begins in a garden with a river and the tree of life, and ends in a city with the river of the water of life and the tree of life.",
+        "zh": "生命树出现在圣经的第一卷（创 2:9），也出现在最后一卷（启 22:2）。圣经的故事从一个有河、有生命树的园子开始，也在一座有生命水的河、有生命树的城结束。"
+      },
+      "at": [
+        53,
+        -14.5
+      ]
+    },
+    {
+      "id": "not-good",
+      "kind": "reflection",
+      "title": {
+        "en": "The first “not good”",
+        "zh": "第一个“不好”"
+      },
+      "text": {
+        "en": "After so many “good”s, “not good” appears for the first time: “It is not good that the man should be alone” (Genesis 2:18). God made us to love and help one another. Who around you needs a companion?",
+        "zh": "在一连串的“好”之后，第一次出现了“不好”：“那人独居不好”（创 2:18）。神造我们，是要我们彼此相爱、彼此帮助。你身边有谁需要一个同伴？"
+      },
+      "at": [
+        45.5,
+        -25.5
+      ]
+    },
+    {
+      "id": "zoom",
+      "kind": "history",
+      "title": {
+        "en": "Wide shot and close-up",
+        "zh": "全景和特写"
+      },
+      "text": {
+        "en": "Genesis 1 is like a wide shot: it tells the whole of creation in seven days. Genesis 2 is like a close-up: it slows down and tells how people were made on the sixth day in more detail. This is a common way many Bible readers understand the two chapters.",
+        "zh": "创世记第 1 章像“全景镜头”，按七日讲完整个创造；第 2 章像“特写镜头”，把第六日造人的经过讲得更仔细。这是许多读经者常见的理解。"
+      },
+      "at": [
+        50.5,
+        -9.5
+      ]
+    },
+    {
+      "id": "not-apple",
+      "kind": "history",
+      "title": {
+        "en": "Was it an apple?",
+        "zh": "是苹果吗？"
+      },
+      "text": {
+        "en": "The Bible only speaks of fruit from “the tree of the knowledge of good and evil.” It never says it was an apple. The apple came later, from traditions in Western art. So in this game, it is simply a golden fruit.",
+        "zh": "圣经只说“分别善恶树上的果子”，从来没有说是苹果。“禁果是苹果”是后来西方绘画里的传统。所以在这个游戏里，它只是一种金色的果子。"
+      },
+      "at": [
+        71.5,
+        -22
+      ]
+    }
+  ],
+  "relics": [
+    {
+      "id": "onyx",
+      "name": {
+        "en": "Onyx Stone",
+        "zh": "红玛瑙"
+      },
+      "ref": "Gen 2:12",
+      "kind": "history",
+      "desc": {
+        "en": "The Pishon flows around the land of Havilah, “where there is gold… bdellium and onyx stone are there” (Genesis 2:11–12). Later, each shoulder piece of the high priest’s ephod held an onyx stone engraved with the names of the sons of Israel (Exodus 28:9–12).",
+        "zh": "比逊河环绕的哈腓拉地，“在那里有金子……又有珍珠和红玛瑙”（创 2:11–12）。后来大祭司以弗得的两条肩带上，也各镶着一块红玛瑙，上面刻着以色列儿子的名字（出 28:9–12）。"
+      }
+    }
+  ],
+  "window": {
+    "id": "eden",
+    "name": {
+      "en": "Window of Eden",
+      "zh": "伊甸之窗"
+    },
+    "ref": "Gen 2:8–23",
+    "pieces": [
+      {
+        "en": "A Garden in the East",
+        "zh": "东方的园子"
+      },
+      {
+        "en": "Four Rivers",
+        "zh": "四道河"
+      },
+      {
+        "en": "Two Trees in the Midst",
+        "zh": "园子当中的两棵树"
+      },
+      {
+        "en": "Naming the Animals",
+        "zh": "给活物起名"
+      },
+      {
+        "en": "Bone of My Bones",
+        "zh": "骨中的骨"
+      }
+    ]
+  },
+  "gestures": [
+    {
+      "id": "name",
+      "name": {
+        "en": "Name",
+        "zh": "命名"
+      },
+      "key": "F",
+      "desc": {
+        "en": "Raise your hand and point ahead, like the man naming the animals. Learned from: Genesis 2:19–20.",
+        "zh": "抬手指向前方，像那人给活物起名。学自：创 2:19–20。"
+      }
+    }
+  ],
+  "animalNames": {
+    "sheep": {
+      "en": "Sheep",
+      "zh": "绵羊",
+      "he": "שֶׂה",
+      "tr": "seh"
+    },
+    "deer": {
+      "en": "Deer",
+      "zh": "鹿",
+      "he": "אַיָּל",
+      "tr": "ayyal"
+    },
+    "lion": {
+      "en": "Lion",
+      "zh": "狮子",
+      "he": "אַרְיֵה",
+      "tr": "aryeh"
+    },
+    "dove": {
+      "en": "Dove",
+      "zh": "鸽子",
+      "he": "יוֹנָה",
+      "tr": "yonah"
+    }
+  },
+  "riverNames": [
+    {
+      "en": "Pishon",
+      "zh": "比逊"
+    },
+    {
+      "en": "Gihon",
+      "zh": "基训"
+    },
+    {
+      "en": "Tigris",
+      "zh": "希底结"
+    },
+    {
+      "en": "Euphrates",
+      "zh": "伯拉河"
+    }
+  ]
+}

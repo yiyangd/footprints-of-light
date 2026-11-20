@@ -1,0 +1,57 @@
+# 自动发布到 GitHub Pages
+# 每次有人把修改推送到 main 分支（包括在 GitHub 网页上直接改文件），
+# 这里就会自动打包小样（prototype/），并发布到 https://<用户名>.github.io/<仓库名>/
+# 一般 1–2 分钟后网站就更新了。进度可以在仓库的 Actions 页面看。
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # 也可以在 Actions 页面手动点“Run workflow”
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只发布一次；新的推送会排队
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 取出代码
+        uses: actions/checkout@v5
+      - name: 安装 Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: 安装依赖
+        working-directory: prototype
+        run: npm ci
+      - name: 数一数 ESV 经文（上限 500 节）
+        working-directory: prototype
+        run: npm run count:esv
+      - name: 打包小样
+        working-directory: prototype
+        run: npm run build
+      - name: 准备 Pages
+        uses: actions/configure-pages@v5
+      - name: 上传网站文件
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: prototype/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 发布到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+# 打包生成的单文件小样（npm run build 会重新生成）
+prototype/起初-双击打开.html

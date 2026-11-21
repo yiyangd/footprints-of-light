@@ -3,12 +3,10 @@ import * as THREE from 'three';
 import { lerp, rng } from '../core/math';
 import { scene } from '../core/renderer';
 import { TEX } from '../core/textures';
+import { pickJump, SPOTS } from './fish-spots';
 import { mergeParts, placeAt } from './shapes';
 
-/** 鱼出没的水域：[中心 x, 中心 z, 半径]。前三条在第五日的小湖里，其余在海里 */
-const SPOTS: Array<[number, number, number]> = [[-16, -5, 3], [-16, -5, 3], [-16, -5, 3], [-31, 12, 6], [12, 44, 6], [-6, -41, 5], [38, 24, 6]];
-
-/** 一条鱼：t 小于 0 是在水下等着，0 到 dur 是正在跳，从 (ax, az) 跳到 (bx, bz) */
+/** 一条鱼：水域的中心 (cx, cz) 和半径 rr；t 小于 0 是在水下等着，0 到 dur 是正在跳，从 (ax, az) 跳到 (bx, bz) */
 interface Jumper { cx: number; cz: number; rr: number; t: number; dur: number; ax: number; az: number; bx: number; bz: number }
 
 function buildFish(): THREE.InstancedMesh {
@@ -24,22 +22,10 @@ function buildFish(): THREE.InstancedMesh {
 }
 const mesh = buildFish();
 
-/** 在自己的水域里挑好一次跳跃的起跳点和落水点 */
-function pickJumpSpots(f: Jumper): void {
-  const rand = Math.random;
-  const a = rand() * 6.28, r = rand() * f.rr;
-  f.ax = f.cx + Math.cos(a) * r;
-  f.az = f.cz + Math.sin(a) * r;
-  const b = a + (rand() - 0.5) * 2;
-  f.bx = f.ax + Math.cos(b) * 1.6;
-  f.bz = f.az + Math.sin(b) * 1.6;
-}
-
-const R = rng(13);
-const jumpers: Jumper[] = SPOTS.map(([cx, cz, rr]) => ({ cx, cz, rr, t: -R() * 4, dur: 0.9 + R() * 0.4, ax: 0, az: 0, bx: 0, bz: 0 }));
-// 第一次跳也要在自己的水域里，所以一开始就把位置挑好（先等多久还是用上面的 t）。
+// 每条鱼一开始就在自己的水域里挑好第一次跳跃的位置（怎么挑、怎么保证落在水里，见 fish-spots.ts）。
 // 以前起跳点和落水点一开始都是 0，每条鱼的第一次跳跃都发生在地图正中央的陆地上。
-jumpers.forEach((f) => pickJumpSpots(f));
+const R = rng(13);
+const jumpers: Jumper[] = SPOTS.map(([cx, cz, rr]) => ({ cx, cz, rr, t: -R() * 4, dur: 0.9 + R() * 0.4, ...pickJump(cx, cz, rr, Math.random) }));
 
 /** 每条鱼一圈涟漪 */
 const ripples: THREE.Sprite[] = SPOTS.map(() => {
@@ -59,7 +45,7 @@ const vPos = new THREE.Vector3(), ONE = new THREE.Vector3(1, 1, 1);
 /** 跳完一次：回到水下等几秒，并挑好下一次起跳和落水的地方 */
 function planNextJump(f: Jumper): void {
   f.t = -1.5 - Math.random() * 4;
-  pickJumpSpots(f);
+  Object.assign(f, pickJump(f.cx, f.cz, f.rr, Math.random));
 }
 
 /** 每一帧：推进每条鱼的跳跃和涟漪 */

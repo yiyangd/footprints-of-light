@@ -1,0 +1,42 @@
+# 合并之前先检查
+# 每次开 PR（或者往 PR 里再推送修改），这里就会把三部分都测试、打包一遍，但不发布。
+# PR 页面上出现绿色的勾，说明合并到 main 以后网站能正常更新；出现红色的叉，点进去看是哪一步出错。
+name: Check
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 取出代码
+        uses: actions/checkout@v5
+      - name: 安装 Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: 安装依赖（正式工程）
+        run: npm ci
+      - name: 测试正式工程
+        run: npm test
+      - name: 检查类型，打包正式工程
+        run: npm run build
+      - name: 安装依赖（序章小样）
+        working-directory: prototype
+        run: npm ci
+      - name: 数一数 ESV 经文（上限 500 节）
+        working-directory: prototype
+        run: npm run count:esv
+      - name: 打包序章小样
+        working-directory: prototype
+        run: npm run build
+      - name: 安装依赖（主页）
+        working-directory: home
+        run: npm ci
+      - name: 检查时间线数据，打包主页
+        working-directory: home
+        run: npm run build

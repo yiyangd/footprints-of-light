@@ -24,7 +24,9 @@
 | `content/episodes/*.json` | 第 1、2 章的剧情、经文、陶片、信物、彩窗数据（中英双语） |
 | `content/README.md` | 这些 JSON 每个字段的意思 |
 | `home/` | 主页“光之地图”的源代码：`src/main.js`、`src/index.html`，底图 `src/basemap.json` |
-| `.github/workflows/deploy.yml` | 自动发布：每次推送到 `main`，GitHub 自动打包主页和序章并更新上面的网站 |
+| `index.html`、`src/`、`package.json` | **正式工程**（Vite + TypeScript + Three.js）。`src/` 里按功能分了文件夹，`src/main.ts` 是入口，开头有一段说明每个文件夹管什么 |
+| `.github/workflows/deploy.yml` | 自动发布：每次推送到 `main`，GitHub 自动打包主页、序章小样和正式工程并更新上面的网站 |
+| `.github/workflows/check.yml` | 自动检查：每次开 PR，GitHub 先测试、打包一遍，合并前就知道会不会出错 |
 | `prototype/src/` | 序章小样的源代码：`main.js`（游戏）、`content.js`（内容，中英双语）、`index.html`（界面） |
 | `CREDITS.md` | 授权说明，特别是 ESV 经文的使用条件 |
 
@@ -32,7 +34,7 @@
 
 1. 先玩：打开上面的在线试玩链接。
 2. 改一行试试：按下面“网站怎么更新”的做法，改一句提示文字，看网站跟着变。
-3. 交给 Codex：在 Codex 里打开这个仓库，复制 `docs/PROMPTS.md` 里的 **M0** 提示词。Codex 会把小样变成正式工程（Vite + TypeScript + Three.js）。
+3. 接着做：先读 `docs/STATUS.md`，里面写着做到哪了、下一步是什么。把小样变成正式工程的 **M0** 分三步，现在做完了第 1 步。
 4. 每做完一步，在电脑和手机上各玩一遍；有问题就用“修 bug 模板”告诉 Codex。
 
 ## 网站怎么更新
@@ -62,7 +64,23 @@ npm run build      # 打包主页
 
 年代用的是较传统的圣经纪年，都是约数。有几处需要牧者确认（出埃及的年代、十字架的年份、约伯记和约珥书放在哪里等），确认后只需要改 `timeline.json` 里对应的几行。
 
-## 想在自己电脑上改小样？（在 Codex 做完 M0 之前）
+## 想在自己电脑上跑正式工程？
+
+需要先安装 Node.js（https://nodejs.org ，选 LTS 版本，22 或更新）。然后在仓库最外层打开终端：
+
+```bash
+npm install
+npm run dev
+```
+
+终端里会显示一个网址（一般是 `http://localhost:5173/`），用浏览器打开就是游戏。改了 `src/` 里的代码，页面会自己刷新。
+
+- **在手机上试**：手机和电脑连同一个 Wi-Fi，运行 `npm run dev -- --host`，用手机浏览器打开终端里 `Network` 后面的那个网址。
+- **改完检查**：`npm test`（自动测试）和 `npm run build`（检查类型并打包）都要通过。
+- **调试**：网址末尾加 `#debug` 会显示帧率，并可在浏览器控制台用 `__gzy.completeNext()` 跳过一段剧情。
+- 正式工程打包以后发布在网站的 `/play/`。主页上的入口暂时还指向小样（`/prologue/`），等 M0 做完再换过来。
+
+## 想在自己电脑上改小样？（在 M0 全部做完之前，内容还是先改这里）
 
 需要先安装 Node.js（https://nodejs.org ，选 LTS 版本）。
 

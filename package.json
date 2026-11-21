@@ -1,0 +1,23 @@
+{
+  "name": "footprints-of-light",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "description": "《光之踪迹》Footprints of Light 正式工程（Vite + TypeScript + Three.js）。主页在 home/，最早的小样在 prototype/。",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "@types/three": "0.186.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
+  }
+}

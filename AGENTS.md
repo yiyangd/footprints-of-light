@@ -6,7 +6,7 @@
 完整设计见 `docs/设计方案.md`。
 
 ## 现在做到哪了（先读这里）
-现在上线的是主页 `home/` 和序章小样 `prototype/`，正式工程还没开始搭。下面“技术栈”“常用命令”“目录”里的 `src/` 和最外层的 `npm` 命令，要等 `docs/PROMPTS.md` 的 M0 做完才有。
+现在上线的是主页 `home/`、序章小样 `prototype/`，以及刚搭起来的正式工程（`src/`，发布在 `/play/` 试看）。`docs/PROMPTS.md` 的 M0 分三步做，现在做完了第 1 步：下面“常用命令”里的 `npm run validate:content`、`npm run count:esv` 和“目录”里的 `src/content/schema.ts` 要到第 2 步才有。
 **现在实际能用的命令、目录、发布方式和下一步，都写在 `docs/STATUS.md`。** 开始任何任务之前先读它。
 
 ## 技术栈
@@ -30,7 +30,8 @@
 - `src/player` 角色控制、镜头、灯
 - `src/story` 剧情节点（BeatRunner）、字幕、效果注册表
 - `src/collect` 收集、存档、图鉴界面
-- `src/episodes/<id>.ts` 每章专属的场景和效果
+- `src/episodes/<id>.ts` 每章专属的场景和效果（新的一章要在 `src/episodes/index.ts` 里登记）
+- `src/content` 读 `content/` 下的 JSON，并说明每一项数据的类型
 - `content/episodes/<id>.json` 每章的经文、节点、收集品（中英双语）
 - `docs/STATUS.md` 现状与下一步；`docs/时间线与地图调研.md` 66 卷书按年代的排法和 41 张地图的依据
 - `content/timeline.json` 全书时间线：12 季、66 卷书、41 张场景地图（主页直接读它）

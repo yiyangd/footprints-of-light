@@ -81,9 +81,12 @@ function buildAnimals(): void {
     for (let i = 0; i < counts[sp]; i++) {
       const home = homes[sp][i % homes[sp].length];
       const a = R() * 6.28, r = R() * home[2];
+      const x = home[0] + Math.cos(a) * r, z = home[1] + Math.sin(a) * r;
+      // 一开始“想去的地方”就是自己站的地方，等够了再在家附近另挑一处。
+      // 以前这里是 (0, 0)，所有走兽一出现都先朝地图正中央走。
       animals.push({
-        sp, i, mesh, x: home[0] + Math.cos(a) * r, z: home[1] + Math.sin(a) * r, yaw: R() * 6.28, home,
-        tx: 0, tz: 0, wait: R() * 3, speed: sp === 'deer' ? 1.3 : 0.75, appear: 0, phase: R() * 6, summon: null,
+        sp, i, mesh, x, z, yaw: R() * 6.28, home,
+        tx: x, tz: z, wait: R() * 3, speed: sp === 'deer' ? 1.3 : 0.75, appear: 0, phase: R() * 6, summon: null,
       });
     }
   }

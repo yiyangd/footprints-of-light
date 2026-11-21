@@ -24,8 +24,22 @@ function buildFish(): THREE.InstancedMesh {
 }
 const mesh = buildFish();
 
+/** 在自己的水域里挑好一次跳跃的起跳点和落水点 */
+function pickJumpSpots(f: Jumper): void {
+  const rand = Math.random;
+  const a = rand() * 6.28, r = rand() * f.rr;
+  f.ax = f.cx + Math.cos(a) * r;
+  f.az = f.cz + Math.sin(a) * r;
+  const b = a + (rand() - 0.5) * 2;
+  f.bx = f.ax + Math.cos(b) * 1.6;
+  f.bz = f.az + Math.sin(b) * 1.6;
+}
+
 const R = rng(13);
 const jumpers: Jumper[] = SPOTS.map(([cx, cz, rr]) => ({ cx, cz, rr, t: -R() * 4, dur: 0.9 + R() * 0.4, ax: 0, az: 0, bx: 0, bz: 0 }));
+// 第一次跳也要在自己的水域里，所以一开始就把位置挑好（先等多久还是用上面的 t）。
+// 以前起跳点和落水点一开始都是 0，每条鱼的第一次跳跃都发生在地图正中央的陆地上。
+jumpers.forEach((f) => pickJumpSpots(f));
 
 /** 每条鱼一圈涟漪 */
 const ripples: THREE.Sprite[] = SPOTS.map(() => {
@@ -44,14 +58,8 @@ const vPos = new THREE.Vector3(), ONE = new THREE.Vector3(1, 1, 1);
 
 /** 跳完一次：回到水下等几秒，并挑好下一次起跳和落水的地方 */
 function planNextJump(f: Jumper): void {
-  const rand = Math.random;
-  f.t = -1.5 - rand() * 4;
-  const a = rand() * 6.28, r = rand() * f.rr;
-  f.ax = f.cx + Math.cos(a) * r;
-  f.az = f.cz + Math.sin(a) * r;
-  const b = a + (rand() - 0.5) * 2;
-  f.bx = f.ax + Math.cos(b) * 1.6;
-  f.bz = f.az + Math.sin(b) * 1.6;
+  f.t = -1.5 - Math.random() * 4;
+  pickJumpSpots(f);
 }
 
 /** 每一帧：推进每条鱼的跳跃和涟漪 */

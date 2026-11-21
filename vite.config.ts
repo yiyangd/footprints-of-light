@@ -1,9 +1,20 @@
 // Vite 的设置：开发时的小服务器 + 打包。
+import fs from 'node:fs';
 import { defineConfig } from 'vitest/config';
+import { fillPage } from './src/content/page.ts';
+
+/** 界面文字：每次都重新读，这样开发时改了 content/ui.json，刷新页面就能看到 */
+const readUi = (): unknown => JSON.parse(fs.readFileSync(new URL('./content/ui.json', import.meta.url), 'utf8'));
 
 export default defineConfig({
   // 用相对路径，这样打包结果放在网站的任何一层目录里（例如 /play/）都能打开
   base: './',
+  plugins: [{
+    // index.html 里不写死文字，只写 {{bi:page.hud.map}} 这样的记号；
+    // 在这里把记号换成 content/ui.json 里的文字（做法见 src/content/page.ts）
+    name: 'fill-page-text',
+    transformIndexHtml: { order: 'pre', handler: (html) => fillPage(html, readUi()) },
+  }],
   build: {
     // 打包出来的代码和样式要能在这些浏览器上运行（和小样用的 es2020 一样宽）。
     // 不写的话，打包工具会把样式改成只有新浏览器才认识的写法：例如把 @media (max-width: 520px)

@@ -1,6 +1,14 @@
-# 章节数据说明（content/episodes/*.json）
+# 内容数据说明（content/ 下的 JSON）
 
-每一章一个 JSON 文件。考据组和关卡组只改这里，就能改剧情；改完请属灵顾问核对经文。
+游戏里所有给玩家看的文字都在这个文件夹里，代码里不写死文字：
+
+- `episodes/*.json`：每一章一个文件（剧情、经文、陶片、信物、彩窗、姿态）。考据组和关卡组只改这里，就能改剧情；改完请属灵顾问核对经文。
+- `ui.json`：界面上的文字（按钮、开始页、结尾页、提示、书卷名）。说明在本页后面。
+- `timeline.json`、`home-ui.json`：主页“光之地图”用的，说明在本页最后。
+
+改完 `episodes/` 或 `ui.json`，在仓库最外层运行 **`npm run validate:content`**：写错了它会说是哪个文件、哪一项、错在哪。每个文件该长什么样，规矩写在 `src/content/schema.ts`。
+
+小样（`prototype/`）有它自己的一份内容 `prototype/src/content.js`。小样还在线上的这段时间，两边要保持一致，见 `docs/STATUS.md` 的“改内容要注意”。
 
 ## 双语
 
@@ -14,13 +22,15 @@
 - 考据、想象、思考：两种语言意思一致就行，不需要逐字对译。英文要写给 8 岁以上的孩子看得懂。
 - ESV 有版权：整个游戏不超过 500 节，加经文前后都运行 `npm run count:esv` 看一下总数（详见 `CREDITS.md`）。
 
-## 顶层字段
+## 每一章（episodes/*.json）的顶层字段
 
 | 字段 | 意思 |
 | --- | --- |
-| `id` | 章节编号，例如 `gen-01-creation` |
+| `id` | 章节编号，例如 `gen-01-creation`，和文件名一样 |
+| `n` | 第几章（图鉴里显示“第 1 章”） |
 | `title` | 章节名 `{ en, zh }` |
 | `range` | 经文范围，例如 `Gen 1:1–2:3` |
+| `hudBook` | 左上角显示的书卷和章节，例如 `Gen 1:1–2:3` 或 `Gen 2` |
 | `era` | 时间轴上显示的书卷、标签、创世纪年 |
 | `scripture` | 这一章用的译本（ESV / 和合本） |
 | `beats` | 剧情节点，按顺序触发 |
@@ -28,6 +38,9 @@
 | `relics` | 信物 |
 | `window` | 这一章的彩窗，`pieces` 是每一片的名字 |
 | `gestures` | 这一章学会的姿态 |
+| `animalNames`、`riverNames` | 这一章要用的名字（伊甸园里给活物起名、四道河），没有就不写 |
+
+新加一章：除了写这个 JSON，还要在 `src/content/index.ts` 里登记这个文件（场景和效果在 `src/episodes/` 里登记）。没登记的话 `npm run validate:content` 会提醒。
 
 ## 剧情节点（beats）
 
@@ -50,9 +63,29 @@
 | `text` | 显示的文字 `{ en, zh }` |
 | `fx` | 这一行出现时触发的世界效果，例如 `light`（要有光）、`land`（旱地露出来） |
 
-书卷缩写现在有 `Gen`（创世记）和 `Ps`（诗篇）；用到新书卷时，在 `prototype/src/content.js` 的 `BOOKS` 里加一行（例如 `Exod: { en: 'Exodus', zh: '出', zhFull: '出埃及记' }`）。
+一行经文的 `ref` 只能写同一章里的一节或连续几节（`Gen 1:3`、`Gen 1:14–15`）；彩窗、信物的 `ref` 和 `range`、`hudBook` 是一段范围，可以只写到章或者跨章（`Gen 2`、`Gen 1:1–2:3`）。连接号是 `–`，不是减号 `-`。
+
+书卷缩写现在有 `Gen`（创世记）和 `Ps`（诗篇）；用到新书卷时，在 `content/ui.json` 的 `books` 里加一行（例如 `"Exod": { "en": "Exodus", "zh": "出", "zhFull": "出埃及记" }`）。
+
+经文还没有人核对过原文、暂时空着的时候，文字写 `TODO(经文)`，`npm run validate:content` 会一条一条提醒，等人照圣经补上。不要凭记忆写。
 
 小样里已经有的效果：`wind` `light` `sky` `land` `plants` `lights` `creatures` `animals` `humans` `rest` `evening` `openEden` `eden` `rivers` `naming` `sleep` `eve` `serpent` `end`。新的效果要请 Codex 在对应章节的代码里实现。
+
+## 界面文字（content/ui.json）
+
+| 部分 | 意思 |
+| --- | --- |
+| `books` | 书卷名，按出处里的缩写查：英文名、中文简称、中文全名 |
+| `kinds` | 四种文字的名字：经文 / 考据 / 游戏想象 / 思考 |
+| `hints` | 剧情结束后的操作提示，按节点的 `id` 写。分手机和电脑的写成 `{ touch: {…}, desk: {…} }` |
+| `titleVerse` | 开始页上的那节经文（诗 77:19）。和剧情里的经文一样：ESV 和和合本一字不改，带 `kind` 和 `ref` |
+| `page` | 写在页面上的固定文字，分成几组：`hud` 右上角、`touch` 触屏按钮、`story` 字幕、`card` 陶片、`book` 图鉴、`end` 结尾页、`start` 开始页、`common` 好几处都用的 |
+| `aria` | 读屏软件念的说明、鼠标停在按钮上时的小提示。不分语言，一项一行字 |
+| `game` | 游戏进行中显示的文字：通知、图鉴、计数、版权声明（`esvNotice` 是 Crossway 要求的，不能删）…… |
+
+- 除了 `aria` 和 `game` 里少数几项（例如 `title`、`langNote` 是按语言模式分的 `{ en, bi }`），每一条都是 `{ en, zh }`。
+- 文字里的 `{n}`、`{w}`、`{ref}` 会被换成数字或名字，不要删。`page.start.helpDesk` 里 `[W A S D]` 这样的方括号会画成键帽。
+- `page` 里的文字怎么到页面上：`index.html` 里不写字，只写记号，例如 `{{bi:page.hud.map}}`；打包时换成真正的文字。四种记号：`bi`（中文跟在英文后面）、`blk`（中文另起一行）、`keys`（另起一行，并把方括号画成键帽）、`text`（不分语言的一行字）。要在页面上加一句新的话：在 `page` 的某一组里加一条，再在 `index.html` 里写上对应的记号。记号和 `ui.json` 对不上时，`npm run validate:content` 和 `npm run build` 都会报错。
 
 ## 全书时间线（content/timeline.json）
 
@@ -82,4 +115,4 @@
 
 一张地图的字段：`name` 是地图的全名，`label` 是标在地图上的短名字，`modern` 是今天在哪里，`lat`/`lon` 是纬度和经度（伊甸位置不可考，写 `null`），`approx` 表示这是传统位置或大概位置，`also` 是同一张地图里的其他地点。`build` 是写给制作者看的备注（画面依据、别画错的地方），不显示给玩家。
 
-改完运行 `cd home && npm run validate`。
+改完 `timeline.json` 或 `home-ui.json`，运行 `cd home && npm run validate`。

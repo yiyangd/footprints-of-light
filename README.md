@@ -21,10 +21,12 @@
 | `CLAUDE.md` | 给 Claude Code 的说明（它会引入 `AGENTS.md` 和 `docs/STATUS.md`） |
 | `content/timeline.json` | 全书时间线：12 季、66 卷书、41 张场景地图。主页直接读它，改了它主页就跟着变 |
 | `content/home-ui.json` | 主页界面上的文字（中英双语） |
-| `content/episodes/*.json` | 第 1、2 章的剧情、经文、陶片、信物、彩窗数据（中英双语） |
+| `content/episodes/*.json` | 第 1、2 章的剧情、经文、陶片、信物、彩窗数据（中英双语）。正式工程直接读它 |
+| `content/ui.json` | 正式工程界面上的文字：按钮、开始页、结尾页、提示、书卷名（中英双语） |
 | `content/README.md` | 这些 JSON 每个字段的意思 |
 | `home/` | 主页“光之地图”的源代码：`src/main.js`、`src/index.html`，底图 `src/basemap.json` |
 | `index.html`、`src/`、`package.json` | **正式工程**（Vite + TypeScript + Three.js）。`src/` 里按功能分了文件夹，`src/main.ts` 是入口，开头有一段说明每个文件夹管什么 |
+| `scripts/` | 正式工程的两个小工具：检查内容（`npm run validate:content`）、数 ESV 经文（`npm run count:esv`） |
 | `.github/workflows/deploy.yml` | 自动发布：每次推送到 `main`，GitHub 自动打包主页、序章小样和正式工程并更新上面的网站 |
 | `.github/workflows/check.yml` | 自动检查：每次开 PR，GitHub 先测试、打包一遍，合并前就知道会不会出错 |
 | `prototype/src/` | 序章小样的源代码：`main.js`（游戏）、`content.js`（内容，中英双语）、`index.html`（界面） |
@@ -45,7 +47,7 @@
 2. GitHub 会自动打包并发布（见 `.github/workflows/deploy.yml`），进度在仓库的 **Actions** 页面。
 3. 一般 1–2 分钟后，刷新在线试玩的网址就能看到新版本。
 
-如果 Actions 里出现红色的叉，点进去看是哪一步出错（最常见的是 `content.js` 或 `timeline.json` 里少了逗号或引号），改好再提交一次就行。
+如果 Actions 里出现红色的叉，点进去看是哪一步出错（最常见的是 `content.js`、`content/` 下的 JSON 里少了逗号或引号），改好再提交一次就行。
 
 ## 想改主页（光之地图）？
 
@@ -76,11 +78,12 @@ npm run dev
 终端里会显示一个网址（一般是 `http://localhost:5173/`），用浏览器打开就是游戏。改了 `src/` 里的代码，页面会自己刷新。
 
 - **在手机上试**：手机和电脑连同一个 Wi-Fi，运行 `npm run dev -- --host`，用手机浏览器打开终端里 `Network` 后面的那个网址。
-- **改完检查**：`npm test`（自动测试）和 `npm run build`（检查类型并打包）都要通过。
+- **改文字**：正式工程的文字都在 `content/` 下的 JSON 里（剧情和经文在 `content/episodes/`，界面文字在 `content/ui.json`），不会编程也可以改，字段说明见 `content/README.md`。改完运行 `npm run validate:content`，写错了它会说是哪个文件、哪一项；动了经文再运行 `npm run count:esv`，并请属灵顾问核对。
+- **改完检查**：`npm test`（自动测试）、`npm run validate:content`（检查内容）和 `npm run build`（检查类型并打包）都要通过。
 - **调试**：网址末尾加 `#debug` 会显示帧率，并可在浏览器控制台用 `__gzy.completeNext()` 跳过一段剧情。
 - 正式工程打包以后发布在网站的 `/play/`。主页上的入口暂时还指向小样（`/prologue/`），等 M0 做完再换过来。
 
-## 想在自己电脑上改小样？（在 M0 全部做完之前，内容还是先改这里）
+## 想在自己电脑上改小样？（主页的入口换到正式工程之前，线上玩到的还是它）
 
 需要先安装 Node.js（https://nodejs.org ，选 LTS 版本）。
 
@@ -90,11 +93,11 @@ npm install
 # 改 src/content.js（剧情和陶片）或 src/main.js（玩法）以后：
 npm run build
 npm run count:esv   # 加了经文就数一下 ESV 节数
-npm run export      # 把内容同步到 content/episodes/*.json
 # 然后双击新生成的 prototype/起初-双击打开.html 看效果
 ```
 
-- 剧情文字、经文、陶片都在 `src/content.js`，每段都有 `en` 和 `zh` 两份，不会编程也可以改（改完记得请属灵顾问核对）。
+- 小样的剧情文字、经文、陶片都在 `src/content.js`，每段都有 `en` 和 `zh` 两份，不会编程也可以改（改完记得请属灵顾问核对）。
+- 小样和正式工程各有一份内容。改了小样的 `content.js`，`content/` 下的 JSON 里同一处也要改，再在仓库最外层运行 `node tools/compare-prototype/diff-content.mjs` 确认两边逐字一致。**不要再运行 `npm run export`**：它会把 `content/episodes/*.json` 盖回旧的样子。
 - 地址后面加 `#debug` 会显示帧率，并可在浏览器控制台用 `__gzy.completeNext()` 跳过剧情（方便测试）。
 
 ## 三条规矩（详见 AGENTS.md）

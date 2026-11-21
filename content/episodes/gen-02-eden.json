@@ -1,10 +1,12 @@
 {
   "id": "gen-02-eden",
+  "n": 2,
   "title": {
     "en": "The Garden of Eden",
     "zh": "伊甸园"
   },
   "range": "Gen 2:4–3:1",
+  "hudBook": "Gen 2",
   "era": {
     "book": {
       "en": "Genesis",

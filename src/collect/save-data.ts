@@ -31,6 +31,19 @@ export function emptySave(windowIds: string[]): SaveData {
   };
 }
 
+/**
+ * 从某一章开始（主页上点了那一章的“进入”）：进度改成“前面各章都走过了”，
+ * 收集到的彩窗碎片、陶片、信物、经文、姿态一样都不少。
+ * @param beforeIds 前面各章所有剧情段的 id（从第 1 章开始就是空的）
+ * @param at 前一章最后一段的位置，玩家站在那里；从第 1 章开始就是 null（站在起点）
+ */
+export function startAtChapter(save: SaveData, beforeIds: string[], at: [number, number] | null): SaveData {
+  const next: SaveData = { ...save, done: [...beforeIds] };
+  if (at) next.pos = [at[0], 2, at[1]];
+  else delete next.pos;
+  return next;
+}
+
 const stringList = (v: unknown): string[] => (Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : []);
 
 /**

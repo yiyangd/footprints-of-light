@@ -51,6 +51,12 @@ for (const b of T.books) {
   (b.parts || []).forEach(p => check(p.season >= 1 && p.season <= 12 && p.ch, `${b.id} 的 parts 有问题`));
   for (const m of b.maps) { check(mapIds.has(m), `${b.id} 用到的地图“${m}”不存在`); used.add(m); }
   if (b.play) check(isBi(b.play.title) && b.play.url && b.play.beats > 0, `${b.id} 的 play 不完整`);
+  if (b.play?.chapters) {
+    // 各章的段数加起来要等于整卷的段数，每一段只属于一章
+    const all = b.play.chapters.flatMap(c => c.beats || []);
+    check(all.length === b.play.beats && new Set(all).size === all.length, `${b.id} 的 play.chapters 里的段数和 play.beats 对不上`);
+    b.play.chapters.forEach((c, i) => check(c.n === i + 1 && isBi(c.title) && isBi(c.ref) && c.beats?.length > 0, `${b.id} 的第 ${i + 1} 章不完整`));
+  }
 }
 for (const m of T.maps) check(used.has(m.id), `地图 ${m.id} 没有任何书卷用到`);
 

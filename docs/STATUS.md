@@ -6,8 +6,8 @@
 ## 一句话
 
 网站已经上线：封面 → 光之地图（游戏目录）→ 序章《起初》。只有序章能玩，其余 65 卷在地图上显示“建造中”。
-正式的 Vite + TypeScript 工程搭好了前两步（`docs/PROMPTS.md` 里的 M0，分三步做，见下面“M0 做到哪了”）：内容全部从 `content/` 下的 JSON 读，并且能自动检查。
-小样的代码已经拆成模块搬进 `src/`，画面和玩法跟小样一样（只有鱼和走兽有意地不一样：正式工程修了它们刚出现时的位置，鱼只在水里跳；小样没有改），发布在 `/play/` 供试看。主页的入口暂时还指向小样 `/prologue/`。
+正式的 Vite + TypeScript 工程搭好了（`docs/PROMPTS.md` 里的 M0 做完了，见下面“M0 做到哪了”）：小样的代码拆成模块搬进了 `src/`，内容全部从 `content/` 下的 JSON 读，并且能自动检查。
+**主页上创世记那盏灯进的就是正式工程（`/play/`）。** 它的画面和玩法跟小样一样，只有鱼和走兽有意地不一样（正式工程修了它们刚出现时的位置，鱼只在水里跳）。小样还留在 `/prologue/`，只作参考，主页已经不通到那里。
 
 在线地址：https://yiyangd.github.io/footprints-of-light/
 
@@ -17,7 +17,7 @@
 | --- | --- | --- |
 | `home/` | 主页：封面 + 光之地图（地图、时间之河、66 盏灯）。原生 JS + SVG，用 esbuild 打成一个 HTML | 能用，v0.3 |
 | `index.html`、`src/`、`package.json` 等 | **正式工程**：Vite + TypeScript（strict）+ Three.js + Vitest。现在的内容就是序章，和小样一样（鱼和走兽除外，见 `docs/CHANGELOG.md`） | 能用，v0.4。以后的新功能都加在这里 |
-| `prototype/` | 序章小样：创造七天 + 伊甸园，共 14 段。Three.js，打成一个 HTML | 能用，v0.2。只作参考，不再加功能 |
+| `prototype/` | 序章小样：创造七天 + 伊甸园，共 14 段。Three.js，打成一个 HTML | 能用，v0.2。只作参考，不再加功能。主页已经不通到它，但 `/prologue/` 这个网址还能打开 |
 | `tools/compare-prototype/` | 把小样和正式工程逐帧对比的工具（确认画面和玩法没变）。不参与打包 | M0 做完、小样删掉以后可以一起删 |
 | `content/timeline.json` | 12 季、66 卷书、41 张场景地图。主页直接读它 | 主页的数据来源 |
 | `content/home-ui.json` | 主页界面上的文字 | — |
@@ -25,7 +25,7 @@
 | `content/ui.json` | 界面上的文字（封面、按钮、图鉴……）和书卷的名字。`index.html` 里用占位符按名字取 | 各字段的意思见 `content/README.md` |
 | `docs/设计方案.md` | 完整设计：玩法、十二季、分工、里程碑 | — |
 | `docs/时间线与地图调研.md` | 66 卷书按年代的排法、每一季的分幕、41 张地图的依据、主页设计 | `timeline.json` 就是照它第 2、9 节转出来的 |
-| `docs/PROMPTS.md` | 一步步做正式工程的任务说明（M0 起） | 还没开始 |
+| `docs/PROMPTS.md` | 一步步做正式工程的任务说明（M0 起） | M0 做完了，下一个是 M1 |
 
 ### M0 做到哪了
 
@@ -33,9 +33,13 @@ M0（把小样变成正式工程）分三步，每一步一个 PR：
 
 1. **搭架子，把小样搬进来** —— 做完了（v0.4）。`src/` 按 `AGENTS.md` 的目录拆成了 `core / world / player / story / collect / episodes / content`。
 2. **内容全部从 JSON 读，并且能自动检查** —— 做完了。界面文字在 `content/ui.json`，正式工程不再读小样的任何文件；`index.html` 里的文字换成了占位符，打包时从 `ui.json` 填进去（`src/content/page-text.ts`）；内容的规则写在 `src/content/schema.ts`（zod），`npm run validate:content` 照着检查，`npm run count:esv` 数 ESV 节数。
-3. **主页入口改到 `/play/`** —— 还没做。把 `content/timeline.json` 里创世记的 `play.url` 改成 `./play/`，确认没问题以后再考虑删掉 `prototype/`。
+3. **主页入口改到 `/play/`** —— 做完了。`content/timeline.json` 里创世记的 `play.url` 现在是 `./play/`。
 
-`AGENTS.md` 里“常用命令”和“目录”写的东西现在都有了。还差第 3 步，M0 才算做完。
+三步都做完了，`AGENTS.md` 里“常用命令”和“目录”写的东西现在都有。
+
+**万一 `/play/` 在某台设备上有问题**：把 `content/timeline.json` 里创世记的 `play.url` 改回 `./prologue/`，主页就退回小样，改一行就行。
+
+还留着一件收尾的事，**先不要做，等带领人点头**：`/play/` 在真手机上用过一阵没问题以后，可以删掉 `prototype/`、`tools/compare-prototype/`，并把发布流程里的 `/prologue/` 去掉。
 
 ## 现在能用的命令
 
@@ -71,8 +75,8 @@ npm run build      # → prototype/dist/index.html
 推送到 `main` 分支，GitHub Actions（`.github/workflows/deploy.yml`）自动打包并发布，大约一分钟：
 
 - `home/dist/index.html` → 网站最外层 `/`
-- `prototype/dist/index.html` → `/prologue/`
-- 正式工程的 `dist/` → `/play/`（试看用：https://yiyangd.github.io/footprints-of-light/play/ ，主页上还没有通到这里的入口）
+- 正式工程的 `dist/` → `/play/`（主页上创世记那盏灯进的就是这里）
+- `prototype/dist/index.html` → `/prologue/`（旧的小样；主页已经不通到这里，网址还能打开）
 
 **只有 `main` 会发布。** 在别的分支上改，要合并到 `main` 网站才会变。
 
@@ -80,7 +84,7 @@ npm run build      # → prototype/dist/index.html
 
 两个页面之间的约定：
 
-- 主页进序章：`./prologue/?from=map`。序章看到 `from=map` 才显示“回到光之地图”的按钮，并把开始页变成简版。`/play/` 遵守同样的约定。
+- 主页进序章：`./play/?from=map`（网址写在 `timeline.json` 里创世记的 `play.url`）。序章看到 `from=map` 才显示“回到光之地图”的按钮，并把开始页变成简版。小样 `/prologue/` 遵守同样的约定。
 - 序章回主页：`../#map`。主页看到 `#map` 就直接显示地图，不再过封面。
 - 存档在玩家浏览器的 localStorage 里：进度是 `guangzhiyue-proto-v1`（里面的 `done` 数组，满 14 段算走完），语言是 `guangzhiyue-lang`（`en` 或 `bi`）。这两个名字是旧名“光之约”留下的，**不要改**，改了玩家的存档和语言设置会丢。`/prologue/` 和 `/play/` 共用同一份存档和语言设置。
 - 一卷书能不能进，看它在 `timeline.json` 里有没有 `play`。现在只有创世记有。
@@ -114,7 +118,8 @@ npm run build      # → prototype/dist/index.html
 
 ## 建议的下一步
 
-1. **把 M0 做完**：上面“M0 做到哪了”的第 3 步。先在真手机上看过 `/play/` 没问题再做。
+1. **在真手机上把序章完整玩一遍**（从主页点创世记进去）。这是现在最该做的检查：到目前为止只在电脑上模拟过手机的屏幕和触屏，声音也只有人能听。有问题先照上面说的把入口改回小样。
+   然后接着做 `docs/PROMPTS.md` 的 **M1（手感：走、跑、跳、滑翔）**，或者直接做下面的第 2 条。
 2. **每一季先做一幕**，把主线贯通。12 幕的清单在调研文档第 11 节；第 2 季是“亚伯兰蒙召，夜里数星星”（创 12；15）。
 3. **三个模板各做一个样板**：先知书用哈该书，书信用腓利门书，诗篇用诗 51。
 4. **主页的带领者模式**：老师一键全部解锁（设计在调研文档第 10 节）。

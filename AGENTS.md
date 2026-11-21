@@ -6,7 +6,7 @@
 完整设计见 `docs/设计方案.md`。
 
 ## 现在做到哪了（先读这里）
-现在上线的是主页 `home/`、序章小样 `prototype/`，以及刚搭起来的正式工程（`src/`，发布在 `/play/` 试看）。`docs/PROMPTS.md` 的 M0 分三步做，现在做完了第 1 步：下面“常用命令”里的 `npm run validate:content`、`npm run count:esv` 和“目录”里的 `src/content/schema.ts` 要到第 2 步才有。
+现在上线的是主页 `home/`、序章小样 `prototype/`，以及刚搭起来的正式工程（`src/`，发布在 `/play/` 试看）。`docs/PROMPTS.md` 的 M0 分三步做，现在做完了前两步：正式工程的内容全部从 `content/` 下的 JSON 读，下面的命令和目录都已经可用。还差第 3 步：把主页的入口从小样（`/prologue/`）换到正式工程（`/play/`）。
 **现在实际能用的命令、目录、发布方式和下一步，都写在 `docs/STATUS.md`。** 开始任何任务之前先读它。
 
 ## 技术栈
@@ -31,7 +31,9 @@
 - `src/story` 剧情节点（BeatRunner）、字幕、效果注册表
 - `src/collect` 收集、存档、图鉴界面
 - `src/episodes/<id>.ts` 每章专属的场景和效果（新的一章要在 `src/episodes/index.ts` 里登记）
-- `src/content` 读 `content/` 下的 JSON，并说明每一项数据的类型
+- `src/content` 读 `content/` 下的 JSON；`schema.ts` 是内容的规则（zod），`check.ts` 检查内容，`esv-count.ts` 数 ESV，`page-text.ts` 把 `index.html` 里的占位符换成 `content/ui.json` 里的文字
+- `scripts/` 命令行脚本：`validate-content.ts`、`count-esv.ts`
+- `content/ui.json` 界面上的文字和书卷的名字（中英双语）
 - `content/episodes/<id>.json` 每章的经文、节点、收集品（中英双语）
 - `docs/STATUS.md` 现状与下一步；`docs/时间线与地图调研.md` 66 卷书按年代的排法和 41 张地图的依据
 - `content/timeline.json` 全书时间线：12 季、66 卷书、41 张场景地图（主页直接读它）

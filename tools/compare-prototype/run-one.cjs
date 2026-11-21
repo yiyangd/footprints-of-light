@@ -4,7 +4,8 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const [which, device, lang] = process.argv.slice(2);
-const URLS = { old: 'file://' + path.resolve(__dirname, '../../prototype/dist/index.html'), new: 'http://localhost:4173/' };
+// “旧的一版”默认是小样；设了 OLD_URL 就改用那个地址（拿正式工程改动前后的两个版本互相比，见 README）
+const URLS = { old: process.env.OLD_URL || 'file://' + path.resolve(__dirname, '../../prototype/dist/index.html'), new: 'http://localhost:4173/' };
 const DEVICES = {
   desktop: { viewport: { width: 1280, height: 720 } },
   portrait: { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true },

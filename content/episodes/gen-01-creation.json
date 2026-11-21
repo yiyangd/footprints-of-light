@@ -1,10 +1,12 @@
 {
   "id": "gen-01-creation",
+  "chapter": 1,
   "title": {
     "en": "Seven Days of Creation",
     "zh": "创造七日"
   },
   "range": "Gen 1:1–2:3",
+  "hudRef": "Gen 1:1–2:3",
   "era": {
     "book": {
       "en": "Genesis",
@@ -20,7 +22,7 @@
     "en": "ESV (English Standard Version, © Crossway)",
     "zh": "和合本（新标点和合本，神版）"
   },
-  "note": "所有给玩家看的文字都是 { en, zh }。at 是地图上的 [x, z] 坐标（x 向东，z 向南）；r 是触发半径；fx 是剧情效果名；kind: scripture 经文 / history 考据 / imagination 游戏想象 / reflection 思考；ref 写成 Gen 1:3",
+  "note": "所有给玩家看的文字都是 { en, zh }。at 是地图上的 [x, z] 坐标（x 向东，z 向南）；r 是触发半径；fx 是剧情效果名；kind: scripture 经文 / history 考据 / imagination 游戏想象 / reflection 思考；ref 写成 Gen 1:3；hint 是这个节点结束后出现的操作提示（可以分 touch 手机 / desk 电脑两种）",
   "beats": [
     {
       "id": "begin",
@@ -70,7 +72,17 @@
           "type": "verse",
           "ref": "Gen 1:1"
         }
-      ]
+      ],
+      "hint": {
+        "touch": {
+          "en": "Use the joystick at the bottom left to move. Follow the faint light.",
+          "zh": "用左下角的摇杆移动，跟着远处的微光走"
+        },
+        "desk": {
+          "en": "Press W or ↑ to walk. Follow the faint light in the distance.",
+          "zh": "按 W 或 ↑ 往前走，跟着远处的微光"
+        }
+      }
     },
     {
       "id": "day1",
@@ -138,7 +150,17 @@
           "ref": "Gen 1:3"
         }
       ],
-      "after": "evening"
+      "after": "evening",
+      "hint": {
+        "touch": {
+          "en": "Your lamp is lit. Hold the button at the bottom right to jump and glide.",
+          "zh": "灯亮了。按住右下角的按钮，可以跳起来滑翔"
+        },
+        "desk": {
+          "en": "Your lamp is lit. Press Space to jump; hold Space in the air to glide.",
+          "zh": "灯亮了。按空格跳跃，在空中按住空格可以滑翔"
+        }
+      }
     },
     {
       "id": "day2",
@@ -253,7 +275,11 @@
           "i": 2
         }
       ],
-      "after": "evening"
+      "after": "evening",
+      "hint": {
+        "en": "The land has risen! Explore freely — glowing potsherds are hidden around the map.",
+        "zh": "陆地升起来了！可以自由探索。地图上藏着发光的陶片"
+      }
     },
     {
       "id": "day4",
@@ -493,7 +519,11 @@
           "ref": "Gen 2:3"
         }
       ],
-      "after": "openEden"
+      "after": "openEden",
+      "hint": {
+        "en": "The garden in the east is open. Follow the light east.",
+        "zh": "东方的园子开启了。跟着光，往东走"
+      }
     }
   ],
   "cards": [

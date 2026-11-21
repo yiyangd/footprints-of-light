@@ -1,5 +1,6 @@
 // 图鉴里的画：两扇彩窗和两件信物的图标，都用 SVG 现画（原创，不用图片文件）。
 // got 是已经得到的碎片编号；没得到的那一片是暗的，上面写着它是第几片。
+// 彩窗的名字来自内容（已经是安全的文字），所以可以直接放进 SVG 里。
 
 /** 彩窗的圆心在 (120, 120)。给半径 r 和角度 a，算出那一点的坐标 */
 const polar = (r: number, a: number): [number, number] => [120 + r * Math.cos(a), 120 + r * Math.sin(a)];
@@ -22,7 +23,7 @@ const numberMark = (x: number, y: number, n: number): string =>
 const GOLD_RIM = '<circle cx="120" cy="120" r="112" fill="none" stroke="#ffcf7a" stroke-width="2" opacity=".8"/>';
 
 /** 创造之窗：外圈六块是第一到第六日，中央是第七日 */
-function creationWindowSVG(got: number[]): string {
+function creationWindowSVG(got: number[], label: string): string {
   const cols = ['#f3d36b', '#6fb7e9', '#78c06a', '#f2a23a', '#45b5ae', '#d9775a'];
   const icons: Icon[] = [
     // 第一日：光
@@ -38,7 +39,7 @@ function creationWindowSVG(got: number[]): string {
     // 第六日：走兽和人
     (x, y) => `<ellipse cx="${x - 6}" cy="${y + 4}" rx="9" ry="6" fill="#fff6ea"/><circle cx="${x + 4}" cy="${y + 2}" r="3.2" fill="#3d3430"/><circle cx="${x + 12}" cy="${y - 9}" r="3.6" fill="#fff6ea"/><path d="M${x + 12} ${y - 5}v12" stroke="#fff6ea" stroke-width="3"/>`,
   ];
-  let s = `<svg viewBox="0 0 240 240" role="img" aria-label="Window of Creation"><circle cx="120" cy="120" r="114" fill="#15161c" stroke="#3a3326" stroke-width="4"/>`;
+  let s = `<svg viewBox="0 0 240 240" role="img" aria-label="${label}"><circle cx="120" cy="120" r="114" fill="#15161c" stroke="#3a3326" stroke-width="4"/>`;
   for (let i = 0; i < 6; i++) {
     const a0 = -Math.PI / 2 + i * Math.PI / 3 - Math.PI / 6, a1 = a0 + Math.PI / 3, on = got.includes(i);
     s += `<path d="${sector(44, 108, a0 + 0.02, a1 - 0.02)}" fill="${on ? cols[i] : DARK_GLASS}" stroke="#141414" stroke-width="3.5" opacity="${on ? 0.95 : 1}"/>`;
@@ -64,7 +65,7 @@ function creationWindowSVG(got: number[]): string {
 }
 
 /** 伊甸之窗：中央是泉源，四道河沿对角线流出，把窗分成四块：西 = 园子，北 = 命名，东 = 两棵树，南 = 夏娃 */
-function edenWindowSVG(got: number[]): string {
+function edenWindowSVG(got: number[], label: string): string {
   const quads = [{ i: 0, a: Math.PI, col: '#5fb35a' }, { i: 3, a: -Math.PI / 2, col: '#d8b46a' }, { i: 2, a: 0, col: '#e2a03f' }, { i: 4, a: Math.PI / 2, col: '#e3929a' }];
   const icon: Record<number, Icon> = {
     0: (x, y) => `<circle cx="${x - 8}" cy="${y - 4}" r="7" fill="#2f6b2c"/><circle cx="${x + 6}" cy="${y - 8}" r="8" fill="#3f7d3a"/><circle cx="${x + 2}" cy="${y + 6}" r="7" fill="#2f6b2c"/>`,
@@ -72,7 +73,7 @@ function edenWindowSVG(got: number[]): string {
     2: (x, y) => `<line x1="${x - 8}" y1="${y + 10}" x2="${x - 8}" y2="${y - 2}" stroke="#5a3d22" stroke-width="3"/><circle cx="${x - 8}" cy="${y - 7}" r="7" fill="#ffe08a"/><line x1="${x + 9}" y1="${y + 10}" x2="${x + 9}" y2="${y - 2}" stroke="#5a3d22" stroke-width="3"/><circle cx="${x + 9}" cy="${y - 7}" r="7" fill="#2f6b2c"/><circle cx="${x + 7}" cy="${y - 6}" r="1.8" fill="#f0a83a"/><circle cx="${x + 12}" cy="${y - 9}" r="1.8" fill="#f0a83a"/>`,
     4: (x, y) => `<circle cx="${x - 6}" cy="${y - 8}" r="4" fill="#fff6e2"/><rect x="${x - 9}" y="${y - 3}" width="6" height="13" rx="3" fill="#fff6e2"/><circle cx="${x + 6}" cy="${y - 8}" r="4" fill="#fff6e2"/><rect x="${x + 3}" y="${y - 3}" width="6" height="13" rx="3" fill="#fff6e2"/>`,
   };
-  let s = `<svg viewBox="0 0 240 240" role="img" aria-label="Window of Eden"><circle cx="120" cy="120" r="114" fill="#15161c" stroke="#3a3326" stroke-width="4"/>`;
+  let s = `<svg viewBox="0 0 240 240" role="img" aria-label="${label}"><circle cx="120" cy="120" r="114" fill="#15161c" stroke="#3a3326" stroke-width="4"/>`;
   for (const q of quads) {
     const on = got.includes(q.i);
     s += `<path d="${sector(34, 108, q.a - Math.PI / 4 + 0.05, q.a + Math.PI / 4 - 0.05)}" fill="${on ? q.col : DARK_GLASS}" stroke="#141414" stroke-width="3.5"/>`;
@@ -94,8 +95,8 @@ function edenWindowSVG(got: number[]): string {
   return s + '</svg>';
 }
 
-/** 每扇彩窗怎么画，按彩窗的 id 查 */
-export const WINDOW_ART: Record<string, (got: number[]) => string> = {
+/** 每扇彩窗怎么画，按彩窗的 id 查。label 是彩窗的名字，给读屏软件念 */
+export const WINDOW_ART: Record<string, (got: number[], label: string) => string> = {
   creation: creationWindowSVG,
   eden: edenWindowSVG,
 };

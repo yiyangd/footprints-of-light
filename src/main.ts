@@ -27,7 +27,7 @@ import { updateTweens } from './core/tween';
 import { initDebug, updateFps } from './debug';
 import { EPISODE_MODULES } from './episodes';
 import { cam, updateCamera } from './player/camera';
-import { doGesture, updateGestureButtons } from './player/gestures';
+import { doGesture, labelGestureButtons, updateGestureButtons } from './player/gestures';
 import { startGuideNear, updateGuide } from './player/guide';
 import { player, updatePlayer } from './player/player';
 import { bindStoryUi, story, tryStartBeat } from './story/beats';
@@ -154,6 +154,7 @@ initInput({
   gesture: doGesture,
   gestureKeys,
 });
+labelGestureButtons();
 bindStoryUi();
 bindJournalUi();
 bindSoundButton();

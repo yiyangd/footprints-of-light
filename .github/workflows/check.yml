@@ -23,12 +23,14 @@ jobs:
         run: npm ci
       - name: 测试正式工程
         run: npm test
-      - name: 检查类型，打包正式工程
+      - name: 数一数 ESV 经文（上限 500 节）
+        run: npm run count:esv
+      - name: 检查内容和类型，打包正式工程
         run: npm run build
       - name: 安装依赖（序章小样）
         working-directory: prototype
         run: npm ci
-      - name: 数一数 ESV 经文（上限 500 节）
+      - name: 数一数小样里的 ESV 经文
         working-directory: prototype
         run: npm run count:esv
       - name: 打包序章小样

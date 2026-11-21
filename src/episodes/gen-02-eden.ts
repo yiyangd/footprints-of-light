@@ -22,6 +22,7 @@ import { riverPoint, RIVERS, terrainY } from '../world/heightmap';
 import { addLabel } from '../world/labels';
 import { showBridges } from '../world/path';
 import { growth } from '../world/plants';
+import type { EDEN_EFFECTS } from './effect-names';
 import { dimEastLights } from './gen-01-creation';
 
 // 这一章几个固定的位置 [x, z]
@@ -201,7 +202,7 @@ Object.entries(ANIMAL_NAMES).forEach(([id, n], i) => {
     { maxDist: 16, chime: true });
 });
 
-export const effects: Record<string, Effect> = {
+export const effects: Record<(typeof EDEN_EFFECTS)[number], Effect> = {
   /** 走进伊甸：园子里的草木长出来，两棵树、石桥和亚当出现 */
   eden(instant) {
     growth.eden.start.value = instant ? -100 : U.time.value + 0.2;

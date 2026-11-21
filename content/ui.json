@@ -1,0 +1,341 @@
+{
+  "note": "界面上的文字（不属于某一章的那些）。books 是书卷的名字；kinds 是四种文字的名字；text 是游戏里用到的零散文字（{n} {w} {t} 会被换成实际的值）；page 是页面上固定的文字（封面、按钮、结尾）。每段文字都是 { en, zh }；经文的规矩见 AGENTS.md 第 1、2 条。",
+  "books": {
+    "Gen": {
+      "en": "Genesis",
+      "zh": "创",
+      "zhFull": "创世记"
+    },
+    "Ps": {
+      "en": "Psalm",
+      "zh": "诗",
+      "zhFull": "诗篇"
+    }
+  },
+  "kinds": {
+    "scripture": {
+      "en": "Scripture",
+      "zh": "经文"
+    },
+    "history": {
+      "en": "History & archaeology",
+      "zh": "考据"
+    },
+    "imagination": {
+      "en": "Imagined for the game",
+      "zh": "游戏想象"
+    },
+    "reflection": {
+      "en": "Think about it",
+      "zh": "思考"
+    }
+  },
+  "text": {
+    "version": {
+      "en": "ESV",
+      "zh": "和合本"
+    },
+    "toast": {
+      "relic": {
+        "en": "Keepsake",
+        "zh": "信物"
+      },
+      "piece": {
+        "en": "Window piece",
+        "zh": "彩窗碎片"
+      },
+      "done": {
+        "en": "Complete",
+        "zh": "完成"
+      },
+      "verse": {
+        "en": "Verse lit",
+        "zh": "经文之光"
+      },
+      "gesture": {
+        "en": "New gesture",
+        "zh": "新姿态"
+      }
+    },
+    "windowDone": {
+      "en": "{w} is complete. Open your journal to see it.",
+      "zh": "{w}已经拼好，打开图鉴看看"
+    },
+    "counts": {
+      "windows": {
+        "en": "Windows",
+        "zh": "彩窗"
+      },
+      "cards": {
+        "en": "Potsherds",
+        "zh": "陶片"
+      },
+      "relics": {
+        "en": "Keepsakes",
+        "zh": "信物"
+      }
+    },
+    "potsherd": {
+      "en": "Potsherd",
+      "zh": "知识陶片"
+    },
+    "tabs": {
+      "windows": {
+        "en": "Windows",
+        "zh": "彩窗"
+      },
+      "relics": {
+        "en": "Keepsakes",
+        "zh": "信物"
+      },
+      "cards": {
+        "en": "Potsherds",
+        "zh": "陶片"
+      },
+      "verses": {
+        "en": "Verses",
+        "zh": "经文"
+      },
+      "gestures": {
+        "en": "Gestures",
+        "zh": "姿态"
+      }
+    },
+    "collected": {
+      "en": "{n} collected",
+      "zh": "已收集 {n}"
+    },
+    "notFound": {
+      "en": "Not found yet",
+      "zh": "尚未找到"
+    },
+    "relicHint": {
+      "onyx": {
+        "en": "Hint: it has something to do with one of Eden’s rivers.",
+        "zh": "提示：它和伊甸的一道河有关。"
+      },
+      "first-light": {
+        "en": "Hint: follow the light.",
+        "zh": "提示：跟着光走。"
+      }
+    },
+    "legend": {
+      "scripture": {
+        "en": "Scripture",
+        "zh": "经文"
+      },
+      "history": {
+        "en": "History & archaeology",
+        "zh": "考据（历史·地理·考古）"
+      },
+      "imagination": {
+        "en": "Imagined for the game",
+        "zh": "游戏想象"
+      },
+      "reflection": {
+        "en": "Think about it",
+        "zh": "思考"
+      }
+    },
+    "undiscovered": {
+      "en": "Undiscovered potsherd",
+      "zh": "未发现的陶片"
+    },
+    "chapter": {
+      "en": "Chapter {n} · {t}",
+      "zh": "第 {n} 章 {t}"
+    },
+    "noVerses": {
+      "en": "No verses lit yet. Follow the light and witness each moment.",
+      "zh": "还没有点亮经文。跟着光走，见证每一个时刻。"
+    },
+    "tap": {
+      "en": "Tap",
+      "zh": "按钮"
+    },
+    "notLearned": {
+      "en": "Not learned yet",
+      "zh": "尚未学会"
+    },
+    "learnHint": {
+      "en": "Learn new gestures from people in the Bible.",
+      "zh": "向圣经人物学习新的姿态。"
+    },
+    "resting": {
+      "en": "Resting… (press again or move to get up)",
+      "zh": "安息……（再按一次或走动就会起来）"
+    },
+    "barrier": {
+      "en": "The garden in the east isn’t open yet. First follow the light through all seven days.",
+      "zh": "东方的园子还没有开启。先跟着光走完七日。"
+    },
+    "endStats": [
+      {
+        "en": "Window pieces",
+        "zh": "彩窗碎片"
+      },
+      {
+        "en": "Potsherds",
+        "zh": "知识陶片"
+      },
+      {
+        "en": "Keepsakes",
+        "zh": "信物"
+      },
+      {
+        "en": "Verses lit",
+        "zh": "经文之光"
+      }
+    ],
+    "sound": {
+      "en": "Sound",
+      "zh": "声音"
+    },
+    "muted": {
+      "en": "Muted",
+      "zh": "静音"
+    },
+    "startOver": {
+      "en": "Start Over",
+      "zh": "从头开始"
+    },
+    "day": {
+      "en": "Day {n}",
+      "zh": "第{n}日"
+    },
+    "dayNums": "一二三四五六七",
+    "langShort": {
+      "en": "EN",
+      "bi": "EN + 中"
+    },
+    "langNote": {
+      "en": "Scripture: ESV",
+      "bi": "Scripture: ESV · 中文经文：和合本"
+    },
+    "title": {
+      "en": "Footprints of Light · Prologue",
+      "bi": "Footprints of Light 光之踪迹 · Prologue 序章"
+    },
+    "esvNotice": "Scripture quotations marked (ESV) are from the ESV® Bible (The Holy Bible, English Standard Version®), © 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved.",
+    "cuvNotice": "中文经文引自和合本（新标点和合本，神版）。",
+    "esvSite": "www.esv.org"
+  },
+  "page": {
+    "hud": {
+      "map": {
+        "en": "Map",
+        "zh": "地图"
+      }
+    },
+    "journal": {
+      "en": "Journal",
+      "zh": "图鉴"
+    },
+    "touch": {
+      "jump": {
+        "en": "Jump",
+        "zh": "跳跃"
+      }
+    },
+    "story": {
+      "skip": {
+        "en": "Skip this part",
+        "zh": "跳过这一段"
+      },
+      "next": {
+        "en": "Tap or press Space",
+        "zh": "点击或按空格继续"
+      }
+    },
+    "card": {
+      "keep": {
+        "en": "Keep this potsherd",
+        "zh": "收下这块陶片"
+      }
+    },
+    "close": {
+      "en": "Close (B)",
+      "zh": "关闭"
+    },
+    "end": {
+      "title": {
+        "en": "Prologue Complete",
+        "zh": "序章《起初》完"
+      },
+      "line1": {
+        "en": "You witnessed the seven days of creation and walked into the garden in the east.",
+        "zh": "你见证了创造的七日，走进了东方的园子。"
+      },
+      "line2": {
+        "en": "The next chapter, “Where Are You?” (Genesis 3), is being made by all of us together.",
+        "zh": "下一章《你在哪里？》（创世记 3 章），正在由我们一起制作。"
+      },
+      "openJournal": {
+        "en": "Open Journal",
+        "zh": "打开图鉴"
+      },
+      "keepWalking": {
+        "en": "Keep walking in the garden",
+        "zh": "继续在园子里走走"
+      }
+    },
+    "backToMap": {
+      "en": "Back to the Map of Light",
+      "zh": "回到光之地图"
+    },
+    "cover": {
+      "title": {
+        "en": "Footprints of Light",
+        "zh": "光之踪迹"
+      },
+      "sub": {
+        "en": "Prologue · In the Beginning",
+        "zh": "序章 · 起初"
+      },
+      "verse": {
+        "kind": "scripture",
+        "ref": "Ps 77:19",
+        "text": {
+          "en": "Your way was through the sea, your path through the great waters; yet your footprints were unseen.",
+          "zh": "你的道在海中；你的路在大水中；你的脚踪无人知道。"
+        }
+      },
+      "verseFormat": {
+        "en": "“{text}” ({ref}, {version})",
+        "zh": "“{text}”（{ref}）"
+      },
+      "begin": {
+        "en": "Begin the Journey",
+        "zh": "开始旅程"
+      },
+      "continue": {
+        "en": "Continue",
+        "zh": "继续上次的旅程"
+      },
+      "helpDesk": {
+        "en": "Computer: [[W A S D]] or arrow keys to move, hold [[Shift]] to run, [[Space]] to jump (hold it in the air to glide), drag the mouse to look around, scroll to zoom, [[B]] opens the journal, [[L]] switches language.",
+        "zh": "电脑：[[W A S D]] 或方向键移动，按住 [[Shift]] 奔跑，[[空格]] 跳跃（在空中按住滑翔），拖动鼠标看四周，滚轮拉近拉远，[[B]] 打开图鉴，[[L]] 切换语言。"
+      },
+      "helpPhone": {
+        "en": "Phone: use the joystick at the bottom left to move, drag the right half of the screen to look around, and tap the button at the bottom right to jump. Headphones recommended.",
+        "zh": "手机：左下角摇杆移动，右半边屏幕拖动看四周，右下角按钮跳跃。建议戴上耳机。"
+      },
+      "credit": {
+        "en": "Prologue v0.4 · A church youth project",
+        "zh": "序章 v0.4 · 教会青少年项目"
+      },
+      "langNames": {
+        "en": "English",
+        "bi": "English + 中文"
+      }
+    },
+    "aria": {
+      "game": "Game view",
+      "journal": "Open journal (B)",
+      "sound": "Sound on/off",
+      "language": "Language: English, or English + Chinese (L)",
+      "languageTitle": "English / English + 中文 (L)",
+      "languagePick": "Language 语言"
+    }
+  }
+}

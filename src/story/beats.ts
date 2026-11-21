@@ -82,7 +82,7 @@ export const story = {
     save.done.push(b.id);
     b.rewards.forEach((r, i) => setTimeout(() => grant(r), 300 + i * 650)); // 奖励一个一个地弹出来
     runEffect(b.after, false);
-    afterBeatHint(b.id);
+    afterBeatHint(b);
     persist();
     refreshCounts();
     moveGuide();

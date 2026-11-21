@@ -5,7 +5,7 @@
 import { closeModals, openBook, openCard, showEnd } from './collect/journal';
 import { grant } from './collect/rewards';
 import { nextBeat, save } from './collect/save';
-import { BEATS, CARDS, HINTS, UI } from './content';
+import { BEATS, CARDS, UI } from './content';
 import { $ } from './core/env';
 import { setLang } from './core/i18n';
 import { camera, renderer, scene } from './core/renderer';
@@ -51,7 +51,8 @@ export function initDebug(start: (fromSave: boolean) => void): void {
   $('fps').hidden = false;
   window.__gzy = {
     W, save, player, cam, BEATS, scene, camera, guide: guideDebug.guide, trail: guideDebug.trail,
-    completeNext, teleport, start, story, openBook, closeModals, showEnd, hint, setLang, HINTS, UI,
+    completeNext, teleport, start, story, openBook, closeModals, showEnd, hint, setLang, UI,
+    HINTS: Object.fromEntries(BEATS.filter((b) => b.hint).map((b) => [b.id, b.hint])),
     openCard: (id: string) => { const c = CARDS.find((x) => x.id === id); if (c) openCard(c); },
   };
 }

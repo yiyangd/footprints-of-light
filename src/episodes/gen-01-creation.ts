@@ -15,6 +15,7 @@ import { tween } from '../core/tween';
 import { setFocus } from '../player/camera';
 import { player } from '../player/player';
 import type { Effect } from '../story/effects';
+import type { CREATION_EFFECTS } from './effect-names';
 import { showAnimals } from '../world/animals';
 import { showBirds } from '../world/birds';
 import { showFish } from '../world/fish';
@@ -40,7 +41,7 @@ function lookUpForAWhile(amount: number, holdMs: number): void {
   setTimeout(() => tween(W, 'lookUp', 0, 2.5), holdMs);
 }
 
-export const effects: Record<string, Effect> = {
+export const effects: Record<(typeof CREATION_EFFECTS)[number], Effect> = {
   /** 创 1:2 神的灵运行在水面上：起一阵风 */
   wind(instant) {
     if (instant) return;

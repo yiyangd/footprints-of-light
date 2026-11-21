@@ -140,7 +140,7 @@ function computeSkyColors(): void {
   blendToward(PAL.sun, W.lights);
   blendToward(PAL.rest, W.rest * 0.75);
   blendToward(PAL.night, W.night * W.light);
-  const shade = 1 - W.shadow * 0.18;
+  const shade = (1 - W.shadow * 0.18) * (1 - W.dim * 0.45);
   for (const c of now) c.multiplyScalar(shade);
   if (W.fade > 0) for (const c of now) fadeColor(c);
 }
@@ -187,8 +187,8 @@ export function updateSky(dt: number): void {
   // —— 灯光 ——
   hemi.color.copy(mid).lerp(WHITE, 0.45);
   hemi.groundColor.copy(GROUND_LIT).lerp(GROUND_DARK, 1 - W.light);
-  hemi.intensity = 0.06 + day * 1.15;
-  sunLight.intensity = day * (0.45 + W.lights * 1.35) * (1 - W.shadow * 0.3);
+  hemi.intensity = (0.06 + day * 1.15) * (1 - W.dim * 0.35);
+  sunLight.intensity = day * (0.45 + W.lights * 1.35) * (1 - W.shadow * 0.3) * (1 - W.dim * 0.5);
   if (W.lights > 0.01) sunLight.position.copy(sunDirection).multiplyScalar(100);
   else sunLight.position.set(10, 100, 20);
   sunLight.color.copy(SUN_WHITE).lerp(SUN_WARM, W.rest * 0.6);

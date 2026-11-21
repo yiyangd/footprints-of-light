@@ -15,8 +15,14 @@ export const FALL_EFFECTS = [
   'serpentSpeaks', 'eatFruit', 'lightFades', 'coolWind', 'silence', 'serpentCursed', 'goldenThread', 'thorns', 'clothe', 'leaveEden', 'cherubim',
 ] as const;
 
+/** 第 4 章《兄弟》的效果 */
+export const BROTHERS_EFFECTS = [
+  'brothersBorn', 'brothersGrow', 'offerings', 'regard', 'cainFalls', 'warnCain', 'sinAtDoor', 'intoField', 'whereIsAbel', 'groundCries', 'fieldWilts',
+  'markOfCain', 'toNod', 'cityRises', 'lamech', 'tents', 'lyre', 'forge', 'lamechSong', 'sethBorn', 'callOnName',
+] as const;
+
 /** 已经进游戏的章节的效果名 */
-export const EFFECT_NAMES: readonly string[] = [...CREATION_EFFECTS, ...EDEN_EFFECTS, ...FALL_EFFECTS];
+export const EFFECT_NAMES: readonly string[] = [...CREATION_EFFECTS, ...EDEN_EFFECTS, ...FALL_EFFECTS, ...BROTHERS_EFFECTS];
 
 /** 草稿里可以用的效果名：已经进游戏的，加上草稿章节自己的（现在没有草稿章节） */
 export const DRAFT_EFFECT_NAMES: readonly string[] = [...EFFECT_NAMES];

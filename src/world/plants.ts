@@ -3,6 +3,7 @@
 // 生长动画写在着色器里：到了 growth.start 的时刻，每一株按自己的 aDelay 依次长出来。
 import * as THREE from 'three';
 import { BEATS } from '../content';
+import { CLEAR_SPOTS } from '../episodes/gen-04-spots';
 import { IS_TOUCH } from '../core/env';
 import { rng } from '../core/math';
 import { U } from '../core/state';
@@ -10,12 +11,16 @@ import { baseHeight, EDEN, riverMeander, RIVERS, T_CX, T_CZ, T_D, T_W } from './
 import { pathDist } from './path';
 import { terrainGroup } from './terrain';
 
-/** 两片植被：主岛（第三日长出来）和伊甸（走进园子时长出来） */
-export type Region = 'main' | 'eden';
+/** 三片植被：主岛（第三日长出来）、伊甸（走进园子时长出来）、伊甸的东边（和主岛一起，第三日长出来） */
+export type Region = 'main' | 'eden' | 'east';
+
+/** 主岛和伊甸东边一起长 */
+const mainGrowth = { start: { value: 1e6 }, dur: { value: 2.2 } };
 
 /** 每一片从什么时刻开始长（start）、每一株长多久（dur）。start 很大 = 还没开始长 */
 export const growth: Record<Region, { start: { value: number }; dur: { value: number } }> = {
-  main: { start: { value: 1e6 }, dur: { value: 2.2 } },
+  main: mainGrowth,
+  east: mainGrowth,
   eden: { start: { value: 1e6 }, dur: { value: 2.4 } },
 };
 
@@ -46,13 +51,13 @@ function growMaterial<T extends THREE.Material>(base: T, key: string, region: Re
  * 在整张地图上随机撒点，只留下 accept 说“可以”的那些，直到凑够 count 个。
  * 用带种子的随机数，所以每次打开游戏撒出来的位置都一样。
  */
-function scatter(count: number, seed: number, accept: (x: number, z: number, h: number) => boolean): Spot[] {
+function scatter(count: number, seed: number, accept: (x: number, z: number, h: number) => boolean, height: (x: number, z: number) => number = baseHeight): Spot[] {
   const R = rng(seed), out: Spot[] = [];
   let tries = 0;
   while (out.length < count && tries < count * 60) {
     tries++;
     const x = T_CX - T_W / 2 + R() * T_W, z = T_CZ - T_D / 2 + R() * T_D;
-    const h = baseHeight(x, z);
+    const h = height(x, z);
     if (accept(x, z, h)) out.push({ x, z, h, R: R() });
   }
   return out;
@@ -60,6 +65,9 @@ function scatter(count: number, seed: number, accept: (x: number, z: number, h: 
 
 /** (x, z) 在不在伊甸园里（离泉源 rad 米以内） */
 const inEden = (x: number, z: number, rad = 25): boolean => Math.hypot(x - EDEN.x, z - EDEN.z) < rad;
+
+/** (x, z) 在不在伊甸东边那块地上（第 4 章） */
+const inEastLand = (x: number, z: number): boolean => x > 86 && !inEden(x, z, 27);
 
 /** (x, z) 是不是离泉源和四道河都够远（河里不长草） */
 function notRiver(x: number, z: number): boolean {
@@ -84,7 +92,7 @@ interface Counts { grass: number; flowers: number; trees: number }
  * @param origin 从哪里开始长：离这个点越远的植物长出来得越晚
  * @param filter 哪些位置可以种
  */
-function buildVegetation(region: Region, origin: [number, number], filter: (x: number, z: number) => boolean, counts: Counts, seed: number): void {
+function buildVegetation(region: Region, origin: [number, number], filter: (x: number, z: number) => boolean, counts: Counts, seed: number, clear: Array<{ at: [number, number]; r: number }> = []): void {
   const group = new THREE.Group();
   terrainGroup.add(group);
   const delayFrom = (s: Spot): number => Math.hypot(s.x - origin[0], s.z - origin[1]) / 14 + s.R * 0.6;
@@ -129,7 +137,8 @@ function buildVegetation(region: Region, origin: [number, number], filter: (x: n
   // —— 树：树干 + 圆树冠，或者像柏树一样的尖树冠 ——
   // 树不种在路边，也不种在剧情节点旁边，免得挡住视线
   const treeItems = scatter(counts.trees, seed + 2, (x, z, h) =>
-    h > 0.9 && filter(x, z) && pathDist(x, z) > 5.5 && BEATS.every((b) => Math.hypot(b.at[0] - x, b.at[1] - z) > 6));
+    h > 0.9 && filter(x, z) && pathDist(x, z) > 5.5 && BEATS.every((b) => Math.hypot(b.at[0] - x, b.at[1] - z) > 6)
+    && clear.every((c) => Math.hypot(c.at[0] - x, c.at[1] - z) > c.r));
   for (const t of treeItems) TREE_SPOTS.push([t.x, t.z, region]);
   const trunkGeo = new THREE.CylinderGeometry(0.13, 0.22, 1.7, 6);
   trunkGeo.translate(0, 0.85, 0);
@@ -159,9 +168,17 @@ function buildVegetation(region: Region, origin: [number, number], filter: (x: n
   });
 }
 
-/** 岸边的石头（随陆地一起升起） */
+/**
+ * 岸边的石头（随陆地一起升起）。
+ * 照“伊甸东边那块地还没有”时的海岸线撒点，这样加了那块地以后，原来的石头一块都不挪；
+ * 原来在伊甸东岸、现在成了内陆的那两块去掉。新的那块地另外撒一些。
+ */
 function buildRocks(): void {
-  const items = scatter(60, 303, (x, z, h) => h > -0.2 && h < 1.2 && !inEden(x, z, 25));
+  const coast = (x: number, z: number, h: number): boolean => h > -0.2 && h < 1.2 && !inEden(x, z, 25);
+  const old = scatter(60, 303, coast, (x, z) => baseHeight(x, z, false))
+    .filter((s) => Math.abs(baseHeight(s.x, s.z) - s.h) < 0.2);
+  const east = scatter(16, 304, (x, z, h) => coast(x, z, h) && inEastLand(x, z));
+  const items = [...old, ...east];
   const mesh = new THREE.InstancedMesh(new THREE.DodecahedronGeometry(0.6, 0), new THREE.MeshLambertMaterial({ color: '#a79e92', flatShading: true }), items.length);
   items.forEach((s, i) => {
     const size = 0.4 + s.R * 1.1;
@@ -179,4 +196,7 @@ buildVegetation('main', [-4, 16.5], (x, z) => !inEden(x, z, 27) && x < 40, VEG, 
 // 伊甸：从园子的入口开始往里长
 buildVegetation('eden', [42, -15], (x, z) => inEden(x, z, 25) && notRiver(x, z),
   { grass: Math.round(VEG.grass * 0.45), flowers: Math.round(VEG.flowers * 0.9), trees: 26 }, 202);
+// 伊甸的东边（第 4 章）：草和花少一些，树更少；房子、田、坛、城那些地方不种树
+buildVegetation('east', [90, -15], inEastLand,
+  { grass: Math.round(VEG.grass * 0.18), flowers: Math.round(VEG.flowers * 0.12), trees: 10 }, 404, CLEAR_SPOTS);
 buildRocks();

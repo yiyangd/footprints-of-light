@@ -1,7 +1,7 @@
 // 内容的入口：游戏里所有给玩家看的文字都从这里拿。
 //
 // 来源只有 content/ 下的 JSON：
-//   - content/episodes/*.json  每一章的剧情、经文、陶片、信物、彩窗、姿态（现在有第 1、2、3 章）
+//   - content/episodes/*.json  每一章的剧情、经文、陶片、信物、彩窗、姿态（现在有第 1—4 章）
 //   - content/ui.json          界面上的文字、书卷的名字
 // JSON 写得对不对，由 npm run validate:content 检查（规则在 schema.ts）；打包之前会自动检查一遍。
 //
@@ -9,6 +9,7 @@
 import creationJson from '../../content/episodes/gen-01-creation.json';
 import edenJson from '../../content/episodes/gen-02-eden.json';
 import fallJson from '../../content/episodes/gen-03-fall.json';
+import brothersJson from '../../content/episodes/gen-04-brothers.json';
 import uiJson from '../../content/ui.json';
 import { refText as refTextWith } from './refs';
 import type { AnimalName, Beat, Bi, BookName, Card, EpisodeFile, EpisodeInfo, Gesture, Kind, Relic, UiFile, UiText, WindowDef } from './types';
@@ -25,7 +26,7 @@ const draftFile = wantedDraft ? DRAFTS[`../../content/drafts/${wantedDraft}.json
 export const DRAFT_ID: string | null = draftFile ? wantedDraft : null;
 
 // 章节文件，按游戏里的先后顺序排。做了新的一章，就在这里加一行
-const FILES = [creationJson, edenJson, fallJson, ...(draftFile ? [draftFile] : [])] as unknown as EpisodeFile[];
+const FILES = [creationJson, edenJson, fallJson, brothersJson, ...(draftFile ? [draftFile] : [])] as unknown as EpisodeFile[];
 
 /** 正在预览的草稿的第一个剧情节点的 id（预览时直接从这里开始）；没有在预览就是 null */
 export const DRAFT_FIRST_BEAT: string | null = draftFile?.beats[0]?.id ?? null;

@@ -197,6 +197,21 @@ export const sfx = {
     this.tone(196, t + 1.2, 4, 0.05, 'triangle');
     this.tone(164.8, t + 2.4, 5, 0.05, 'triangle');
   },
+  /** 一段旋律：一个音接一个音（第 4 章犹八弹琴吹箫） */
+  melody(notes: number[], gap = 0.32): void {
+    if (!actx) return;
+    const t = actx.currentTime;
+    notes.forEach((f, i) => this.tone(f, t + i * gap, 1.1, 0.06, 'triangle'));
+  },
+  /** 叮当：打铜铁的声音（第 4 章土八该隐） */
+  clang(times = 3): void {
+    if (!actx) return;
+    const t = actx.currentTime;
+    for (let i = 0; i < times; i++) {
+      this.tone(1318.5, t + i * 0.45, 0.35, 0.03, 'square');
+      this.tone(1975.5, t + i * 0.45, 0.25, 0.02, 'square');
+    }
+  },
   /** 低沉的隆隆声：旱地露出来 */
   rumble(): void {
     if (!actx) return;

@@ -26,7 +26,7 @@ export const player = {
   safe: new THREE.Vector3(0, 0.22, 49),  // 最后站过的安全位置（掉进水里就回到这里）
   safeT: 0,
   walkT: 0,        // 走路动画的进度
-  gesture: null as string | null,        // 正在做的姿态（rest 安息 / name 命名）
+  gesture: null as string | null,        // 正在做的姿态（rest 安息 / name 命名 / offer 献上）
   gestureT: 0,
 };
 
@@ -220,6 +220,7 @@ function animateHero(dt: number, speedNow: number, ground: number | null): void 
   player.gestureT += dt;
   const sit = player.gesture === 'rest' ? smooth(0, 0.6, player.gestureT) : 0;     // 安息：坐下
   const point = player.gesture === 'name' ? smooth(0, 0.4, player.gestureT) : 0;   // 命名：抬手指向前方
+  const lift = player.gesture === 'offer' ? smooth(0, 0.7, player.gestureT) : 0;   // 献上：把灯举过头顶
   hero.position.set(player.pos.x, player.pos.y + bob - sit * 0.32, player.pos.z);
   hero.rotation.y = player.facing;
 
@@ -227,9 +228,10 @@ function animateHero(dt: number, speedNow: number, ground: number | null): void 
   parts.robe.rotation.z = Math.sin(player.walkT) * 0.04 * stride;
   parts.cape.rotation.x = player.gliding ? -1.2 : damp(parts.cape.rotation.x, -0.12 - clamp(speedNow / 7, 0, 1) * 0.45, 6, dt);
   parts.cape.scale.x = player.gliding ? 1.9 : damp(parts.cape.scale.x, 1, 6, dt);
-  parts.arm.rotation.x = 1.25 + point * 0.25;
-  parts.arm.position.y = 0.78 + point * 0.25;
-  parts.lamp.position.y = 0.72 + point * 0.3 - sit * 0.05 + Math.sin(player.walkT * 0.5) * 0.015;
+  parts.arm.rotation.x = 1.25 + point * 0.25 - lift * 1.1;
+  parts.arm.position.y = 0.78 + point * 0.25 + lift * 0.42;
+  parts.lamp.position.y = 0.72 + point * 0.3 - sit * 0.05 + lift * 0.86 + Math.sin(player.walkT * 0.5) * 0.015;
+  parts.lamp.position.z = 0.42 - lift * 0.18;
 
   // 灯火：点亮之后才有，会轻轻闪动；滑翔的力气越足，火越大
   const lit = W.lampLit ? 1 : 0;
@@ -237,7 +239,7 @@ function animateHero(dt: number, speedNow: number, ground: number | null): void 
   parts.flame.material.opacity = lit * flicker;
   parts.flame.scale.setScalar(0.45 + player.energy * 0.25);
   parts.core.material.opacity = lit;
-  parts.lampLight.intensity = lit * (3.2 + player.energy * 1.5) * flicker;
+  parts.lampLight.intensity = lit * (3.2 + player.energy * 1.5) * flicker * (1 + lift * 0.6); // 举起来的时候亮一些
 
   // 影子：贴在地上；跳得越高越淡，天越亮越明显
   const sg = ground ?? player.pos.y;

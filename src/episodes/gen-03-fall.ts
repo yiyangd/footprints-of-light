@@ -78,6 +78,15 @@ function movePresence(to: Spot, instant: boolean): void {
   if (instant) { presenceX = to[0]; presenceZ = to[1]; }
 }
 
+/**
+ * 让那道光去一个地方，或者淡去（to 写 null）。第 4 章神对该隐说话时也用它。
+ * instant = true 时直接到位（读档时用）
+ */
+export function presenceTo(to: Spot | null, instant: boolean): void {
+  if (to) movePresence(to, instant);
+  tween(S, 'presence', to ? 1 : 0, 3, instant);
+}
+
 function updatePresence(dt: number, t: number): void {
   presence.visible = S.presence > 0.01;
   if (!presence.visible) return;

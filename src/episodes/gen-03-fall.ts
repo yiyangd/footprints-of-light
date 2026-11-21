@@ -1,6 +1,5 @@
 // 第 3 章《你在哪里？》（创 3:1–24）专属的场景和效果。
-// 【还是草稿】内容在 content/drafts/gen-03-fall.json，还没有进游戏：
-// 只有开发时在网址后面加 ?draft=gen-03-fall 才会用到这个文件（见 src/episodes/index.ts）。
+// 内容在 content/episodes/gen-03-fall.json。用的是第 2 章的伊甸地图和人物（亚当、夏娃、蛇都在 gen-02-eden.ts 里）。
 //
 // 呈现上守的几条（AGENTS.md 第 6 条）：
 //   - 神不以人的样子出现：只用风、一道光和声音
@@ -19,7 +18,7 @@ import { cam, setFocus } from '../player/camera';
 import type { Effect } from '../story/effects';
 import { terrainY } from '../world/heightmap';
 import type { FALL_EFFECTS } from './effect-names';
-import { cast, sendPerson, TREE_SPOTS_EDEN } from './gen-02-eden';
+import { cast, effects as edenEffects, sendPerson, TREE_SPOTS_EDEN } from './gen-02-eden';
 import { EAST_GATE, PRESENCE, STAND, THORN_PATCHES, THREAD_FROM, type Spot } from './gen-03-spots';
 
 const TREE = TREE_SPOTS_EDEN.know;
@@ -222,11 +221,9 @@ function updateCherubim(dt: number, t: number): void {
 export const effects: Record<(typeof FALL_EFFECTS)[number], Effect> = {
   /** 创 3:1：蛇说话。亚当、夏娃来到分别善恶的树旁，蛇的身体微微晃动 */
   serpentSpeaks(instant) {
+    edenEffects.serpent(instant); // 蛇出现在分别善恶的树上，天色暗一点（这个效果写在第 2 章里）
     sendBoth('atTree', instant ? 'instant' : 'fade');
-    if (instant) return;
-    tween(cast, 'serpentTalk', 1, 1.5);
-    setFocus(TREE[0], 4, TREE[1], 0.9, 8);
-    music.set('shadow');
+    if (!instant) tween(cast, 'serpentTalk', 1, 1.5);
   },
   /** 创 3:6：夏娃摘下果子吃了，又给她丈夫。不做特写 */
   eatFruit(instant) {

@@ -1,6 +1,7 @@
 // 内容数据的测试：确认 content/episodes/*.json 读进来以后是完整、自洽的。运行：npm test
 // （下一步会有专门的 npm run validate:content，报错会更详细。）
 import { describe, expect, it } from 'vitest';
+import timelineJson from '../../content/timeline.json';
 import { BEATS, CARDS, EPISODES, GESTURES, KIND_LABEL, refText, RELICS, UI, verseText, WINDOWS } from './index';
 
 const KINDS = ['scripture', 'history', 'imagination', 'reflection'];
@@ -9,8 +10,10 @@ const isBi = (t: unknown): boolean =>
   && (t as { en: string }).en.length > 0 && (t as { zh: string }).zh.length > 0;
 
 describe('剧情节点', () => {
-  it('序章一共 14 段（主页的 timeline.json 里 play.beats 也是 14）', () => {
-    expect(BEATS).toHaveLength(14);
+  it('创世记 1—3 章一共 20 段，和主页 timeline.json 里的 play.beats 一样（主页靠它算“走过几段”）', () => {
+    const genesis = timelineJson.books.find((b) => b.id === 'gen') as { play?: { beats: number } } | undefined;
+    expect(BEATS).toHaveLength(20);
+    expect(genesis?.play?.beats).toBe(BEATS.length);
   });
 
   it('每个节点的 id 都不重复，并且属于一个已知的章节', () => {

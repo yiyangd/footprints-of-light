@@ -117,6 +117,10 @@
       "first-light": {
         "en": "Hint: follow the light.",
         "zh": "提示：跟着光走。"
+      },
+      "garments": {
+        "en": "Hint: before they leave the garden, someone takes care of them.",
+        "zh": "提示：离开园子之前，有一位顾念他们。"
       }
     },
     "legend": {
@@ -213,8 +217,8 @@
       "bi": "Scripture: BSB · 中文经文：和合本"
     },
     "title": {
-      "en": "Footprints of Light · Prologue",
-      "bi": "Footprints of Light 光之踪迹 · Prologue 序章"
+      "en": "Footprints of Light · Genesis 1–3",
+      "bi": "Footprints of Light 光之踪迹 · Genesis 1–3 创世记 1—3 章"
     },
     "bibleNotice": "The Holy Bible, Berean Standard Bible, BSB is produced in cooperation with Bible Hub, Discovery Bible, unfoldingWord, Bible Aquifer, OpenBible.com, and the Berean Bible Translation Committee. This text of God's Word has been dedicated to the public domain.",
     "bibleSite": "berean.bible",
@@ -259,24 +263,24 @@
     },
     "end": {
       "title": {
-        "en": "Prologue Complete",
-        "zh": "序章《起初》完"
+        "en": "Genesis 1–3 Complete",
+        "zh": "创世记 1—3 章完"
       },
       "line1": {
-        "en": "You witnessed the seven days of creation and walked into the garden in the east.",
-        "zh": "你见证了创造的七日，走进了东方的园子。"
+        "en": "You witnessed the seven days of creation, walked into the garden in the east, and went out with them to the east of Eden.",
+        "zh": "你见证了创造的七日，走进了东方的园子，又陪他们走到了伊甸的东边。"
       },
       "line2": {
-        "en": "The next chapter, “Where Are You?” (Genesis 3), is being made by all of us together.",
-        "zh": "下一章《你在哪里？》（创世记 3 章），正在由我们一起制作。"
+        "en": "The next chapter, “Brothers” (Genesis 4), is being made by all of us together.",
+        "zh": "下一章《兄弟》（创世记 4 章），正在由我们一起制作。"
       },
       "openJournal": {
         "en": "Open Journal",
         "zh": "打开图鉴"
       },
       "keepWalking": {
-        "en": "Keep walking in the garden",
-        "zh": "继续在园子里走走"
+        "en": "Keep walking",
+        "zh": "继续走走"
       }
     },
     "backToMap": {
@@ -289,8 +293,8 @@
         "zh": "光之踪迹"
       },
       "sub": {
-        "en": "Prologue · In the Beginning",
-        "zh": "序章 · 起初"
+        "en": "Genesis 1–3 · In the Beginning",
+        "zh": "创世记 1—3 章 · 起初"
       },
       "verse": {
         "kind": "scripture",
@@ -321,8 +325,8 @@
         "zh": "手机：左下角摇杆移动，右半边屏幕拖动看四周，右下角按钮跳跃。建议戴上耳机。"
       },
       "credit": {
-        "en": "Prologue v0.4 · A church youth project",
-        "zh": "序章 v0.4 · 教会青少年项目"
+        "en": "Genesis 1–3 v0.5 · A church youth project",
+        "zh": "创世记 1—3 章 v0.5 · 教会青少年项目"
       },
       "langNames": {
         "en": "English",

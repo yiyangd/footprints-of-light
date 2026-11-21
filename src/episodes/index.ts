@@ -2,6 +2,7 @@
 import type { Effect } from '../story/effects';
 import * as creation from './gen-01-creation';
 import * as eden from './gen-02-eden';
+import * as fall from './gen-03-fall';
 
 /** 一章要提供的两样东西 */
 export interface EpisodeModule {
@@ -11,12 +12,12 @@ export interface EpisodeModule {
   update(dt: number, t: number): void;
 }
 
-export const EPISODE_MODULES: EpisodeModule[] = [creation, eden];
+export const EPISODE_MODULES: EpisodeModule[] = [creation, eden, fall];
 
 /** 草稿章节的代码：草稿的文件名（content/drafts/ 下）→ 怎么加载它 */
-const DRAFT_MODULES: Record<string, () => Promise<EpisodeModule>> = {
-  'gen-03-fall': () => import('./gen-03-fall'),
-};
+// 现在没有草稿章节。写第 4 章的草稿时，在这里加一行，例如：
+//   'gen-04-brothers': () => import('./gen-04-brothers'),
+const DRAFT_MODULES: Record<string, () => Promise<EpisodeModule>> = {};
 
 /**
  * 开发时预览草稿（网址带 ?draft=gen-03-fall）：把那一章的代码也加载进来。

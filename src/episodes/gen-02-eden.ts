@@ -1,5 +1,5 @@
-// 第 2 章《伊甸园》（创 2:4–3:1）专属的场景和效果：
-// 两棵树、亚当和夏娃、给活物起名、鸽子、河名和动物名的标签、红玛瑙，以及结尾的蛇。
+// 第 2 章《伊甸园》（创 2:4–25）专属的场景和效果：
+// 两棵树、亚当和夏娃、给活物起名、鸽子、河名和动物名的标签、红玛瑙，以及蛇（第 3 章一开始出现）。
 // 内容在 content/episodes/gen-02-eden.json。
 import * as THREE from 'three';
 import { showEnd } from '../collect/journal';
@@ -307,7 +307,7 @@ export const effects: Record<(typeof EDEN_EFFECTS)[number], Effect> = {
     eve.appear = instant ? 1 : 0;
     if (!instant) sfx.swell(0.6);
   },
-  /** 序章结尾：蛇出现在分别善恶的树上，天色暗了一点（下一章的预告） */
+  /** 蛇出现在分别善恶的树上，天色暗了一点（第 3 章第一节经文时，由 gen-03-fall.ts 调用） */
   serpent(instant) {
     serpent.visible = true;
     serpentGrow = instant ? 1 : 0;
@@ -316,9 +316,9 @@ export const effects: Record<(typeof EDEN_EFFECTS)[number], Effect> = {
     setFocus(TREE_KNOW_POS[0], 4, TREE_KNOW_POS[1], 0.9, 7);
     music.set('shadow');
   },
-  /** 序章结束：显示结尾画面 */
+  /** 走完了：显示结尾画面。等最后几样奖励都发完（大约 2 秒），结尾画面上的数字才对 */
   end(instant) {
-    if (!instant) setTimeout(showEnd, 700);
+    if (!instant) setTimeout(showEnd, 2600);
   },
 };
 

@@ -87,6 +87,7 @@ function crossProblems(episodes: Array<{ file: string; data: EpisodeFile }>, uiF
   const gestureIds = all((e) => e.gestures.map((g) => g.id));
   const windows = new Map(episodes.map((e) => [e.data.window.id, e.data.window]));
   const verseRefs = new Set(all((e) => e.beats.flatMap((b) => b.lines.filter((l) => l.kind === 'scripture').map((l) => l.ref))));
+  const beatIds = all((e) => e.beats.map((b) => b.id));
 
   // 名字不能重复（存档里是靠名字记的）
   const unique = (what: string, names: string[]): void => {
@@ -109,6 +110,9 @@ function crossProblems(episodes: Array<{ file: string; data: EpisodeFile }>, uiF
     checkBook(file, 'range', data.range);
     checkBook(file, 'hudRef', data.hudRef);
     checkBook(file, 'window › ref', data.window.ref);
+    for (const card of data.cards) {
+      if (card.after && !beatIds.includes(card.after)) add(file, `cards › ${card.id} › after`, `剧情节点 "${card.after}" 不存在：after 要写某个节点的 id`);
+    }
     for (const relic of data.relics) {
       checkBook(file, `relics › ${relic.id} › ref`, relic.ref);
       if (!ui.text.relicHint[relic.id]) add(uiFile, `text › relicHint › ${relic.id}`, `信物 "${relic.id}" 还没有写“没找到时的提示”`);

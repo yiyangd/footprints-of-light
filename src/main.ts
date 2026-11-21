@@ -101,7 +101,7 @@ function startGame(fromSave: boolean): void {
   // 镜头放在玩家身后
   cam.yaw = player.facing + Math.PI;
   cam.pos.set(player.pos.x + Math.sin(cam.yaw) * 7, player.pos.y + 3, player.pos.z + Math.cos(cam.yaw) * 7);
-  if (W.light > 0.5) music.set(W.rest > 0.5 ? 'rest' : (isDone('e1') ? 'eden' : 'day1'));
+  if (W.light > 0.5) music.set(W.fade > 0.5 ? 'dark' : W.rest > 0.5 ? 'rest' : (isDone('e1') ? 'eden' : 'day1'));
   if (!fromSave) flash('black', 1, 0.6);
 }
 

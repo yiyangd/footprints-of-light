@@ -1,4 +1,4 @@
-// 图鉴里的画：两扇彩窗和两件信物的图标，都用 SVG 现画（原创，不用图片文件）。
+// 图鉴里的画：三扇彩窗和三件信物的图标，都用 SVG 现画（原创，不用图片文件）。
 // got 是已经得到的碎片编号；没得到的那一片是暗的，上面写着它是第几片。
 // 彩窗的名字来自内容（已经是安全的文字），所以可以直接放进 SVG 里。
 
@@ -95,16 +95,69 @@ function edenWindowSVG(got: number[], label: string): string {
   return s + '</svg>';
 }
 
+/**
+ * 应许之窗（第 3 章）：外圈六块，颜色比前两扇暗（园子的颜色褪去了）；
+ * 第 4 片“一条金线”（创 3:15）是一根从窗心穿出去的金线，伸到窗外，因为这个应许要一直接到以后的章节。
+ * 外圈从正上方起，顺时针是第 1、2、3、5、6、7 片。
+ */
+function promiseWindowSVG(got: number[], label: string): string {
+  const ring = [
+    { i: 0, col: '#5f7d45' }, // 蛇的话
+    { i: 1, col: '#b8763f' }, // 吃了
+    { i: 2, col: '#6e8aa3' }, // 天起了凉风
+    { i: 4, col: '#97714f' }, // 皮衣
+    { i: 5, col: '#b46a4c' }, // 伊甸的东边
+    { i: 6, col: '#8a3a2b' }, // 发火焰的剑
+  ];
+  const icon: Record<number, Icon> = {
+    // 蛇：一条弯弯的身子
+    0: (x, y) => `<path d="M${x - 14} ${y + 8}q7 -14 14 -4t14 -6" fill="none" stroke="#1f3319" stroke-width="5" stroke-linecap="round"/><circle cx="${x + 15}" cy="${y - 10}" r="3.5" fill="#1f3319"/>`,
+    // 果子：一颗金色的果子（圣经没说是苹果）
+    1: (x, y) => `<circle cx="${x}" cy="${y + 3}" r="9" fill="#f0a83a"/><path d="M${x} ${y - 6}q4 -7 10 -6q-3 6 -10 6z" fill="#3f6b2f"/>`,
+    // 凉风：三道风
+    2: (x, y) => [-8, 0, 8].map((d) => `<path d="M${x - 15} ${y + d}q6 -5 12 0t12 0" fill="none" stroke="#eef6ff" stroke-width="2.4" stroke-linecap="round"/>`).join(''),
+    // 皮衣：一件简单的长衣
+    4: (x, y) => `<path d="M${x - 6} ${y - 12}h12l8 8l-5 4v14h-18v-14l-5 -4z" fill="#5c3f27"/><path d="M${x - 4} ${y - 12}q4 5 8 0" fill="none" stroke="#2e1f13" stroke-width="1.8"/>`,
+    // 伊甸的东边：两个人向东走，前面是升起的太阳
+    5: (x, y) => `<path d="M${x + 4} ${y + 10}a10 10 0 0 1 20 0z" fill="#ffd9a0" opacity=".8"/><circle cx="${x - 12}" cy="${y - 6}" r="3.2" fill="#fff2dc"/><rect x="${x - 14.5}" y="${y - 2}" width="5" height="12" rx="2.5" fill="#fff2dc"/><circle cx="${x - 3}" cy="${y - 6}" r="3.2" fill="#fff2dc"/><rect x="${x - 5.5}" y="${y - 2}" width="5" height="12" rx="2.5" fill="#fff2dc"/>`,
+    // 发火焰的剑：一把剑，四周是火
+    6: (x, y) => `<circle cx="${x}" cy="${y}" r="13" fill="#ff8a2a" opacity=".45"/><line x1="${x - 12}" y1="${y + 12}" x2="${x + 12}" y2="${y - 12}" stroke="#ffe7b0" stroke-width="3.5" stroke-linecap="round"/><line x1="${x - 9}" y1="${y + 3}" x2="${x - 3}" y2="${y + 9}" stroke="#ffe7b0" stroke-width="3" stroke-linecap="round"/>`,
+  };
+  let s = `<svg viewBox="0 0 240 240" role="img" aria-label="${label}"><circle cx="120" cy="120" r="114" fill="#15161c" stroke="#3a3326" stroke-width="4"/>`;
+  ring.forEach((q, k) => {
+    const a0 = -Math.PI / 2 + k * Math.PI / 3 - Math.PI / 6, a1 = a0 + Math.PI / 3, on = got.includes(q.i);
+    s += `<path d="${sector(40, 108, a0 + 0.02, a1 - 0.02)}" fill="${on ? q.col : DARK_GLASS}" stroke="#141414" stroke-width="3.5"/>`;
+    const [x, y] = polar(76, (a0 + a1) / 2);
+    s += on ? icon[q.i](x, y) : numberMark(x, y, q.i + 1);
+  });
+  // 窗心和金线（第 4 片）
+  const threadOn = got.includes(3);
+  s += `<circle cx="120" cy="120" r="36" fill="${threadOn ? '#2f2a1c' : DARK_GLASS}" stroke="#141414" stroke-width="3.5"/>`;
+  if (threadOn) {
+    // 从窗心出发，弯弯地穿过外圈，一直伸到窗外：这条线以后还要接下去
+    const thread = 'M120 132q-14 -8 0 -16t18 -12q24 -18 40 -52t36 -44';
+    s += `<path d="${thread}" fill="none" stroke="#ffcf5a" stroke-width="9" stroke-linecap="round" opacity=".25"/>`
+      + `<path d="${thread}" fill="none" stroke="#ffd36b" stroke-width="3.5" stroke-linecap="round"/>`
+      + '<circle cx="120" cy="132" r="4" fill="#ffe7a0"/>';
+  } else {
+    s += numberMark(120, 120, 4);
+  }
+  if (got.length === 7) s += GOLD_RIM;
+  return s + '</svg>';
+}
+
 /** 每扇彩窗怎么画，按彩窗的 id 查。label 是彩窗的名字，给读屏软件念 */
 export const WINDOW_ART: Record<string, (got: number[], label: string) => string> = {
   creation: creationWindowSVG,
   eden: edenWindowSVG,
+  promise: promiseWindowSVG,
 };
 
 /** 每件信物的图标，按信物的 id 查 */
 const RELIC_ICONS: Record<string, string> = {
   'first-light': `<svg viewBox="0 0 48 48" width="40" height="40"><circle cx="24" cy="24" r="9" fill="#fff4cf"/><circle cx="24" cy="24" r="17" fill="none" stroke="#ffcf7a" stroke-width="2" stroke-dasharray="3 4"/></svg>`,
   onyx: `<svg viewBox="0 0 48 48" width="40" height="40"><path d="M24 8l13 8v16l-13 8l-13-8V16z" fill="#b3242c"/><path d="M18 18l8-4l-3 9z" fill="#ffffff" opacity=".55"/></svg>`,
+  garments: `<svg viewBox="0 0 48 48" width="40" height="40"><path d="M18 8h12l9 9l-6 4v20H15V21l-6-4z" fill="#8a6440"/><path d="M20 8q4 6 8 0" fill="none" stroke="#4a3220" stroke-width="2"/><path d="M15 30h18" stroke="#6d4d31" stroke-width="2"/></svg>`,
 };
 
 /** 信物的图标；还没给它画图标的信物先用一个星号 */

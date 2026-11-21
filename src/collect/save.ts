@@ -29,9 +29,18 @@ export function persist(): void {
   } catch { /* 存不了也没关系（例如浏览器开了无痕模式） */ }
 }
 
-/** 从浏览器读出上次的进度；没有就返回 null */
+const BEAT_IDS = new Set(BEATS.map((b) => b.id));
+
+/**
+ * 从浏览器读出上次的进度；没有就返回 null。
+ * 已经不存在的剧情节点会被去掉：例如旧版第 2 章最后的“下一章预告”（e6），现在它的经文挪进了第 3 章。
+ */
 export function loadSave(): SaveData | null {
-  try { return parseSave(localStorage.getItem(KEY), WINDOW_IDS); } catch { return null; }
+  try {
+    const data = parseSave(localStorage.getItem(KEY), WINDOW_IDS);
+    if (data) data.done = data.done.filter((id) => BEAT_IDS.has(id));
+    return data;
+  } catch { return null; }
 }
 
 /** 删掉存档（“从头开始”时用） */

@@ -65,6 +65,8 @@ export const CardSchema = z.strictObject({
   at: PositionSchema,
   /** 放在光之路上（陆地升起之前就能捡到） */
   onPath: z.boolean().optional(),
+  /** 哪个剧情节点完成以后，这块陶片才出现（写节点的 id）。不写就是“陆地升起以后” */
+  after: text.optional(),
 });
 
 /** 信物 */

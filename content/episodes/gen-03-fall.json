@@ -22,7 +22,7 @@
     "en": "BSB (Berean Standard Bible, public domain)",
     "zh": "和合本（新标点和合本，神版）"
   },
-  "note": "【草稿，还没有进游戏】第 3 章的初稿：节点怎么分、每一节经文放在哪里、需要哪些新效果。依据 docs/设计方案.md 第 4 节“第 3 章《你在哪里？》”，并照“经文一节都不跳过”把创 3:1–24 全部排了进去。英文经文是程序从 BSB 填的，中文经文是程序从新标点和合本填的。位置 at 是在现有伊甸地图上暂定的。fx 里的效果名都是新的，代码里还没有。要请带领人和牧者看过再开工。",
+  "note": "所有给玩家看的文字都是 { en, zh }。at 是地图上的 [x, z] 坐标（x 向东，z 向南）；r 是触发半径；fx 是剧情效果名；kind: scripture 经文 / history 考据 / imagination 游戏想象 / reflection 思考；ref 写成 Gen 1:3；hint 是这个节点结束后出现的操作提示（可以分 touch 手机 / desk 电脑两种）；card 的 after 是“哪个节点完成以后这块陶片才出现”；after（节点上的）是这个节点结束后触发的效果。第 3 章依据 docs/设计方案.md 第 4 节，创 3:1–24 一节不缺；用的是伊甸的地图。",
   "beats": [
     {
       "id": "f1",
@@ -447,7 +447,8 @@
           "win": "promise",
           "i": 6
         }
-      ]
+      ],
+      "after": "end"
     }
   ],
   "cards": [
@@ -458,6 +459,7 @@
         73.5,
         -12
       ],
+      "after": "f5",
       "title": {
         "en": "The first good news",
         "zh": "最早的好消息"
@@ -474,6 +476,7 @@
         80,
         -21
       ],
+      "after": "f7",
       "title": {
         "en": "Cherubim are not baby angels",
         "zh": "基路伯不是胖胖的小天使"
@@ -490,6 +493,7 @@
         61,
         -22
       ],
+      "after": "f4",
       "title": {
         "en": "The first question God asks",
         "zh": "神问的第一个问题"

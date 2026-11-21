@@ -21,8 +21,14 @@ export const BROTHERS_EFFECTS = [
   'markOfCain', 'toNod', 'cityRises', 'lamech', 'tents', 'lyre', 'forge', 'lamechSong', 'sethBorn', 'callOnName',
 ] as const;
 
+/** 第 5 章《与神同行》的效果：每一代“生了下一代”（born…）和“就死了”（died…），以及以诺 */
+export const GENERATIONS_EFFECTS = [
+  'bookOfAdam', 'bornSeth', 'diedAdam', 'bornEnosh', 'diedSeth', 'bornKenan', 'diedEnosh', 'bornMahalalel', 'diedKenan', 'bornJared', 'diedMahalalel',
+  'bornEnoch', 'diedJared', 'bornMethuselah', 'walkWithGod', 'enochTaken', 'bornLamech', 'diedMethuselah', 'bornNoah', 'diedLamech', 'noahSons',
+] as const;
+
 /** 已经进游戏的章节的效果名 */
-export const EFFECT_NAMES: readonly string[] = [...CREATION_EFFECTS, ...EDEN_EFFECTS, ...FALL_EFFECTS, ...BROTHERS_EFFECTS];
+export const EFFECT_NAMES: readonly string[] = [...CREATION_EFFECTS, ...EDEN_EFFECTS, ...FALL_EFFECTS, ...BROTHERS_EFFECTS, ...GENERATIONS_EFFECTS];
 
 /** 草稿里可以用的效果名：已经进游戏的，加上草稿章节自己的（现在没有草稿章节） */
 export const DRAFT_EFFECT_NAMES: readonly string[] = [...EFFECT_NAMES];

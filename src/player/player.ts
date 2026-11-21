@@ -26,7 +26,7 @@ export const player = {
   safe: new THREE.Vector3(0, 0.22, 49),  // 最后站过的安全位置（掉进水里就回到这里）
   safeT: 0,
   walkT: 0,        // 走路动画的进度
-  gesture: null as string | null,        // 正在做的姿态（rest 安息 / name 命名 / offer 献上）
+  gesture: null as string | null,        // 正在做的姿态（rest 安息 / name 命名 / offer 献上 / walkwith 同行）
   gestureT: 0,
 };
 
@@ -117,6 +117,25 @@ function buildHero(): HeroParts {
 }
 const parts = buildHero();
 
+// 姿态“同行”：一团小小的光，在玩家左边肩膀的高度轻轻飘着，跟着玩家走
+const companion = glowSprite('#fff0c8', 0.9, 0);
+scene.add(companion);
+const companionPos = new THREE.Vector3();
+
+function updateCompanion(dt: number): void {
+  const on = player.gesture === 'walkwith';
+  companion.material.opacity = damp(companion.material.opacity, on ? 0.85 : 0, 3, dt);
+  companion.visible = companion.material.opacity > 0.01;
+  if (!companion.visible) { companionPos.copy(player.pos); return; }
+  // 想待的位置：玩家左手边 0.9 米，比头稍高一点
+  const side = player.facing + Math.PI / 2;
+  const wantX = player.pos.x + Math.sin(side) * 0.9, wantZ = player.pos.z + Math.cos(side) * 0.9;
+  companionPos.x = damp(companionPos.x, wantX, 4, dt);
+  companionPos.z = damp(companionPos.z, wantZ, 4, dt);
+  companionPos.y = damp(companionPos.y, player.pos.y + 1.5 + Math.sin(U.time.value * 1.6) * 0.1, 4, dt);
+  companion.position.copy(companionPos);
+}
+
 // —— 每一帧的移动 ——
 const forward = new THREE.Vector3(), right = new THREE.Vector3(), wish = new THREE.Vector3();
 let toldBarrier = false; // “园子还没开”这句提示只说一次
@@ -142,8 +161,8 @@ function canGo(x: number, z: number): boolean {
  */
 export function updatePlayer(dt: number, camYaw: number): boolean {
   const mi = game.state === 'play' ? moveInput() : { x: 0, y: 0, mag: 0, run: false };
-  // 一走动，姿态就结束
-  if (player.gesture && mi.mag > 0.1) { player.gesture = null; music.duck(false); }
+  // 一走动，姿态就结束（“同行”除外：它本来就是陪你走的）
+  if (player.gesture && player.gesture !== 'walkwith' && mi.mag > 0.1) { player.gesture = null; music.duck(false); }
 
   // 1. 水平方向：想往哪走 → 速度慢慢跟上 → 脸转过去
   forward.set(-Math.sin(camYaw), 0, -Math.cos(camYaw));
@@ -171,7 +190,7 @@ export function updatePlayer(dt: number, camYaw: number): boolean {
     if (g === null || g < player.pos.y - 0.7) { player.onGround = false; player.coyote = 0.12; } // 走出了边缘
     else { player.pos.y = damp(player.pos.y, g, 25, dt); player.vel.y = 0; }
   }
-  if (player.jumpBuf > 0 && (player.onGround || player.coyote > 0) && game.state === 'play' && !player.gesture) {
+  if (player.jumpBuf > 0 && (player.onGround || player.coyote > 0) && game.state === 'play' && (!player.gesture || player.gesture === 'walkwith')) {
     player.vel.y = 7.6;
     player.onGround = false;
     player.coyote = 0;
@@ -218,6 +237,7 @@ function animateHero(dt: number, speedNow: number, ground: number | null): void 
   const stride = clamp(speedNow / 4, 0, 1);
   const bob = player.onGround ? Math.abs(Math.sin(player.walkT)) * 0.05 * stride : 0;
   player.gestureT += dt;
+  updateCompanion(dt);
   const sit = player.gesture === 'rest' ? smooth(0, 0.6, player.gestureT) : 0;     // 安息：坐下
   const point = player.gesture === 'name' ? smooth(0, 0.4, player.gestureT) : 0;   // 命名：抬手指向前方
   const lift = player.gesture === 'offer' ? smooth(0, 0.7, player.gestureT) : 0;   // 献上：把灯举过头顶

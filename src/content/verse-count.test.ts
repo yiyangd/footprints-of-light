@@ -4,12 +4,13 @@ import creationJson from '../../content/episodes/gen-01-creation.json';
 import edenJson from '../../content/episodes/gen-02-eden.json';
 import fallJson from '../../content/episodes/gen-03-fall.json';
 import brothersJson from '../../content/episodes/gen-04-brothers.json';
+import generationsJson from '../../content/episodes/gen-05-generations.json';
 import bsbJson from '../../content/scripture/bsb.json';
 import uiJson from '../../content/ui.json';
 import type { EpisodeFile } from './types';
 import { countVerses } from './verse-count';
 
-const episodes = [creationJson, edenJson, fallJson, brothersJson] as unknown as EpisodeFile[];
+const episodes = [creationJson, edenJson, fallJson, brothersJson, generationsJson] as unknown as EpisodeFile[];
 const BSB = bsbJson.verses as Record<string, string>;
 
 describe('countVerses', () => {
@@ -25,7 +26,7 @@ describe('countVerses', () => {
   });
 
   it('每一章都报告范围里一共多少节、还缺哪些', () => {
-    expect(count.coverage.map((c) => c.id)).toEqual(['gen-01-creation', 'gen-02-eden', 'gen-03-fall', 'gen-04-brothers']);
+    expect(count.coverage.map((c) => c.id)).toEqual(['gen-01-creation', 'gen-02-eden', 'gen-03-fall', 'gen-04-brothers', 'gen-05-generations']);
     expect(count.coverage[0].total).toBe(34);
     for (const c of count.coverage) for (const v of c.missing) expect(count.verses).not.toContain(v);
   });

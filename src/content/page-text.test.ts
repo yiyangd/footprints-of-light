@@ -25,7 +25,7 @@ describe('fillPageText', () => {
 
   it('单语占位符原样放进去（放进属性里也安全）', () => {
     expect(fillPageText('<canvas aria-label="{{ui:page.aria.game}}"></canvas>', ui)).toBe('<canvas aria-label="Game view"></canvas>');
-    expect(fillPageText('<title>{{ui:text.title.bi}}</title>', ui)).toBe('<title>Footprints of Light 光之踪迹 · Genesis 1–4 创世记 1—4 章</title>');
+    expect(fillPageText('<title>{{ui:text.title.bi}}</title>', ui)).toBe('<title>Footprints of Light 光之踪迹 · Genesis 1–5 创世记 1—5 章</title>');
   });
 
   it('经文：一字不改，并拼上引号、出处和译本（AGENTS.md 第 1、2 条）', () => {

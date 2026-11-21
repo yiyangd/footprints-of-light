@@ -187,12 +187,38 @@ function offeringWindowSVG(got: number[], label: string): string {
   return s + '</svg>';
 }
 
+/**
+ * 家谱之窗（第 5 章）：外圈十块，一代一块，从正上方起顺时针是亚当到挪亚。
+ * 每一块里是一座小房子；以诺那一块（第 7 片）是一团往上升的光，挪亚那一块（第 10 片）是一只船，下一章要用到。
+ * 中间是一条路，集齐了路上亮起一串脚印。
+ */
+function generationsWindowSVG(got: number[], label: string): string {
+  const house: Icon = (x, y) => `<path d="M${x - 7} ${y + 7}v-8l7 -6l7 6v8z" fill="#f3e6cc"/><rect x="${x - 2}" y="${y + 1}" width="4" height="6" fill="#5a4630"/>`;
+  const light: Icon = (x, y) => `<circle cx="${x}" cy="${y - 2}" r="5" fill="#fff4d6"/><path d="M${x} ${y + 9}v-4M${x - 6} ${y + 7}l2 -3M${x + 6} ${y + 7}l-2 -3" stroke="#fff4d6" stroke-width="1.8" stroke-linecap="round"/>`;
+  const boat: Icon = (x, y) => `<path d="M${x - 10} ${y + 1}h20l-4 6h-12z" fill="#8a6440"/><rect x="${x - 5}" y="${y - 5}" width="10" height="6" fill="#a98458"/>`;
+  let s = `<svg viewBox="0 0 240 240" role="img" aria-label="${label}"><circle cx="120" cy="120" r="114" fill="#15161c" stroke="#3a3326" stroke-width="4"/>`;
+  for (let i = 0; i < 10; i++) {
+    const a0 = -Math.PI / 2 + i * Math.PI / 5 - Math.PI / 10, a1 = a0 + Math.PI / 5, on = got.includes(i);
+    // 颜色从暖到冷，一代一代往下传
+    const col = `hsl(${32 + i * 16}, 38%, ${46 - i * 1.2}%)`;
+    s += `<path d="${sector(46, 108, a0 + 0.02, a1 - 0.02)}" fill="${on ? (i === 6 ? '#d9b35a' : col) : DARK_GLASS}" stroke="#141414" stroke-width="3.5"/>`;
+    const [x, y] = polar(78, (a0 + a1) / 2);
+    s += on ? (i === 6 ? light : i === 9 ? boat : house)(x, y) : numberMark(x, y, i + 1);
+  }
+  const all = got.length === 10;
+  s += `<circle cx="120" cy="120" r="42" fill="${all ? '#2c2618' : DARK_GLASS}" stroke="#141414" stroke-width="3.5"/>`;
+  s += `<path d="M120 152q-10 -16 0 -32t0 -32" fill="none" stroke="${all ? '#c9a45a' : '#2f3542'}" stroke-width="5" stroke-linecap="round"/>`;
+  if (all) s += [0, 1, 2, 3, 4].map((k) => `<ellipse cx="${120 + (k % 2 ? 4 : -4)}" cy="${146 - k * 13}" rx="2" ry="3.4" fill="#ffe7a0"/>`).join('') + GOLD_RIM;
+  return s + '</svg>';
+}
+
 /** 每扇彩窗怎么画，按彩窗的 id 查。label 是彩窗的名字，给读屏软件念 */
 export const WINDOW_ART: Record<string, (got: number[], label: string) => string> = {
   creation: creationWindowSVG,
   eden: edenWindowSVG,
   promise: promiseWindowSVG,
   offering: offeringWindowSVG,
+  generations: generationsWindowSVG,
 };
 
 /** 每件信物的图标，按信物的 id 查 */
@@ -200,6 +226,7 @@ const RELIC_ICONS: Record<string, string> = {
   'first-light': `<svg viewBox="0 0 48 48" width="40" height="40"><circle cx="24" cy="24" r="9" fill="#fff4cf"/><circle cx="24" cy="24" r="17" fill="none" stroke="#ffcf7a" stroke-width="2" stroke-dasharray="3 4"/></svg>`,
   onyx: `<svg viewBox="0 0 48 48" width="40" height="40"><path d="M24 8l13 8v16l-13 8l-13-8V16z" fill="#b3242c"/><path d="M18 18l8-4l-3 9z" fill="#ffffff" opacity=".55"/></svg>`,
   'firstborn-lamb': `<svg viewBox="0 0 48 48" width="40" height="40"><ellipse cx="22" cy="27" rx="13" ry="9" fill="#f3efe6"/><circle cx="35" cy="21" r="6" fill="#f3efe6"/><circle cx="37" cy="20" r="1.4" fill="#3b332e"/><path d="M14 35v6M20 35v6M26 35v6M31 34v6" stroke="#cfc6b8" stroke-width="2.4" stroke-linecap="round"/></svg>`,
+  'enoch-footprints': `<svg viewBox="0 0 48 48" width="40" height="40"><circle cx="24" cy="24" r="20" fill="#ffe7a0" opacity=".15"/><ellipse cx="18" cy="31" rx="4" ry="7" fill="#ffe7a0"/><ellipse cx="29" cy="18" rx="4" ry="7" fill="#fff4d6"/></svg>`,
   garments: `<svg viewBox="0 0 48 48" width="40" height="40"><path d="M18 8h12l9 9l-6 4v20H15V21l-6-4z" fill="#8a6440"/><path d="M20 8q4 6 8 0" fill="none" stroke="#4a3220" stroke-width="2"/><path d="M15 30h18" stroke="#6d4d31" stroke-width="2"/></svg>`,
 };
 

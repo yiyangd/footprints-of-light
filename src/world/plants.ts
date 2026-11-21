@@ -4,6 +4,7 @@
 import * as THREE from 'three';
 import { BEATS } from '../content';
 import { CLEAR_SPOTS } from '../episodes/gen-04-spots';
+import { CLEAR_SPOTS_5 } from '../episodes/gen-05-spots';
 import { IS_TOUCH } from '../core/env';
 import { rng } from '../core/math';
 import { U } from '../core/state';
@@ -196,7 +197,7 @@ buildVegetation('main', [-4, 16.5], (x, z) => !inEden(x, z, 27) && x < 40, VEG, 
 // 伊甸：从园子的入口开始往里长
 buildVegetation('eden', [42, -15], (x, z) => inEden(x, z, 25) && notRiver(x, z),
   { grass: Math.round(VEG.grass * 0.45), flowers: Math.round(VEG.flowers * 0.9), trees: 26 }, 202);
-// 伊甸的东边（第 4 章）：草和花少一些，树更少；房子、田、坛、城那些地方不种树
+// 伊甸的东边和再往北的那块地（第 4、5 章）：草和花少一些，树更少；房子、田、坛、城那些地方不种树
 buildVegetation('east', [90, -15], inEastLand,
-  { grass: Math.round(VEG.grass * 0.18), flowers: Math.round(VEG.flowers * 0.12), trees: 10 }, 404, CLEAR_SPOTS);
+  { grass: Math.round(VEG.grass * 0.22), flowers: Math.round(VEG.flowers * 0.15), trees: 14 }, 404, [...CLEAR_SPOTS, ...CLEAR_SPOTS_5]);
 buildRocks();

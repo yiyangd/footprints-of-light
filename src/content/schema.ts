@@ -100,6 +100,8 @@ export const EpisodeFileSchema = z.strictObject({
   gestures: z.array(GestureSchema),
   animalNames: z.record(z.string(), AnimalNameSchema).optional(),
   riverNames: z.array(BiSchema).optional(),
+  /** 第 5 章：每位先祖头上显示的名字和岁数，按先祖的 id 查 */
+  elders: z.record(z.string(), BiSchema).optional(),
 });
 
 /** 书卷的名字：英文全名、中文简称、中文全名 */

@@ -85,6 +85,8 @@ body.in-story #hint { opacity: 0; }
 .wlabel .tr { font-size: 12px; color: var(--ink-dim); font-style: italic; }
 .wlabel.river .nm { font-size: 16px; color: #bfe6ff; font-weight: 600; }
 .wlabel.river .zh { font-size: 13px; color: #bfe6ff; }
+.wlabel.elder .nm { font-size: 15px; color: #ffe9b8; font-weight: 600; }
+.wlabel.elder .zh { font-size: 13px; color: #ffe9b8; }
 
 /* ---------- 触屏 ---------- */
 #touch { position: fixed; inset: 0; pointer-events: none; }
@@ -93,6 +95,7 @@ body.in-story #hint { opacity: 0; }
 #touch-buttons { position: absolute; right: max(18px, env(safe-area-inset-right)); bottom: max(22px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 12px; align-items: flex-end; pointer-events: auto; }
 .tbtn { width: 72px; height: 72px; border-radius: 50%; background: rgba(23,20,28,.6); border: 1px solid rgba(255,207,122,.55); color: var(--ink); font-size: 14px; font-weight: 700; line-height: 1.15; touch-action: none; }
 .tbtn.small { width: 58px; height: 58px; font-size: 12.5px; }
+#gesture-buttons { display: flex; flex-wrap: wrap-reverse; justify-content: flex-end; gap: 12px; width: 128px; }
 .tbtn .zh.blk { font-size: 11px; font-weight: 500; margin-top: 2px; }
 
 /* ---------- 剧情字幕 ---------- */

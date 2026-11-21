@@ -1,0 +1,811 @@
+{
+  "id": "gen-05-generations",
+  "chapter": 5,
+  "title": {
+    "en": "Walking with God",
+    "zh": "与神同行"
+  },
+  "range": "Gen 5:1–32",
+  "hudRef": "Gen 5",
+  "era": {
+    "book": {
+      "en": "Genesis",
+      "zh": "创世记"
+    },
+    "label": {
+      "en": "From Adam to Noah",
+      "zh": "从亚当到挪亚"
+    },
+    "yearAM": 0
+  },
+  "scripture": {
+    "en": "BSB (Berean Standard Bible, public domain)",
+    "zh": "和合本（新标点和合本，神版）"
+  },
+  "note": "所有给玩家看的文字都是 { en, zh }。at 是地图上的 [x, z] 坐标（x 向东，z 向南）；r 是触发半径；fx 是剧情效果名；kind: scripture 经文 / history 考据 / imagination 游戏想象 / reflection 思考；ref 写成 Gen 1:3；hint 是这个节点结束后出现的操作提示（可以分 touch 手机 / desk 电脑两种）；card 的 after 是“哪个节点完成以后这块陶片才出现”；after（节点上的）是这个节点结束后触发的效果。第 3 章依据 docs/设计方案.md 第 4 节，创 3:1–24 一节不缺；用的是伊甸的地图。；elders 是每位先祖头上显示的名字和岁数（岁数照创 5 的经文）。第 5 章依据 docs/设计方案.md 第 4 节“第 5 章《与神同行》”，创 5:1–32 一节不缺：十代人的家沿着一条路排开，每走到一家是一代人（位置在 src/episodes/gen-05-spots.ts）。",
+  "beats": [
+    {
+      "id": "h1",
+      "at": [
+        97.6,
+        -22.2
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Adam",
+          "zh": "亚当"
+        },
+        "sub": {
+          "en": "First generation",
+          "zh": "第一代"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:1",
+          "fx": "bookOfAdam",
+          "text": {
+            "en": "This is the book of the generations of Adam. In the day that God created man, He made him in His own likeness.",
+            "zh": "亚当的后代记在下面。（当神造人的日子，是照着自己的样式造的，"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:2",
+          "text": {
+            "en": "Male and female He created them, and He blessed them. And in the day they were created, He called them “man.”",
+            "zh": "并且造男造女。在他们被造的日子，神赐福给他们，称他们为“人”。）"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:3",
+          "fx": "bornSeth",
+          "text": {
+            "en": "When Adam was 130 years old, he had a son in his own likeness, after his own image; and he named him Seth.",
+            "zh": "亚当活到一百三十岁，生了一个儿子，形象样式和自己相似，就给他起名叫塞特。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:4",
+          "text": {
+            "en": "And after he had become the father of Seth, Adam lived 800 years and had other sons and daughters.",
+            "zh": "亚当生塞特之后，又在世八百年，并且生儿养女。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:5",
+          "fx": "diedAdam",
+          "text": {
+            "en": "So Adam lived a total of 930 years, and then he died.",
+            "zh": "亚当共活了九百三十岁就死了。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "generations",
+          "i": 0
+        }
+      ],
+      "hint": {
+        "en": "Follow the road north. Each house is one generation.",
+        "zh": "沿着路往北走。每一座房子是一代人。"
+      }
+    },
+    {
+      "id": "h2",
+      "at": [
+        99,
+        -28.6
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Seth",
+          "zh": "塞特"
+        },
+        "sub": {
+          "en": "Second generation",
+          "zh": "第二代"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:6",
+          "fx": "bornEnosh",
+          "text": {
+            "en": "When Seth was 105 years old, he became the father of Enosh.",
+            "zh": "塞特活到一百零五岁，生了以挪士。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:7",
+          "text": {
+            "en": "And after he had become the father of Enosh, Seth lived 807 years and had other sons and daughters.",
+            "zh": "塞特生以挪士之后，又活了八百零七年，并且生儿养女。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:8",
+          "fx": "diedSeth",
+          "text": {
+            "en": "So Seth lived a total of 912 years, and then he died.",
+            "zh": "塞特共活了九百一十二岁就死了。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "generations",
+          "i": 1
+        }
+      ]
+    },
+    {
+      "id": "h3",
+      "at": [
+        99.4,
+        -33.6
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Enosh",
+          "zh": "以挪士"
+        },
+        "sub": {
+          "en": "Third generation",
+          "zh": "第三代"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:9",
+          "fx": "bornKenan",
+          "text": {
+            "en": "When Enosh was 90 years old, he became the father of Kenan.",
+            "zh": "以挪士活到九十岁，生了该南。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:10",
+          "text": {
+            "en": "And after he had become the father of Kenan, Enosh lived 815 years and had other sons and daughters.",
+            "zh": "以挪士生该南之后，又活了八百一十五年，并且生儿养女。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:11",
+          "fx": "diedEnosh",
+          "text": {
+            "en": "So Enosh lived a total of 905 years, and then he died.",
+            "zh": "以挪士共活了九百零五岁就死了。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "generations",
+          "i": 2
+        }
+      ]
+    },
+    {
+      "id": "h4",
+      "at": [
+        100.6,
+        -38.6
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Kenan",
+          "zh": "该南"
+        },
+        "sub": {
+          "en": "Fourth generation",
+          "zh": "第四代"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:12",
+          "fx": "bornMahalalel",
+          "text": {
+            "en": "When Kenan was 70 years old, he became the father of Mahalalel.",
+            "zh": "该南活到七十岁，生了玛勒列。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:13",
+          "text": {
+            "en": "And after he had become the father of Mahalalel, Kenan lived 840 years and had other sons and daughters.",
+            "zh": "该南生玛勒列之后，又活了八百四十年，并且生儿养女。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:14",
+          "fx": "diedKenan",
+          "text": {
+            "en": "So Kenan lived a total of 910 years, and then he died.",
+            "zh": "该南共活了九百一十岁就死了。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "generations",
+          "i": 3
+        }
+      ]
+    },
+    {
+      "id": "h5",
+      "at": [
+        101.8,
+        -42.2
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Mahalalel",
+          "zh": "玛勒列"
+        },
+        "sub": {
+          "en": "Fifth generation",
+          "zh": "第五代"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:15",
+          "fx": "bornJared",
+          "text": {
+            "en": "When Mahalalel was 65 years old, he became the father of Jared.",
+            "zh": "玛勒列活到六十五岁，生了雅列。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:16",
+          "text": {
+            "en": "And after he had become the father of Jared, Mahalalel lived 830 years and had other sons and daughters.",
+            "zh": "玛勒列生雅列之后，又活了八百三十年，并且生儿养女。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:17",
+          "fx": "diedMahalalel",
+          "text": {
+            "en": "So Mahalalel lived a total of 895 years, and then he died.",
+            "zh": "玛勒列共活了八百九十五岁就死了。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "generations",
+          "i": 4
+        }
+      ]
+    },
+    {
+      "id": "h6",
+      "at": [
+        102.8,
+        -46.4
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Jared",
+          "zh": "雅列"
+        },
+        "sub": {
+          "en": "Sixth generation",
+          "zh": "第六代"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:18",
+          "fx": "bornEnoch",
+          "text": {
+            "en": "When Jared was 162 years old, he became the father of Enoch.",
+            "zh": "雅列活到一百六十二岁，生了以诺。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:19",
+          "text": {
+            "en": "And after he had become the father of Enoch, Jared lived 800 years and had other sons and daughters.",
+            "zh": "雅列生以诺之后，又活了八百年，并且生儿养女。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:20",
+          "fx": "diedJared",
+          "text": {
+            "en": "So Jared lived a total of 962 years, and then he died.",
+            "zh": "雅列共活了九百六十二岁就死了。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "generations",
+          "i": 5
+        }
+      ]
+    },
+    {
+      "id": "h7",
+      "at": [
+        102.6,
+        -50.2
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Enoch",
+          "zh": "以诺"
+        },
+        "sub": {
+          "en": "Seventh generation",
+          "zh": "第七代"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:21",
+          "fx": "bornMethuselah",
+          "text": {
+            "en": "When Enoch was 65 years old, he became the father of Methuselah.",
+            "zh": "以诺活到六十五岁，生了玛土撒拉。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:22",
+          "fx": "walkWithGod",
+          "text": {
+            "en": "And after he had become the father of Methuselah, Enoch walked with God 300 years and had other sons and daughters.",
+            "zh": "以诺生玛土撒拉之后，与神同行三百年，并且生儿养女。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:23",
+          "text": {
+            "en": "So Enoch lived a total of 365 years.",
+            "zh": "以诺共活了三百六十五岁。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:24",
+          "fx": "enochTaken",
+          "text": {
+            "en": "Enoch walked with God, and then he was no more, because God had taken him away.",
+            "zh": "以诺与神同行，神将他取去，他就不在世了。"
+          }
+        },
+        {
+          "kind": "imagination",
+          "text": {
+            "en": "You learned a gesture: Walk With. Press G (or tap “Walk With”), and a small light walks beside you.",
+            "zh": "你学会了一个姿态：同行。按 G 键（或点“同行”按钮），会有一团小小的光陪你走。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "relic",
+          "id": "enoch-footprints"
+        },
+        {
+          "type": "piece",
+          "win": "generations",
+          "i": 6
+        },
+        {
+          "type": "gesture",
+          "id": "walkwith"
+        },
+        {
+          "type": "verse",
+          "ref": "Gen 5:24"
+        }
+      ],
+      "hint": {
+        "touch": {
+          "en": "You learned “Walk With”: tap the “Walk With” button.",
+          "zh": "你学会了“同行”：点“同行”按钮"
+        },
+        "desk": {
+          "en": "You learned “Walk With”: press G.",
+          "zh": "你学会了“同行”：按 G 键"
+        }
+      }
+    },
+    {
+      "id": "h8",
+      "at": [
+        108.4,
+        -53.2
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Methuselah",
+          "zh": "玛土撒拉"
+        },
+        "sub": {
+          "en": "Eighth generation",
+          "zh": "第八代"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:25",
+          "fx": "bornLamech",
+          "text": {
+            "en": "When Methuselah was 187 years old, he became the father of Lamech.",
+            "zh": "玛土撒拉活到一百八十七岁，生了拉麦。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:26",
+          "text": {
+            "en": "And after he had become the father of Lamech, Methuselah lived 782 years and had other sons and daughters.",
+            "zh": "玛土撒拉生拉麦之后，又活了七百八十二年，并且生儿养女。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:27",
+          "fx": "diedMethuselah",
+          "text": {
+            "en": "So Methuselah lived a total of 969 years, and then he died.",
+            "zh": "玛土撒拉共活了九百六十九岁就死了。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "generations",
+          "i": 7
+        }
+      ]
+    },
+    {
+      "id": "h9",
+      "at": [
+        109.4,
+        -57.4
+      ],
+      "r": 2.6,
+      "hud": {
+        "label": {
+          "en": "Lamech",
+          "zh": "拉麦"
+        },
+        "sub": {
+          "en": "Ninth generation",
+          "zh": "第九代"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:28",
+          "text": {
+            "en": "When Lamech was 182 years old, he had a son.",
+            "zh": "拉麦活到一百八十二岁，生了一个儿子，"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:29",
+          "fx": "bornNoah",
+          "text": {
+            "en": "And he named him Noah, saying, “May this one comfort us in the labor and toil of our hands caused by the ground that the LORD has cursed.”",
+            "zh": "给他起名叫挪亚，说：“这个儿子必为我们的操作和手中的劳苦安慰我们；这操作劳苦是因为耶和华咒诅地。”"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:30",
+          "text": {
+            "en": "And after he had become the father of Noah, Lamech lived 595 years and had other sons and daughters.",
+            "zh": "拉麦生挪亚之后，又活了五百九十五年，并且生儿养女。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:31",
+          "fx": "diedLamech",
+          "text": {
+            "en": "So Lamech lived a total of 777 years, and then he died.",
+            "zh": "拉麦共活了七百七十七岁就死了。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "generations",
+          "i": 8
+        },
+        {
+          "type": "verse",
+          "ref": "Gen 5:29"
+        }
+      ]
+    },
+    {
+      "id": "h10",
+      "at": [
+        112.5,
+        -57.5
+      ],
+      "r": 2.6,
+      "hud": {
+        "label": {
+          "en": "Noah",
+          "zh": "挪亚"
+        },
+        "sub": {
+          "en": "Tenth generation",
+          "zh": "第十代"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 5:32",
+          "fx": "noahSons",
+          "text": {
+            "en": "After Noah was 500 years old, he became the father of Shem, Ham, and Japheth.",
+            "zh": "挪亚五百岁生了闪、含、雅弗。"
+          }
+        },
+        {
+          "kind": "imagination",
+          "text": {
+            "en": "The next part of the story begins with Noah.",
+            "zh": "接下来的故事，要从挪亚开始。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "generations",
+          "i": 9
+        }
+      ],
+      "after": "end"
+    }
+  ],
+  "cards": [
+    {
+      "id": "and-he-died",
+      "kind": "history",
+      "at": [
+        103.2,
+        -36.6
+      ],
+      "after": "h3",
+      "title": {
+        "en": "“And then he died”",
+        "zh": "“就死了”"
+      },
+      "text": {
+        "en": "In Genesis 5 the words “and then he died” come again and again: eight times. Only one name in the list ends differently: Enoch (Genesis 5:24). Death came, just as God had said it would (Genesis 2:17). But the list keeps going, and so does the story.",
+        "zh": "创世记第 5 章里，“就死了”一次又一次地出现，一共 8 次。名单里只有一个人的结尾不一样：以诺（创 5:24）。死亡临到了人，正像神先前说过的（创 2:17）。可是家谱还在往下写，故事也还在往下走。"
+      }
+    },
+    {
+      "id": "walk-with",
+      "kind": "reflection",
+      "at": [
+        110.2,
+        -51.2
+      ],
+      "after": "h7",
+      "title": {
+        "en": "Walking with God",
+        "zh": "与神同行"
+      },
+      "text": {
+        "en": "Enoch walked with God for 300 years (Genesis 5:22). Walking with someone means going the same way, at the same pace, day after day. What would it look like for you to walk with God this week?",
+        "zh": "以诺与神同行三百年（创 5:22）。和一个人同行，就是天天走同一条路、跟着同样的步子。这个星期，你和神同行会是什么样子？"
+      }
+    },
+    {
+      "id": "methuselah",
+      "kind": "history",
+      "at": [
+        106.4,
+        -56.4
+      ],
+      "after": "h8",
+      "title": {
+        "en": "969 years",
+        "zh": "969 岁"
+      },
+      "text": {
+        "en": "Methuselah lived 969 years (Genesis 5:27), the longest life recorded in the Bible. Add up the years in this chapter and you will find that Adam was still alive when Lamech, Noah’s father, was 56.",
+        "zh": "玛土撒拉活了 969 岁（创 5:27），是圣经里记载活得最长的人。把这一章的数字加起来算一算：挪亚的父亲拉麦 56 岁的时候，亚当还活着。"
+      }
+    },
+    {
+      "id": "noah-comfort",
+      "kind": "history",
+      "at": [
+        113.2,
+        -53
+      ],
+      "after": "h9",
+      "title": {
+        "en": "Comfort",
+        "zh": "安慰"
+      },
+      "text": {
+        "en": "Lamech named his son Noah, saying, “May this one comfort us” (Genesis 5:29). In Hebrew the name Noah (נֹחַ) sounds like “rest” and “comfort.” People were tired from working the cursed ground (Genesis 3:17), and they were hoping for comfort.",
+        "zh": "拉麦给儿子起名叫挪亚，说：“这个儿子必为我们的操作和手中的劳苦安慰我们”（创 5:29）。挪亚（נֹחַ）这个名字，在希伯来文里听起来像“安息”和“安慰”。人在受了咒诅的地上劳苦（创 3:17），盼望得到安慰。"
+      }
+    }
+  ],
+  "relics": [
+    {
+      "id": "enoch-footprints",
+      "name": {
+        "en": "Enoch’s Footprints",
+        "zh": "以诺的足迹"
+      },
+      "ref": "Gen 5:24",
+      "kind": "imagination",
+      "desc": {
+        "en": "“Enoch walked with God, and then he was no more, because God had taken him away” (Genesis 5:24). Hebrews 11:5 says he “was commended as one who pleased God.” The footprints of light he left on the hill are imagined for the game.",
+        "zh": "“以诺与神同行，神将他取去，他就不在世了。”（创 5:24）希伯来书 11:5 说，他“已经得了神喜悦他的明证”。他在山上留下的光的脚印，是游戏的想象。"
+      }
+    }
+  ],
+  "window": {
+    "id": "generations",
+    "name": {
+      "en": "Window of Generations",
+      "zh": "家谱之窗"
+    },
+    "ref": "Gen 5:1–32",
+    "pieces": [
+      {
+        "en": "Adam",
+        "zh": "亚当"
+      },
+      {
+        "en": "Seth",
+        "zh": "塞特"
+      },
+      {
+        "en": "Enosh",
+        "zh": "以挪士"
+      },
+      {
+        "en": "Kenan",
+        "zh": "该南"
+      },
+      {
+        "en": "Mahalalel",
+        "zh": "玛勒列"
+      },
+      {
+        "en": "Jared",
+        "zh": "雅列"
+      },
+      {
+        "en": "Enoch",
+        "zh": "以诺"
+      },
+      {
+        "en": "Methuselah",
+        "zh": "玛土撒拉"
+      },
+      {
+        "en": "Lamech",
+        "zh": "拉麦"
+      },
+      {
+        "en": "Noah",
+        "zh": "挪亚"
+      }
+    ]
+  },
+  "gestures": [
+    {
+      "id": "walkwith",
+      "name": {
+        "en": "Walk With",
+        "zh": "同行"
+      },
+      "key": "G",
+      "desc": {
+        "en": "A small light walks beside you as you go. Learned from: Enoch, who walked with God (Genesis 5:22–24).",
+        "zh": "走路的时候，有一团小小的光陪在你身边。学自：与神同行的以诺（创 5:22–24）。"
+      }
+    }
+  ],
+  "elders": {
+    "adam": {
+      "en": "Adam · 930 years",
+      "zh": "亚当 · 930 岁"
+    },
+    "seth": {
+      "en": "Seth · 912 years",
+      "zh": "塞特 · 912 岁"
+    },
+    "enosh": {
+      "en": "Enosh · 905 years",
+      "zh": "以挪士 · 905 岁"
+    },
+    "kenan": {
+      "en": "Kenan · 910 years",
+      "zh": "该南 · 910 岁"
+    },
+    "mahalalel": {
+      "en": "Mahalalel · 895 years",
+      "zh": "玛勒列 · 895 岁"
+    },
+    "jared": {
+      "en": "Jared · 962 years",
+      "zh": "雅列 · 962 岁"
+    },
+    "enoch": {
+      "en": "Enoch · 365 years",
+      "zh": "以诺 · 365 岁"
+    },
+    "methuselah": {
+      "en": "Methuselah · 969 years",
+      "zh": "玛土撒拉 · 969 岁"
+    },
+    "lamech": {
+      "en": "Lamech · 777 years",
+      "zh": "拉麦 · 777 岁"
+    },
+    "noah": {
+      "en": "Noah · 500 years old",
+      "zh": "挪亚 · 500 岁"
+    }
+  }
+}

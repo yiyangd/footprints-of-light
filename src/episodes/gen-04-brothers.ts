@@ -7,17 +7,16 @@
 //   - 献祭只看见坛上的火和烟，不画祭牲
 //   - 人都是简单的身形，不画脸
 import * as THREE from 'three';
-import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { music, sfx } from '../core/audio';
 import { flash } from '../core/flash';
-import { angleDiff, damp, rng, smooth } from '../core/math';
+import { angleDiff, rng, smooth } from '../core/math';
 import { scene } from '../core/renderer';
 import { W } from '../core/state';
 import { glowSprite, TEX } from '../core/textures';
 import { tween } from '../core/tween';
 import { cam, setFocus } from '../player/camera';
-import { player } from '../player/player';
 import type { Effect } from '../story/effects';
+import { appear, makeFigure, merge, paint, updateFigure, vanish, walk } from '../world/figures';
 import { baseHeight, terrainY } from '../world/heightmap';
 import { TREE_SPOTS } from '../world/plants';
 import { startEvening } from '../world/sky';
@@ -50,66 +49,10 @@ const S = {
   lamps: 0,     // 求告耶和华的人手里的灯（创 4:26）
 };
 
-// —— 小工具：把几个形状合成一个网格，画的时候只算一次（AGENTS.md 第 10 条：绘制次数要少） ——
-
-/** 给一个形状涂上一种颜色 */
-function paint(geo: THREE.BufferGeometry, color: THREE.ColorRepresentation): THREE.BufferGeometry {
-  const g = geo.index ? geo.toNonIndexed() : geo;
-  const c = new THREE.Color(color), n = g.attributes.position.count, arr = new Float32Array(n * 3);
-  for (let i = 0; i < n; i++) c.toArray(arr, i * 3);
-  g.setAttribute('color', new THREE.BufferAttribute(arr, 3));
-  return g;
-}
-
-/** 把涂好颜色的几个形状合成一个 */
-function merge(parts: THREE.BufferGeometry[]): THREE.BufferGeometry {
-  const g = mergeGeometries(parts);
-  if (!g) throw new Error('第 4 章：形状合并失败');
-  return g;
-}
-
 const solid = (): THREE.MeshLambertMaterial => new THREE.MeshLambertMaterial({ vertexColors: true, flatShading: true });
 
 /** 地面最后的高度（陆地升起以后）。房子、坛这些不动的东西按它摆 */
 const groundOf = (at: Spot): number => baseHeight(at[0], at[1]);
-
-// —— 人：简单的身形（长衣、上身、头），每个人一个网格 ——
-
-interface Figure {
-  mesh: THREE.Mesh<THREE.BufferGeometry, THREE.MeshLambertMaterial>;
-  x: number;
-  z: number;
-  /** 要去的地方（走过去） */
-  goal: Spot;
-  /** 大小：小孩 0.5，大人 1 */
-  size: number;
-  sizeGoal: number;
-  /** 显出来多少：0 看不见，1 完全看见 */
-  shown: number;
-  showGoal: number;
-  /** 低头的程度 */
-  bow: number;
-  bowGoal: number;
-  /** 站着的时候面向哪里；null = 面向玩家 */
-  face: Spot | null;
-}
-
-const SKIN = '#ead8bc';
-
-function makeFigure(robe: string, female = false): Figure {
-  const parts = [
-    paint(new THREE.CylinderGeometry(0.2, 0.36, 1.1, 8).translate(0, 0.55, 0), robe),
-    paint(new THREE.CylinderGeometry(0.15, 0.21, 0.36, 8).translate(0, 1.27, 0), robe),
-    paint(new THREE.SphereGeometry(0.17, 10, 8).translate(0, 1.6, 0), SKIN),
-  ];
-  // 女人头上一块头巾
-  if (female) parts.push(paint(new THREE.SphereGeometry(0.2, 10, 6, 0, Math.PI * 2, 0, Math.PI * 0.62).scale(1, 1.25, 1).translate(0, 1.62, -0.03), '#6b5442'));
-  const mesh = new THREE.Mesh(merge(parts), new THREE.MeshLambertMaterial({ vertexColors: true, flatShading: true, transparent: true }));
-  mesh.rotation.order = 'YXZ'; // 先转身，再低头
-  mesh.visible = false;
-  scene.add(mesh);
-  return { mesh, x: 0, z: 0, goal: [0, 0], size: 1, sizeGoal: 1, shown: 0, showGoal: 0, bow: 0, bowGoal: 0, face: null };
-}
 
 const P = {
   cain: makeFigure('#8a5a3a'),
@@ -129,57 +72,8 @@ const P = {
 /** 和塞特一家一起求告耶和华的人 */
 const PEOPLE = ['#a08a6a', '#7a8a6a', '#8a7a9a'].map((c, i) => makeFigure(c, i === 1));
 
-/** 让一个人出现在某个地方（不走过去，直接在那里慢慢显出来） */
-function appear(f: Figure, at: Spot, size: number, instant: boolean): void {
-  f.x = at[0];
-  f.z = at[1];
-  f.goal = [at[0], at[1]];
-  f.showGoal = 1;
-  f.sizeGoal = size;
-  if (instant) { f.shown = 1; f.size = size; }
-  else if (f.shown < 0.01) f.size = size;
-}
-
-/** 让一个人走到某个地方；instant = true 时直接在那里 */
-function walk(f: Figure, to: Spot, instant: boolean): void {
-  f.goal = [to[0], to[1]];
-  if (instant) { f.x = to[0]; f.z = to[1]; }
-}
-
-/** 让一个人淡去 */
-function vanish(f: Figure, instant: boolean): void {
-  f.showGoal = 0;
-  if (instant) f.shown = 0;
-}
-
 /** 让一个数值慢慢变成 to；instant = true 时直接变 */
 const set = (key: keyof typeof S, to: number, sec: number, instant: boolean): void => tween(S, key, to, sec, instant);
-
-const WALK_SPEED = 1.6;
-
-function updateFigure(f: Figure, dt: number, t: number): void {
-  f.shown = damp(f.shown, f.showGoal, 1.4, dt);
-  f.mesh.visible = f.shown > 0.01;
-  if (!f.mesh.visible) return;
-  const dx = f.goal[0] - f.x, dz = f.goal[1] - f.z, d = Math.hypot(dx, dz);
-  const walking = d > 0.03;
-  if (walking) {
-    const step = Math.min(d, WALK_SPEED * dt);
-    f.x += dx / d * step;
-    f.z += dz / d * step;
-  }
-  f.size = damp(f.size, f.sizeGoal, 0.5, dt);
-  f.bow = damp(f.bow, f.bowGoal, 1.5, dt);
-  const bob = walking ? Math.abs(Math.sin(t * 7 + f.x)) * 0.04 : 0;
-  f.mesh.position.set(f.x, terrainY(f.x, f.z) + bob, f.z);
-  f.mesh.scale.setScalar(Math.max(0.001, f.size));
-  // 走路时朝着走的方向；站着时面向 face 那一点，没有就面向玩家
-  const look = f.face ?? [player.pos.x, player.pos.z];
-  const want = walking ? Math.atan2(dx, dz) : Math.atan2(look[0] - f.x, look[1] - f.z);
-  f.mesh.rotation.y += angleDiff(want, f.mesh.rotation.y) * (1 - Math.exp(-3 * dt));
-  f.mesh.rotation.x = f.bow * 0.32;
-  f.mesh.material.opacity = Math.min(1, f.shown * 1.2);
-}
 
 // —— 房子、坛、帐棚、炉子：不动的东西，各合成一个网格，“从地里长出来” ——
 
@@ -710,6 +604,12 @@ export const effects: Record<(typeof BROTHERS_EFFECTS)[number], Effect> = {
     setFocus(WORSHIP.at[0], 1.4, WORSHIP.at[1], 0.75, 9);
   },
 };
+
+/** 第 5 章开始时：围着坛的人散去（塞特、以挪士在第 5 章有自己的家），手里的灯也收起来 */
+export function endWorship(instant: boolean): void {
+  for (const f of [P.seth, P.enosh, ...PEOPLE]) vanish(f, instant);
+  set('lamps', 0, 3, instant);
+}
 
 /** 每一帧：更新这一章的人、羊、庄稼、房子、火、影子和光 */
 export function update(dt: number, t: number): void {

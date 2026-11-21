@@ -212,6 +212,13 @@ export const sfx = {
       this.tone(1975.5, t + i * 0.45, 0.25, 0.02, 'square');
     }
   },
+  /** 一声低沉的钟声：第 5 章每一次“就死了” */
+  toll(): void {
+    if (!actx) return;
+    const t = actx.currentTime;
+    this.tone(146.8, t, 3.2, 0.06, 'sine');
+    this.tone(220, t + 0.02, 2.6, 0.03, 'sine');
+  },
   /** 低沉的隆隆声：旱地露出来 */
   rumble(): void {
     if (!actx) return;

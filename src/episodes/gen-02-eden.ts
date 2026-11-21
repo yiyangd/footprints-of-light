@@ -54,6 +54,8 @@ interface Person {
   /** 第 3 章用：无花果树叶和皮衣（平时都看不见） */
   leaves: THREE.Mesh;
   robe: THREE.Mesh;
+  /** 第 5 章：这个人已经离世（慢慢淡去，然后不再显示） */
+  gone: boolean;
 }
 
 /**
@@ -111,7 +113,7 @@ function makePerson(female: boolean, at: [number, number]): Person {
   for (const cover of [leaves, robe]) { cover.visible = false; group.add(cover); }
   group.visible = false;
   scene.add(group);
-  return { group, mat, halo, armR: arms[1], appear: 1, asleep: false, lying: 0, x: at[0], z: at[1], goal: [at[0], at[1]], move: 'walk', heading: null, leaves, robe };
+  return { group, mat, halo, armR: arms[1], appear: 1, asleep: false, lying: 0, x: at[0], z: at[1], goal: [at[0], at[1]], move: 'walk', heading: null, leaves, robe, gone: false };
 }
 const adam = makePerson(false, ADAM_POS), eve = makePerson(true, EVE_POS);
 
@@ -123,6 +125,19 @@ export function sendPerson(who: 'adam' | 'eve', to: [number, number], how: 'walk
   const p = who === 'adam' ? adam : eve;
   p.goal = [to[0], to[1]];
   if (how === 'instant') { p.x = to[0]; p.z = to[1]; } else p.move = how;
+}
+
+/** 第 5 章“就死了”：让亚当（或夏娃）慢慢淡去，不再出现。instant = true 时直接不见（读档时用） */
+export function retirePerson(who: 'adam' | 'eve', instant: boolean): void {
+  const p = who === 'adam' ? adam : eve;
+  p.gone = true;
+  if (instant) { p.appear = 0; p.group.visible = false; }
+}
+
+/** 亚当或夏娃头顶的位置（第 5 章在他头上显示名字）；看不见的时候是 null */
+export function personHead(who: 'adam' | 'eve'): THREE.Vector3 | null {
+  const p = who === 'adam' ? adam : eve;
+  return p.group.visible && !p.gone ? p.group.position.clone().add(new THREE.Vector3(0, 2.25, 0)) : null;
 }
 
 /** 分别善恶的树和生命树的位置（第 3 章也要用） */
@@ -352,7 +367,11 @@ function movePerson(p: Person, dt: number): void {
 function updatePerson(p: Person, isAdam: boolean, dt: number, t: number): void {
   if (!p.group.visible) return;
   movePerson(p, dt);
-  p.appear = Math.min(1, p.appear + dt * 0.5);
+  if (p.gone) {
+    // 离世了：慢慢淡去，完全淡去以后不再显示
+    p.appear -= dt * 0.35;
+    if (p.appear <= 0) { p.group.visible = false; return; }
+  } else p.appear = Math.min(1, p.appear + dt * 0.5);
   const k = smooth(0, 1, p.appear);
   p.lying = damp(p.lying, p.asleep ? 1 : 0, 2.5, dt);
   p.group.position.set(p.x, terrainY(p.x, p.z) + p.lying * 0.25, p.z);

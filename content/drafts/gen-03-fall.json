@@ -20,9 +20,9 @@
   },
   "scripture": {
     "en": "BSB (Berean Standard Bible, public domain)",
-    "zh": "和合本"
+    "zh": "和合本（新标点和合本，神版）"
   },
-  "note": "【草稿，还没有进游戏】第 3 章的初稿：节点怎么分、每一节经文放在哪里、需要哪些新效果。依据 docs/设计方案.md 第 4 节“第 3 章《你在哪里？》”，并照“经文一节都不跳过”把创 3:1–24 全部排了进去。英文经文是程序从 BSB 填的；中文经文都还是 TODO(经文)，要等中文用哪一份定下来。位置 at 是在现有伊甸地图上暂定的。fx 里的效果名都是新的，代码里还没有。要请带领人和牧者看过再开工。",
+  "note": "【草稿，还没有进游戏】第 3 章的初稿：节点怎么分、每一节经文放在哪里、需要哪些新效果。依据 docs/设计方案.md 第 4 节“第 3 章《你在哪里？》”，并照“经文一节都不跳过”把创 3:1–24 全部排了进去。英文经文是程序从 BSB 填的，中文经文是程序从新标点和合本填的。位置 at 是在现有伊甸地图上暂定的。fx 里的效果名都是新的，代码里还没有。要请带领人和牧者看过再开工。",
   "beats": [
     {
       "id": "f1",
@@ -47,7 +47,7 @@
           "ref": "Gen 3:1",
           "text": {
             "en": "Now the serpent was more crafty than any beast of the field that the LORD God had made. And he said to the woman, “Did God really say, ‘You must not eat from any tree in the garden?’”",
-            "zh": "TODO(经文)"
+            "zh": "耶和华神所造的，惟有蛇比田野一切的活物更狡猾。蛇对女人说：“神岂是真说不许你们吃园中所有树上的果子吗？”"
           },
           "fx": "serpentSpeaks"
         },
@@ -56,7 +56,7 @@
           "ref": "Gen 3:2",
           "text": {
             "en": "The woman answered the serpent, “We may eat the fruit of the trees of the garden,",
-            "zh": "TODO(经文)"
+            "zh": "女人对蛇说：“园中树上的果子，我们可以吃，"
           }
         },
         {
@@ -64,7 +64,7 @@
           "ref": "Gen 3:3",
           "text": {
             "en": "but about the fruit of the tree in the middle of the garden, God has said, ‘You must not eat of it or touch it, or you will die.’”",
-            "zh": "TODO(经文)"
+            "zh": "惟有园当中那棵树上的果子，神曾说：‘你们不可吃，也不可摸，免得你们死。’”"
           }
         },
         {
@@ -72,7 +72,7 @@
           "ref": "Gen 3:4",
           "text": {
             "en": "“You will not surely die,” the serpent told the woman.",
-            "zh": "TODO(经文)"
+            "zh": "蛇对女人说：“你们不一定死；"
           }
         },
         {
@@ -80,7 +80,7 @@
           "ref": "Gen 3:5",
           "text": {
             "en": "“For God knows that in the day you eat of it, your eyes will be opened and you will be like God, knowing good and evil.”",
-            "zh": "TODO(经文)"
+            "zh": "因为神知道，你们吃的日子眼睛就明亮了，你们便如神能知道善恶。”"
           }
         }
       ],
@@ -115,7 +115,7 @@
           "ref": "Gen 3:6",
           "text": {
             "en": "When the woman saw that the tree was good for food and pleasing to the eyes, and that it was desirable for obtaining wisdom, she took the fruit and ate it. She also gave some to her husband who was with her, and he ate it.",
-            "zh": "TODO(经文)"
+            "zh": "于是女人见那棵树的果子好作食物，也悦人的眼目，且是可喜爱的，能使人有智慧，就摘下果子来吃了，又给她丈夫，她丈夫也吃了。"
           },
           "fx": "eatFruit"
         },
@@ -124,7 +124,7 @@
           "ref": "Gen 3:7",
           "text": {
             "en": "And the eyes of both of them were opened, and they knew that they were naked; so they sewed together fig leaves and made coverings for themselves.",
-            "zh": "TODO(经文)"
+            "zh": "他们二人的眼睛就明亮了，才知道自己是赤身露体，便拿无花果树的叶子为自己编做裙子。"
           },
           "fx": "lightFades"
         },
@@ -167,7 +167,7 @@
           "ref": "Gen 3:8",
           "text": {
             "en": "Then the man and his wife heard the voice of the LORD God walking in the garden in the breeze of the day, and they hid themselves from the presence of the LORD God among the trees of the garden.",
-            "zh": "TODO(经文)"
+            "zh": "天起了凉风，耶和华神在园中行走。那人和他妻子听见神的声音，就藏在园里的树木中，躲避耶和华神的面。"
           },
           "fx": "coolWind"
         }
@@ -203,7 +203,7 @@
           "ref": "Gen 3:9",
           "text": {
             "en": "But the LORD God called out to the man, “Where are you?”",
-            "zh": "TODO(经文)"
+            "zh": "耶和华神呼唤那人，对他说：“你在哪里？”"
           },
           "fx": "silence"
         },
@@ -212,7 +212,7 @@
           "ref": "Gen 3:10",
           "text": {
             "en": "“I heard Your voice in the garden,” he replied, “and I was afraid because I was naked; so I hid myself.”",
-            "zh": "TODO(经文)"
+            "zh": "他说：“我在园中听见你的声音，我就害怕；因为我赤身露体，我便藏了。”"
           }
         },
         {
@@ -220,7 +220,7 @@
           "ref": "Gen 3:11",
           "text": {
             "en": "“Who told you that you were naked?” asked the LORD God. “Have you eaten from the tree of which I commanded you not to eat?”",
-            "zh": "TODO(经文)"
+            "zh": "耶和华说：“谁告诉你赤身露体呢？莫非你吃了我吩咐你不可吃的那树上的果子吗？”"
           }
         },
         {
@@ -228,7 +228,7 @@
           "ref": "Gen 3:12",
           "text": {
             "en": "And the man answered, “The woman whom You gave me, she gave me fruit from the tree, and I ate it.”",
-            "zh": "TODO(经文)"
+            "zh": "那人说：“你所赐给我、与我同居的女人，她把那树上的果子给我，我就吃了。”"
           }
         },
         {
@@ -236,7 +236,7 @@
           "ref": "Gen 3:13",
           "text": {
             "en": "Then the LORD God said to the woman, “What is this you have done?” “The serpent deceived me,” she replied, “and I ate.”",
-            "zh": "TODO(经文)"
+            "zh": "耶和华神对女人说：“你做的是什么事呢？”女人说：“那蛇引诱我，我就吃了。”"
           }
         },
         {
@@ -277,7 +277,7 @@
           "ref": "Gen 3:14",
           "text": {
             "en": "So the LORD God said to the serpent: “Because you have done this, cursed are you above all livestock and every beast of the field! On your belly will you go, and dust you will eat, all the days of your life.",
-            "zh": "TODO(经文)"
+            "zh": "耶和华神对蛇说：你既做了这事，就必受咒诅，比一切的牲畜野兽更甚；你必用肚子行走，终身吃土。"
           },
           "fx": "serpentCursed"
         },
@@ -286,7 +286,7 @@
           "ref": "Gen 3:15",
           "text": {
             "en": "And I will put enmity between you and the woman, and between your seed and her seed. He will crush your head, and you will strike his heel.”",
-            "zh": "TODO(经文)"
+            "zh": "我又要叫你和女人彼此为仇；你的后裔和女人的后裔也彼此为仇。女人的后裔要伤你的头；你要伤他的脚跟。"
           },
           "fx": "goldenThread"
         },
@@ -295,7 +295,7 @@
           "ref": "Gen 3:16",
           "text": {
             "en": "To the woman He said: “I will sharply increase your pain in childbirth; in pain you will bring forth children. Your desire will be for your husband, and he will rule over you.”",
-            "zh": "TODO(经文)"
+            "zh": "又对女人说：我必多多加增你怀胎的苦楚；你生产儿女必多受苦楚。你必恋慕你丈夫；你丈夫必管辖你。"
           }
         },
         {
@@ -303,7 +303,7 @@
           "ref": "Gen 3:17",
           "text": {
             "en": "And to Adam He said: “Because you have listened to the voice of your wife and have eaten from the tree of which I commanded you not to eat, cursed is the ground because of you; through toil you will eat of it all the days of your life.",
-            "zh": "TODO(经文)"
+            "zh": "又对亚当说：你既听从妻子的话，吃了我所吩咐你不可吃的那树上的果子，地必为你的缘故受咒诅；你必终身劳苦才能从地里得吃的。"
           },
           "fx": "thorns"
         },
@@ -312,7 +312,7 @@
           "ref": "Gen 3:18",
           "text": {
             "en": "Both thorns and thistles it will yield for you, and you will eat the plants of the field.",
-            "zh": "TODO(经文)"
+            "zh": "地必给你长出荆棘和蒺藜来；你也要吃田间的菜蔬。"
           }
         },
         {
@@ -320,7 +320,7 @@
           "ref": "Gen 3:19",
           "text": {
             "en": "By the sweat of your brow you will eat your bread, until you return to the ground—because out of it were you taken. For dust you are, and to dust you shall return.”",
-            "zh": "TODO(经文)"
+            "zh": "你必汗流满面才得糊口，直到你归了土，因为你是从土而出的。你本是尘土，仍要归于尘土。"
           }
         }
       ],
@@ -359,7 +359,7 @@
           "ref": "Gen 3:20",
           "text": {
             "en": "And Adam named his wife Eve, because she would be the mother of all the living.",
-            "zh": "TODO(经文)"
+            "zh": "亚当给他妻子起名叫夏娃，因为她是众生之母。"
           }
         },
         {
@@ -367,7 +367,7 @@
           "ref": "Gen 3:21",
           "text": {
             "en": "And the LORD God made garments of skin for Adam and his wife, and He clothed them.",
-            "zh": "TODO(经文)"
+            "zh": "耶和华神为亚当和他妻子用皮子做衣服给他们穿。"
           },
           "fx": "clothe"
         }
@@ -407,7 +407,7 @@
           "ref": "Gen 3:22",
           "text": {
             "en": "Then the LORD God said, “Behold, the man has become like one of Us, knowing good and evil. And now, lest he reach out his hand and take also from the tree of life, and eat, and live forever...”",
-            "zh": "TODO(经文)"
+            "zh": "耶和华神说：“那人已经与我们相似，能知道善恶；现在恐怕他伸手又摘生命树的果子吃，就永远活着。”"
           }
         },
         {
@@ -415,7 +415,7 @@
           "ref": "Gen 3:23",
           "text": {
             "en": "Therefore the LORD God banished him from the Garden of Eden to work the ground from which he had been taken.",
-            "zh": "TODO(经文)"
+            "zh": "耶和华神便打发他出伊甸园去，耕种他所自出之土。"
           },
           "fx": "leaveEden"
         },
@@ -424,7 +424,7 @@
           "ref": "Gen 3:24",
           "text": {
             "en": "So He drove out the man and stationed cherubim on the east side of the Garden of Eden, along with a whirling sword of flame to guard the way to the tree of life.",
-            "zh": "TODO(经文)"
+            "zh": "于是把他赶出去了；又在伊甸园的东边安设基路伯和四面转动发火焰的剑，要把守生命树的道路。"
           },
           "fx": "cherubim"
         },

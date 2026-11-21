@@ -3,9 +3,11 @@ import { describe, expect, it } from 'vitest';
 import creationJson from '../../content/episodes/gen-01-creation.json';
 import edenJson from '../../content/episodes/gen-02-eden.json';
 import bsbJson from '../../content/scripture/bsb.json';
+import cuvJson from '../../content/scripture/cuv.json';
 import uiJson from '../../content/ui.json';
 import { EFFECT_NAMES } from '../episodes/effect-names';
 import { checkContent, formatProblem, type ContentInput } from './check';
+import { bsbSource, cuvSource } from './scripture';
 
 const CREATION = 'content/episodes/gen-01-creation.json', EDEN = 'content/episodes/gen-02-eden.json';
 
@@ -17,7 +19,7 @@ function content(): ContentInput & { creation: any; eden: any; uiData: any } {
     episodes: { [CREATION]: creation, [EDEN]: eden },
     ui: { file: 'content/ui.json', data: uiData },
     effectNames: EFFECT_NAMES,
-    scripture: bsbJson.verses,
+    sources: [bsbSource(bsbJson), cuvSource(cuvJson)],
   };
 }
 
@@ -158,6 +160,15 @@ describe('经文一字不改（AGENTS.md 第 1 条）', () => {
     expect(p.message).toContain('npm run fill:scripture');
   });
 
+  it('中文经文被改动了一个标点，也会被查出来', () => {
+    const c = content();
+    c.creation.beats[1].lines[0].text.zh = c.creation.beats[1].lines[0].text.zh.replace('，', '；');
+    const [p] = checkContent(c);
+    expect(p.file).toBe(CREATION);
+    expect(p.where).toBe('beats › day1 › lines › 第 1 项');
+    expect(p.message).toContain('Gen 1:3 的中文和 和合本 原文不一样');
+  });
+
   it('中文还写着 TODO(经文) 的内容不能进游戏', () => {
     const c = content();
     c.eden.beats[0].lines[0].text.zh = 'TODO(经文)';
@@ -179,6 +190,7 @@ describe('经文一字不改（AGENTS.md 第 1 条）', () => {
     c.creation.beats[0].lines[0].ref = 'Ps 1:1';
     const messages = checkContent(c).map((p) => p.message).join('\n');
     expect(messages).toContain('content/scripture/bsb.json 里没有 Ps 1:1');
+    expect(messages).toContain('content/scripture/cuv.json 里没有 Ps 1:1');
   });
 });
 

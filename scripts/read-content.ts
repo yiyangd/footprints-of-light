@@ -1,6 +1,7 @@
 // 从硬盘上把 content/ 下的 JSON 读进来。检查脚本和计数脚本都用它。
 import fs from 'node:fs';
 import path from 'node:path';
+import { bsbSource, cuvSource, type Source } from '../src/content/scripture';
 
 /** 仓库最外层的文件夹 */
 export const ROOT = path.resolve(import.meta.dirname, '..');
@@ -30,3 +31,11 @@ export function draftFiles(): string[] {
 
 /** 读一个普通的文本文件 */
 export const readText = (relativePath: string): string => fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
+
+/** 经文的原文：英文 BSB 和中文和合本 */
+export function scriptureSources(): Source[] {
+  return [
+    bsbSource(readJson('content/scripture/bsb.json') as Parameters<typeof bsbSource>[0]),
+    cuvSource(readJson('content/scripture/cuv.json') as Parameters<typeof cuvSource>[0]),
+  ];
+}

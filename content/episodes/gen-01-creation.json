@@ -261,6 +261,14 @@
         },
         {
           "kind": "scripture",
+          "ref": "Gen 1:12",
+          "text": {
+            "en": "The earth produced vegetation: seed-bearing plants according to their kinds and trees bearing fruit with seed according to their kinds. And God saw that it was good.",
+            "zh": "于是地发生了青草和结种子的菜蔬，各从其类；并结果子的树木，各从其类；果子都包着核。神看着是好的。"
+          }
+        },
+        {
+          "kind": "scripture",
           "ref": "Gen 1:13",
           "text": {
             "en": "And there was evening, and there was morning—the third day.",
@@ -424,12 +432,52 @@
         },
         {
           "kind": "scripture",
+          "ref": "Gen 1:25",
+          "text": {
+            "en": "God made the beasts of the earth according to their kinds, the livestock according to their kinds, and everything that crawls upon the earth according to its kind. And God saw that it was good.",
+            "zh": "于是神造出野兽，各从其类；牲畜，各从其类；地上一切昆虫，各从其类。神看着是好的。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 1:26",
+          "text": {
+            "en": "Then God said, “Let Us make man in Our image, after Our likeness, to rule over the fish of the sea and the birds of the air, over the livestock, and over all the earth itself and every creature that crawls upon it.”",
+            "zh": "神说：“我们要照着我们的形象、按着我们的样式造人，使他们管理海里的鱼、空中的鸟、地上的牲畜，和全地，并地上所爬的一切昆虫。”"
+          }
+        },
+        {
+          "kind": "scripture",
           "ref": "Gen 1:27",
           "text": {
             "en": "So God created man in His own image; in the image of God He created him; male and female He created them.",
-            "zh": "神就照着自己的形像造人，乃是照着他的形像造男造女。"
+            "zh": "神就照着自己的形象造人，乃是照着他的形象造男造女。"
           },
           "fx": "humans"
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 1:28",
+          "text": {
+            "en": "God blessed them and said to them, “Be fruitful and multiply, and fill the earth and subdue it; rule over the fish of the sea and the birds of the air and every creature that crawls upon the earth.”",
+            "zh": "神就赐福给他们，又对他们说：“要生养众多，遍满地面，治理这地，也要管理海里的鱼、空中的鸟，和地上各样行动的活物。”"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 1:29",
+          "text": {
+            "en": "Then God said, “Behold, I have given you every seed-bearing plant on the face of all the earth, and every tree whose fruit contains seed. They will be yours for food.",
+            "zh": "神说：“看哪，我将遍地上一切结种子的菜蔬和一切树上所结有核的果子全赐给你们作食物。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 1:30",
+          "text": {
+            "en": "And to every beast of the earth and every bird of the air and every creature that crawls upon the earth—everything that has the breath of life in it—I have given every green plant for food.” And it was so.",
+            "zh": "至于地上的走兽和空中的飞鸟，并各样爬在地上有生命的物，我将青草赐给它们作食物。”事就这样成了。"
+          }
         },
         {
           "kind": "scripture",
@@ -493,7 +541,7 @@
           "ref": "Gen 2:3",
           "text": {
             "en": "Then God blessed the seventh day and sanctified it, because on that day He rested from all the work of creation that He had accomplished.",
-            "zh": "神赐福给第七日，定为圣日；因为在这日神歇了他一切创造的工，就安息了。"
+            "zh": "神赐福给第七日，定为圣日；因为在这日，神歇了他一切创造的工，就安息了。"
           }
         },
         {
@@ -614,11 +662,11 @@
       "kind": "history",
       "title": {
         "en": "The “image” of God",
-        "zh": "神的“形像”"
+        "zh": "神的“形象”"
       },
       "text": {
         "en": "In the ancient Near East, kings often set up images of themselves in the lands they ruled, to show “this belongs to me.” Many scholars think that being made in God’s image also means representing God and caring for his world (see Genesis 1:26–28).",
-        "zh": "在古代近东，君王常在自己统治的地方立起自己的像，表明“这里归我管”。许多学者认为，人按神的形像被造，也带着“代表神照管这个世界”的意思（参创 1:26–28）。"
+        "zh": "在古代近东，君王常在自己统治的地方立起自己的像，表明“这里归我管”。许多学者认为，人按神的形象被造，也带着“代表神照管这个世界”的意思（参创 1:26–28）。"
       },
       "at": [
         13,
@@ -669,7 +717,7 @@
       "kind": "imagination",
       "desc": {
         "en": "“And God said, ‘Let there be light,’ and there was light.” In this game, your lamp was lit by this first light (imagined for the game).",
-        "zh": "“神说：要有光，就有了光。”在这个游戏里，你的灯就是被这第一道光点亮的（游戏想象）。"
+        "zh": "“神说：‘要有光’，就有了光。”在这个游戏里，你的灯就是被这第一道光点亮的（游戏想象）。"
       }
     }
   ],

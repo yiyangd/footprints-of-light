@@ -12,7 +12,7 @@
 
 ```bash
 npm run validate:content   # 写错的地方会列出来：哪个文件、哪一项、怎么了
-npm run fill:scripture     # 写好出处以后，让程序把英文经文（BSB）填进去
+npm run fill:scripture     # 写好出处以后，让程序把英文（BSB）和中文（和合本）经文填进去
 npm run count:verses       # 看每一章的经文齐了没有，还缺哪些节
 ```
 
@@ -28,11 +28,12 @@ npm run count:verses       # 看每一章的经文齐了没有，还缺哪些节
 { "en": "And God said, “Let there be light,” and there was light.", "zh": "神说：“要有光”，就有了光。" }
 ```
 
-- 经文（`scripture`）：`en` 必须是 BSB 原文，`zh` 必须是和合本原文，一个字、一个标点都不改。
-- 英文经文不用自己写：只要写好 `kind` 和 `ref`，`en` 先写 `"TODO(经文)"` 占位，运行 `npm run fill:scripture`，程序会从 `scripture/bsb.json` 把原文填进去。检查脚本会核对每一行英文都和原文一样，改动一个词都会报错。
+- 经文（`scripture`）：`en` 必须是 BSB 原文，`zh` 必须是新标点和合本原文，一个字、一个标点都不改。
+- 经文不用自己写：只要写好 `kind` 和 `ref`，`en` 和 `zh` 先都写 `"TODO(经文)"` 占位，运行 `npm run fill:scripture`，程序会从 `scripture/bsb.json`（英文）和 `scripture/cuv.json`（中文）把原文填进去。检查脚本会核对每一行英文、中文都和原文一样，改动一个词、一个标点都会报错。
 - 经文一节都不跳过：一章的 `range` 里每一节都要出现在剧情里。`npm run count:verses` 会列出还缺哪些节。
 - 考据、想象、思考：两种语言意思一致就行，不需要逐字对译。英文要写给 8 岁以上的孩子看得懂。
-- 缺经文的时候写 `TODO(经文)` 占位，请人照着圣经补上，不要凭记忆写。
+- 程序填不上的时候（那卷书还没有导入，或者来源的文本在那一节有问题），`TODO(经文)` 会留着并报出来：请人对照纸本圣经核对，不要凭记忆写。
+- 陶片、信物的说明里引用经文时，引号里的字也要和原文一样。
 
 ## 章节文件的顶层字段
 

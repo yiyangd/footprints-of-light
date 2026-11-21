@@ -4,7 +4,7 @@
 import { checkContent, formatProblem } from '../src/content/check';
 import { EFFECT_NAMES } from '../src/episodes/effect-names';
 import { EpisodeFileSchema } from '../src/content/schema';
-import { draftFiles, episodeFiles, readJson, readText } from './read-content';
+import { draftFiles, episodeFiles, readJson, readText, scriptureSources } from './read-content';
 
 function main(): number {
   const files = episodeFiles();
@@ -15,7 +15,7 @@ function main(): number {
       ui: { file: 'content/ui.json', data: readJson('content/ui.json') },
       pageHtml: readText('index.html'),
       effectNames: EFFECT_NAMES,
-      scripture: (readJson('content/scripture/bsb.json') as { verses: Record<string, string> }).verses,
+      sources: scriptureSources(),
     };
   } catch (e) {
     console.error(`✗ ${(e as Error).message}`);

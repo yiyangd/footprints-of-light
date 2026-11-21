@@ -28,11 +28,15 @@ describe('countVerses', () => {
     for (const c of count.coverage) for (const v of c.missing) expect(count.verses).not.toContain(v);
   });
 
-  it('把缺的一节加进剧情，它就不再算缺', () => {
-    const [first] = count.coverage;
-    if (first.missing.length === 0) return; // 已经齐了就没什么可试的
-    const more = structuredClone(episodes);
-    more[0].beats[0].lines.push({ kind: 'scripture', ref: first.missing[0], text: { en: BSB[first.missing[0]], zh: 'TODO(经文)' } });
-    expect(countVerses(more, [uiJson], BSB).coverage[0].missing).toHaveLength(first.missing.length - 1);
+  it('现在的两章都齐了：范围里的每一节都在剧情里（经文一节都不跳过）', () => {
+    for (const c of count.coverage) expect(c.missing, c.id).toEqual([]);
   });
+
+  it('从剧情里拿掉一节，就会报告缺了这一节', () => {
+    const fewer = structuredClone(episodes);
+    const lines = fewer[0].beats[0].lines;
+    const gone = lines.findIndex((l) => l.ref === 'Gen 1:2');
+    lines.splice(gone, 1);
+    expect(countVerses(fewer, [uiJson], BSB).coverage[0].missing).toEqual(['Gen 1:2']);
+});
 });

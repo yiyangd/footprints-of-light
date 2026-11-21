@@ -1,7 +1,8 @@
 // 经文原文工具的测试。运行：npm test
 import { describe, expect, it } from 'vitest';
 import bsbJson from '../../content/scripture/bsb.json';
-import { findScripture, sourceText, versesBetween } from './scripture';
+import cuvJson from '../../content/scripture/cuv.json';
+import { bsbSource, cuvSource, findScripture, sourceText, versesBetween } from './scripture';
 
 const BSB = bsbJson.verses as Record<string, string>;
 
@@ -19,16 +20,48 @@ describe('BSB 原文（content/scripture/bsb.json）', () => {
   });
 });
 
-describe('sourceText（按出处取原文）', () => {
-  const verses = { 'Gen 1:1': 'A.', 'Gen 1:2': 'B.', 'Gen 1:3': 'C.' };
+describe('和合本原文（content/scripture/cuv.json）', () => {
+  const CUV = cuvJson.verses as Record<string, string>;
+  const GAPS = cuvJson.gaps as Record<string, string>;
 
-  it('一节就取一节，连续几节用空格连起来', () => {
-    expect(sourceText(verses, 'Gen 1:2')).toBe('B.');
-    expect(sourceText(verses, 'Gen 1:1–3')).toBe('A. B. C.');
+  it('创世记的每一节，要么有文字，要么写明了为什么不能用', () => {
+    for (const ref of Object.keys(BSB).filter((k) => k.startsWith('Gen '))) {
+      expect(CUV[ref] !== undefined || GAPS[ref] !== undefined, ref).toBe(true);
+    }
   });
 
-  it('原文里没有的节会报错', () => {
-    expect(() => sourceText(verses, 'Gen 1:4')).toThrow(/没有 Gen 1:4/);
+  it('第 1 季（创 1–11）的每一节都能用', () => {
+    for (const ref of versesBetween(BSB, 'Gen 1–11')) expect(CUV[ref]?.length, ref).toBeGreaterThan(0);
+  });
+
+  it('文字里没有空格、方括号和 「」 引号（排版统一，见 src/content/usfm.ts）', () => {
+    for (const [ref, text] of Object.entries(CUV)) expect(text, ref).not.toMatch(/[\s\u3000\[\]「」『』\\]/);
+  });
+
+  it('用的是新标点和合本：创 2:14 的河名是底格里斯、幼发拉底', () => {
+    expect(CUV['Gen 2:14']).toContain('底格里斯');
+    expect(CUV['Gen 2:14']).toContain('幼发拉底');
+  });
+});
+
+describe('sourceText（按出处取原文）', () => {
+  const verses = { 'Gen 1:1': 'A.', 'Gen 1:2': 'B.', 'Gen 1:3': 'C.' };
+  const en = bsbSource({ verses });
+  const zh = cuvSource({ verses: { 'Gen 1:1': '甲。', 'Gen 1:2': '乙。' }, gaps: { 'Gen 1:3': '来源的文本缺了一个字' } });
+
+  it('一节就取一节；连续几节，英文用空格连起来，中文直接连', () => {
+    expect(sourceText(en, 'Gen 1:2')).toBe('B.');
+    expect(sourceText(en, 'Gen 1:1–3')).toBe('A. B. C.');
+    expect(sourceText(zh, 'Gen 1:1–2')).toBe('甲。乙。');
+  });
+
+  it('原文里没有的节会报错，并说是哪个文件', () => {
+    expect(() => sourceText(en, 'Gen 1:4')).toThrow(/bsb\.json 里没有 Gen 1:4/);
+    expect(() => sourceText(zh, 'Gen 1:4')).toThrow(/cuv\.json 里没有 Gen 1:4/);
+  });
+
+  it('来源有问题的节不会被悄悄用上，会说明原因', () => {
+    expect(() => sourceText(zh, 'Gen 1:2–3')).toThrow(/Gen 1:3 不能用：来源的文本缺了一个字/);
   });
 });
 

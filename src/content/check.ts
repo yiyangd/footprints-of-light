@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { fillPageText } from './page-text';
 import { bookOf } from './refs';
 import { EpisodeFileSchema, KINDS, UiFileSchema } from './schema';
-import { findScripture, sourceText, type VerseTable } from './scripture';
+import { findScripture, sourceText, type Source } from './scripture';
 import type { EpisodeFile, UiFile } from './types';
 
 /** 一个问题：在哪个文件、哪一项、怎么了 */
@@ -20,8 +20,8 @@ export interface ContentInput {
   pageHtml?: string;
   /** 代码里实现了的效果名 */
   effectNames: readonly string[];
-  /** 英文经文的原文（content/scripture/bsb.json 里的 verses）；不给就不核对 */
-  scripture?: VerseTable;
+  /** 经文的原文（英文 BSB、中文和合本，见 scripture.ts）；不给就不核对 */
+  sources?: Source[];
 }
 
 // —— 把 zod 报的错变成初学者看得懂的话 ——
@@ -142,16 +142,19 @@ function crossProblems(episodes: Array<{ file: string; data: EpisodeFile }>, uiF
   return problems;
 }
 
-/** 每一行经文的英文都要和 BSB 原文一模一样（AGENTS.md 第 1 条：经文一字不改） */
-function scriptureProblems(file: string, data: unknown, source: VerseTable): Problem[] {
+/** 每一行经文的英文、中文都要和原文一模一样（AGENTS.md 第 1 条：经文一字不改） */
+function scriptureProblems(file: string, data: unknown, sources: Source[]): Problem[] {
   const problems: Problem[] = [];
   for (const { where, line } of findScripture(data)) {
-    try {
-      if (line.text.en !== sourceText(source, line.ref)) {
-        problems.push({ file, where, message: `${line.ref} 的英文和 BSB 原文不一样。运行 npm run fill:scripture 会照原文填好` });
+    for (const source of sources) {
+      const lang = source.lang === 'en' ? '英文' : '中文';
+      try {
+        if (line.text[source.lang] !== sourceText(source, line.ref)) {
+          problems.push({ file, where, message: `${line.ref} 的${lang}和 ${source.label} 原文不一样。运行 npm run fill:scripture 会照原文填好` });
+        }
+      } catch (e) {
+        problems.push({ file, where, message: (e as Error).message });
       }
-    } catch (e) {
-      problems.push({ file, where, message: (e as Error).message });
     }
   }
   return problems;
@@ -174,8 +177,8 @@ export function checkContent(input: ContentInput): Problem[] {
     const count = (JSON.stringify(data).match(/TODO\(/g) ?? []).length;
     if (count) problems.push({ file, where: '（整个文件）', message: `还有 ${count} 处 TODO 没有补上，补完才能进游戏` });
   }
-  if (input.scripture) {
-    for (const { file, data } of [...episodes, { file: input.ui.file, data: ui }]) problems.push(...scriptureProblems(file, data, input.scripture));
+  if (input.sources) {
+    for (const { file, data } of [...episodes, { file: input.ui.file, data: ui }]) problems.push(...scriptureProblems(file, data, input.sources));
   }
   if (input.pageHtml !== undefined) {
     try { fillPageText(input.pageHtml, ui); } catch (e) { problems.push({ file: 'index.html', where: '占位符', message: (e as Error).message }); }

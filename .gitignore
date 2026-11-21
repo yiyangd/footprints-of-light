@@ -4,3 +4,6 @@ dist/
 *.log
 # 打包生成的单文件小样（npm run build 会重新生成）
 prototype/起初-双击打开.html
+
+# 新旧两版对比工具的输出（截图和记录）
+tools/compare-prototype/out/

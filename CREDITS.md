@@ -3,6 +3,7 @@
 ## 代码与工具
 - three.js 0.186.1 — MIT License，Copyright © 2010–2025 three.js authors（https://threejs.org）
 - esbuild — MIT License（只在打包时使用）
+- Vite — MIT License；Vitest — MIT License；TypeScript — Apache License 2.0（只在开发、测试和打包时使用）
 - topojson-client — ISC License；world-atlas — ISC License（只在生成底图时使用）
 
 ## 地图

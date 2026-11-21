@@ -16,6 +16,9 @@
 | `docs/设计方案.md` | 完整的设计与开发方案（在线版有示意图） |
 | `docs/PROMPTS.md` | 一步步交给 Codex 的提示词（M0–M10），以及“章节策划提示词” |
 | `docs/CHANGELOG.md` | 更新记录 |
+| `docs/STATUS.md` | **现状与下一步**：现在做到哪了、能用哪些命令、还有什么没定。新开一个 AI 会话先读它 |
+| `docs/时间线与地图调研.md` | 66 卷书按年代的排法、每一季怎么分幕、41 张地图的依据 |
+| `CLAUDE.md` | 给 Claude Code 的说明（它会引入 `AGENTS.md` 和 `docs/STATUS.md`） |
 | `content/timeline.json` | 全书时间线：12 季、66 卷书、41 张场景地图。主页直接读它，改了它主页就跟着变 |
 | `content/home-ui.json` | 主页界面上的文字（中英双语） |
 | `content/episodes/*.json` | 第 1、2 章的剧情、经文、陶片、信物、彩窗数据（中英双语） |

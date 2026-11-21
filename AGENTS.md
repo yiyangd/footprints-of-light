@@ -5,6 +5,10 @@
 开发者是教会青少年（13–18 岁）和带领人；玩家是 8 岁以上的孩子。
 完整设计见 `docs/设计方案.md`。
 
+## 现在做到哪了（先读这里）
+现在上线的是主页 `home/` 和序章小样 `prototype/`，正式工程还没开始搭。下面“技术栈”“常用命令”“目录”里的 `src/` 和最外层的 `npm` 命令，要等 `docs/PROMPTS.md` 的 M0 做完才有。
+**现在实际能用的命令、目录、发布方式和下一步，都写在 `docs/STATUS.md`。** 开始任何任务之前先读它。
+
 ## 技术栈
 - Vite + TypeScript（strict）+ Three.js（WebGL2）
 - 界面：原生 HTML/CSS 覆盖层，不用 React/Vue
@@ -28,6 +32,7 @@
 - `src/collect` 收集、存档、图鉴界面
 - `src/episodes/<id>.ts` 每章专属的场景和效果
 - `content/episodes/<id>.json` 每章的经文、节点、收集品（中英双语）
+- `docs/STATUS.md` 现状与下一步；`docs/时间线与地图调研.md` 66 卷书按年代的排法和 41 张地图的依据
 - `content/timeline.json` 全书时间线：12 季、66 卷书、41 张场景地图（主页直接读它）
 - `home/` 主页“光之地图”（游戏目录）：地图 + 时间之河 + 66 盏灯；单独打包，发布在网站最外层
 - `prototype/` 最早的单文件小样，现在发布在 `/prologue/`（只作参考；除了“回到光之地图”的按钮，不再修改）

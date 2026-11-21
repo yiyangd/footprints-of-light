@@ -16,6 +16,18 @@ describe('剧情节点', () => {
     expect(genesis?.play?.beats).toBe(BEATS.length);
   });
 
+  it('主页 timeline.json 里列的各章，和游戏里的章一一对得上（标题、包含哪几段）', () => {
+    const genesis = timelineJson.books.find((b) => b.id === 'gen') as { play?: { chapters?: Array<{ n: number; title: { en: string; zh: string }; beats: string[] }> } } | undefined;
+    const chapters = genesis?.play?.chapters ?? [];
+    const episodes = Object.values(EPISODES).sort((a, b) => a.n - b.n);
+    expect(chapters.map((c) => c.n)).toEqual(episodes.map((e) => e.n));
+    for (const c of chapters) {
+      const ep = episodes.find((e) => e.n === c.n);
+      expect(c.title, `第 ${c.n} 章的标题`).toEqual(ep?.title);
+      expect(c.beats, `第 ${c.n} 章包含的段`).toEqual(BEATS.filter((b) => b.ep === ep?.key).map((b) => b.id));
+    }
+  });
+
   it('每个节点的 id 都不重复，并且属于一个已知的章节', () => {
     const ids = BEATS.map((b) => b.id);
     expect(new Set(ids).size).toBe(ids.length);

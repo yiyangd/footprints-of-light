@@ -13,13 +13,13 @@
 import { bindJournalUi, closeModals, openBook } from './collect/journal';
 import { updatePickups } from './collect/pickups';
 import { refreshCounts } from './collect/rewards';
-import { clearSave, isDone, loadSave, persist } from './collect/save';
-import { DRAFT_FIRST_BEAT, DRAFT_ID, GESTURES, UI } from './content';
+import { clearSave, isDone, loadSave, persist, saveForChapter } from './collect/save';
+import { DRAFT_FIRST_BEAT, DRAFT_ID, EPISODES, GESTURES, UI } from './content';
 import type { Lang } from './content/types';
 import { bindSoundButton, initAudio, music } from './core/audio';
 import { $, DEBUG, IS_TOUCH } from './core/env';
 import { flash } from './core/flash';
-import { bi, initLang, onLangChange, setLang, toggleLang } from './core/i18n';
+import { bi, fill, initLang, onLangChange, setLang, toggleLang } from './core/i18n';
 import { initInput } from './core/input';
 import { camera, renderer, scene } from './core/renderer';
 import { game, U, W } from './core/state';
@@ -106,14 +106,32 @@ function startGame(fromSave: boolean): void {
 }
 
 /* ---------- 开始页和界面上的按钮 ---------- */
+
+/** 从主页的某一章点进来（网址带 chapter=第几章）：那一章的信息；没有就是 null */
+function chapterFromUrl(): { n: number; title: { en: string; zh: string } } | null {
+  const n = Number(new URLSearchParams(location.search).get('chapter'));
+  return Object.values(EPISODES).find((e) => e.n === n) ?? null;
+}
+
 function bindTitleScreen(): void {
-  $('btn-start').addEventListener('click', () => { clearSave(); startGame(false); });
+  const chapter = chapterFromUrl();
+  $('btn-start').addEventListener('click', () => {
+    if (chapter) {
+      // 从这一章开始：前面各章算走过，收集到的东西都留着
+      saveForChapter(chapter.n);
+      startGame(true);
+    } else {
+      clearSave();
+      startGame(false);
+    }
+  });
   $('btn-continue').addEventListener('click', () => startGame(true));
   // 有存档：多出一个“继续”按钮，原来的按钮变成“从头开始”
   if (loadSave()) {
     $('btn-continue').hidden = false;
     $('btn-start').innerHTML = bi(UI.startOver);
   }
+  if (chapter) $('btn-start').innerHTML = bi(fill(UI.chapterBegin, { n: chapter.n, t: chapter.title }));
 }
 
 /** 语言：开始页的两个选项 + 游戏里右上角的地球按钮（L 键在 core/input.ts 里） */

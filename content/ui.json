@@ -211,6 +211,10 @@
       "en": "Start Over",
       "zh": "从头开始"
     },
+    "chapterBegin": {
+      "en": "Start from Chapter {n}: {t}",
+      "zh": "从第 {n} 章《{t}》开始"
+    },
     "day": {
       "en": "Day {n}",
       "zh": "第{n}日"

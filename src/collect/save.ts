@@ -1,9 +1,9 @@
 // 存档：玩家现在的进度，以及把它存进浏览器、从浏览器读出来。
 // 存在玩家自己浏览器的 localStorage 里，不会上传到任何地方（AGENTS.md 第 7 条）。
-import { BEATS, DRAFT_ID, WINDOWS } from '../content';
+import { BEATS, DRAFT_ID, EPISODES, WINDOWS } from '../content';
 import type { Beat } from '../content/types';
 import { player } from '../player/player';
-import { emptySave, parseSave, SAVE_KEY, type SaveData } from './save-data';
+import { emptySave, parseSave, SAVE_KEY, type SaveData, startAtChapter } from './save-data';
 
 const WINDOW_IDS = Object.keys(WINDOWS);
 
@@ -41,6 +41,17 @@ export function loadSave(): SaveData | null {
     if (data) data.done = data.done.filter((id) => BEAT_IDS.has(id));
     return data;
   } catch { return null; }
+}
+
+/**
+ * 从第 n 章开始：把存档改成“前面各章都走过了”（收集到的东西都留着），存好。
+ * 之后照“继续上次的旅程”那样开始游戏就行。
+ */
+export function saveForChapter(n: number): void {
+  const before = BEATS.filter((b) => (EPISODES[b.ep]?.n ?? 0) < n);
+  const last = before[before.length - 1];
+  const data = startAtChapter(loadSave() ?? emptySave(WINDOW_IDS), before.map((b) => b.id), last ? last.at : null);
+  try { localStorage.setItem(KEY, JSON.stringify(data)); } catch { /* 存不了也没关系 */ }
 }
 
 /** 删掉存档（“从头开始”时用） */

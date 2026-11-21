@@ -135,6 +135,8 @@ export const UiTextSchema = z.strictObject({
   sound: BiSchema,
   muted: BiSchema,
   startOver: BiSchema,
+  /** 从主页的某一章点进来时，开始按钮上的字：{n} 第几章，{t} 章名 */
+  chapterBegin: BiSchema,
   day: BiSchema,
   /** 中文的一到七，连着写：一二三四五六七 */
   dayNums: z.string().length(7),

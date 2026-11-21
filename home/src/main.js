@@ -44,12 +44,19 @@ const mapById = new Map(T.maps.map(m => [m.id, m]));
 const seasonOf = n => T.seasons[n - 1];
 const booksAt = mapId => T.books.filter(b => b.maps.includes(mapId));
 
-// 进度只存在玩家自己的浏览器里；这里只读序章的存档，看走到了第几段。
+// 进度只存在玩家自己的浏览器里；这里只读游戏的存档，看走过了哪几段。
+function doneList(book) {
+  try { const s = JSON.parse(localStorage.getItem(book.play.saveKey) || 'null'); if (s && Array.isArray(s.done)) return s.done; } catch (e) { /* 没有存档 */ }
+  return [];
+}
 function progress(book) {
   if (!book.play) return null;
-  let done = 0;
-  try { const s = JSON.parse(localStorage.getItem(book.play.saveKey) || 'null'); if (s && Array.isArray(s.done)) done = s.done.length; } catch (e) { /* 没有存档 */ }
-  return { done: Math.min(done, book.play.beats), total: book.play.beats };
+  return { done: Math.min(doneList(book).length, book.play.beats), total: book.play.beats };
+}
+// 一章走过了几段（章里有哪几段写在 timeline.json 的 play.chapters 里）
+function chapterProgress(book, ch) {
+  const done = new Set(doneList(book));
+  return { done: ch.beats.filter(id => done.has(id)).length, total: ch.beats.length };
 }
 // 一盏灯的四种状态：building 建造中 / ready 可以玩 / started 走了一半 / kindled 点着了
 function stateOf(book) {
@@ -356,6 +363,7 @@ function bookCard(b) {
     top += `<div class="c-status"><p>${bi(b.play.title, 'blk')}</p>`;
     if (st === 'started') top += `<p>${bi(fill(UI.progress, { a: p.done, b: p.total }), 'blk')}</p><div class="bar"><i style="width:${Math.round(p.done / p.total * 100)}%"></i></div>`;
     top += `<button class="primary" data-play="${b.id}">${bi(st === 'kindled' ? UI.again : st === 'started' ? UI.resume : UI.enter)}</button></div>`;
+    if (b.play.chapters) top += chapterList(b);
   }
   // 下面是详情：手机竖屏时先收起来
   let more = `<p class="c-help">${bi(UI.kindHelp[kind], 'blk')}</p><dl>`;
@@ -365,6 +373,17 @@ function bookCard(b) {
   more += `<div><dt>${bi(UI.sizeLabel)}</dt><dd>${bi(UI.size[b.group === 'gospels' ? 'gospels' : b.size], 'blk')}</dd></div></dl>`;
   more += `<p class="c-note">${bi(st === 'building' ? UI.buildingHelp : UI.restBuilding, 'blk')}</p><p class="c-foot">${bi(UI.datesNote, 'blk')}</p>`;
   return top + TOGGLE() + `<div class="c-more">${more}</div>`;
+}
+// 一卷书里做好的各章：每一章一行，可以从任何一章开始
+function chapterList(b) {
+  const rows = b.play.chapters.map(ch => {
+    const p = chapterProgress(b, ch), state = p.done >= p.total ? 'done' : p.done > 0 ? 'part' : 'new';
+    const n = String(ch.n), label = { en: UI.chapterN.en.replace('{n}', n), zh: UI.chapterN.zh.replace('{n}', n) };
+    const note = state === 'done' ? UI.chapterDone : fill(state === 'part' ? UI.chapterPart : UI.chapterNew, { a: p.done, b: p.total });
+    return `<li class="chap ${state}"><div class="ch-t"><span class="ch-n">${bi(label)}</span> ${bi(ch.title)}<small>${bi(ch.ref)} · ${bi(note)}</small></div>`
+      + `<button class="ch-go" data-chapter="${b.id}:${n}">${bi(UI.chapterGo)}</button></li>`;
+  }).join('');
+  return `<div class="c-chapters"><h3>${bi(UI.chapters)}</h3><ol>${rows}</ol><p>${bi(UI.chapterHelp, 'blk')}</p></div>`;
 }
 const TOGGLE = () => `<button class="c-toggle">${bi(UI.details)}<i>▾</i></button>`;
 function placeCard(m) {
@@ -390,6 +409,11 @@ function initCardInput() {
     else if (t.dataset.place) select('place', t.dataset.place);
     // 进入这一卷已经做好的部分。带上 from=map，那一页就知道要显示“回到光之地图”的按钮
     else if (t.dataset.play) location.href = bookById.get(t.dataset.play).play.url + '?from=map';
+    // 从某一章开始：网址再带上 chapter=第几章
+    else if (t.dataset.chapter) {
+      const [id, n] = t.dataset.chapter.split(':');
+      location.href = bookById.get(id).play.url + '?from=map&chapter=' + n;
+    }
   });
 }
 

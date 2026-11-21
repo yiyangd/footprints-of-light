@@ -26,7 +26,7 @@ const LOCK = '<span class="q">???</span>';
  * 网址只写成文字，不做成链接（AGENTS.md 第 7 条）。
  */
 const notices = (): string =>
-  `<div class="notice"><p>${esc(UI.esvNotice)} <span class="site">www.esv.org</span></p><p class="zh" lang="zh-CN">${esc(UI.cuvNotice)}</p></div>`;
+  `<div class="notice"><p>${esc(UI.esvNotice)} <span class="site">${esc(UI.esvSite)}</span></p><p class="zh" lang="zh-CN">${esc(UI.cuvNotice)}</p></div>`;
 
 /** 打开一块知识陶片 */
 export function openCard(c: Card): void {
@@ -111,10 +111,11 @@ function versesPage(body: HTMLElement): void {
   for (const ref of save.verses) {
     const t = verseText(ref);
     if (!t) continue;
-    const r = refText(ref);
+    // 出处后面标上译本：Genesis 1:3 (ESV) ｜ 创 1:3（和合本）
+    const cite = fill(UI.verseCite, { ref: refText(ref), v: UI.version });
     const d = document.createElement('div');
     d.className = 'verse';
-    d.innerHTML = `<div class="vt">${bi(t, 'blk')}</div><div class="vr">${bi({ en: `${r.en} (ESV)`, zh: `${r.zh}（和合本）` })}</div>`;
+    d.innerHTML = `<div class="vt">${bi(t, 'blk')}</div><div class="vr">${bi(cite)}</div>`;
     list.appendChild(d);
   }
   body.appendChild(list);

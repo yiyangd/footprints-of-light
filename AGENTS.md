@@ -6,7 +6,7 @@
 完整设计见 `docs/设计方案.md`。
 
 ## 现在做到哪了（先读这里）
-现在上线的是主页 `home/`、序章小样 `prototype/`，以及刚搭起来的正式工程（`src/`，发布在 `/play/` 试看）。`docs/PROMPTS.md` 的 M0 分三步做，现在做完了第 1 步：下面“常用命令”里的 `npm run validate:content`、`npm run count:esv` 和“目录”里的 `src/content/schema.ts` 要到第 2 步才有。
+现在上线的是主页 `home/`、序章小样 `prototype/`，以及刚搭起来的正式工程（`src/`，发布在 `/play/` 试看）。`docs/PROMPTS.md` 的 M0 分三步做，现在做完了前两步：下面“常用命令”和“目录”里写的都已经有了；还差第 3 步（主页的入口从小样改到 `/play/`）。
 **现在实际能用的命令、目录、发布方式和下一步，都写在 `docs/STATUS.md`。** 开始任何任务之前先读它。
 
 ## 技术栈
@@ -31,8 +31,10 @@
 - `src/story` 剧情节点（BeatRunner）、字幕、效果注册表
 - `src/collect` 收集、存档、图鉴界面
 - `src/episodes/<id>.ts` 每章专属的场景和效果（新的一章要在 `src/episodes/index.ts` 里登记）
-- `src/content` 读 `content/` 下的 JSON，并说明每一项数据的类型
-- `content/episodes/<id>.json` 每章的经文、节点、收集品（中英双语）
+- `src/content` 读 `content/` 下的 JSON；`schema.ts` 写明每个 JSON 该长什么样（检查和类型都从它来）
+- `content/episodes/<id>.json` 每章的经文、节点、收集品（中英双语；新的一章要在 `src/content/index.ts` 里登记）
+- `content/ui.json` 界面上的文字（按钮、开始页、提示、书卷名）；`index.html` 里用 `{{bi:page.start.title}}` 这样的记号引用，不写死文字
+- `scripts/` `npm run validate:content` 和 `npm run count:esv` 背后的两个小工具
 - `docs/STATUS.md` 现状与下一步；`docs/时间线与地图调研.md` 66 卷书按年代的排法和 41 张地图的依据
 - `content/timeline.json` 全书时间线：12 季、66 卷书、41 张场景地图（主页直接读它）
 - `home/` 主页“光之地图”（游戏目录）：地图 + 时间之河 + 66 盏灯；单独打包，发布在网站最外层
@@ -51,6 +53,22 @@
 10. 性能：draw calls < 150；草和树用 InstancedMesh；纹理 ≤ 1024；每章资源 ≤ 5 MB；不用实时阴影（用圆形阴影贴图）。
 11. 可读性：代码注释和回复都用简体中文，写给初学者看；函数短小，命名清楚（游戏里给玩家看的文字按第 3 条双语）。
 12. 小步前进：一次只做一个任务；不要顺手大改无关的代码。
+
+## 较真的程度
+不是每件事都要一样仔细，分两档。
+
+**要较真**（不能错，改完要认真核对）：
+- 经文原文
+- 圣经里写明的数字和尺寸（要带出处）
+- 年代和地点
+- 存档
+- 手机上能不能玩
+
+**意思到了就行**：动物、植物、天气、水、镜头这些装饰性的画面和小动作。
+- 这一档改完只要 `npm run build`、`npm test` 通过，打开看一眼不报错就行。
+- 不要逐帧记录，不要为它写新测试，不要跑 `tools/compare-prototype/`。
+
+**做任务时发现任务之外的毛病**：只在回复最后列出来，一行一条，不要修。
 
 ## 完成任务前
 - `npm run build`、`npm test`、`npm run validate:content` 全部通过；改了经文就附上 `npm run count:esv` 的结果

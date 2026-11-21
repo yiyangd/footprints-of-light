@@ -11,24 +11,8 @@ export const LANG_KEY = 'guangzhiyue-lang';
 let lang: Lang = 'bi'; // 默认双语
 const listeners: Array<() => void> = [];
 
-const ESCAPES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' };
-
-/** 把文字里的 < > & " 换掉，这样文字放进 HTML 里不会被当成标签 */
-export const esc = (s: unknown): string => String(s).replace(/[&<>"]/g, (c) => ESCAPES[c] ?? c);
-
-/** ESV 用小型大写字母印 LORD（耶和华）。这里只改显示的样子，不改文字本身 */
-const smallCapsLord = (s: string): string => s.replace(/\bLORD\b/g, '<span class="sc">Lord</span>');
-
-/**
- * 把一段双语文字变成 HTML。
- * cls = 'blk'：中文另起一行（段落用）；不写：中文跟在英文后面（标签、按钮用）。
- */
-export function bi(t: Bi | string | number | null | undefined, cls?: string): string {
-  if (t == null) return '';
-  if (typeof t !== 'object') return esc(t);
-  const zhClass = cls ? `zh ${cls}` : 'zh';
-  return `<span class="en">${smallCapsLord(esc(t.en))}</span><span class="${zhClass}" lang="zh-CN">${esc(t.zh)}</span>`;
-}
+// bi() 和 esc() 写在 html.ts 里（那个文件不引用别的文件，打包设置也要用它）；从这里照样能拿到
+export { bi, esc } from './html';
 
 /**
  * 把文字里的 {名字} 换成实际的值。

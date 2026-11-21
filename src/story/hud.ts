@@ -26,8 +26,9 @@ export function setDays(): void {
     const el = document.createElement('i');
     if (isDone('day' + i)) el.className = 'on';
     // 鼠标停在圆点上时显示“第几日”
-    const t = fill(UI.day, { n: i });
-    el.title = getLang() === 'en' ? t.en : `${t.en} · 第${UI.dayNums[i - 1]}日`;
+    const en = fill(UI.day, { n: i }).en;
+    const zh = fill(UI.day, { n: UI.dayNums[i - 1] }).zh; // 中文用“一二三……”
+    el.title = getLang() === 'en' ? en : `${en} · ${zh}`;
     d.appendChild(el);
   }
 }

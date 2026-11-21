@@ -3,7 +3,7 @@ import { GESTURES, CARDS, refText, RELICS, UI, WINDOWS } from '../content';
 import type { Bi, Reward } from '../content/types';
 import { sfx } from '../core/audio';
 import { $ } from '../core/env';
-import { bi, fill, join } from '../core/i18n';
+import { bi, fill } from '../core/i18n';
 import { updateGestureButtons } from '../player/gestures';
 import { persist, pieceCount, save } from './save';
 
@@ -30,7 +30,7 @@ function grantPiece(win: string, i: number): void {
   const w = WINDOWS[win];
   if (!w) return;
   const n = `${got.length}/${w.pieces.length}`;
-  toast(UI.toast.piece, join(w.name, ' · ', w.pieces[i], { en: ` (${n})`, zh: `（${n}）` }));
+  toast(UI.toast.piece, fill(UI.pieceToast, { w: w.name, p: w.pieces[i], n }));
   sfx.chime(2);
   if (got.length === w.pieces.length) setTimeout(() => toast(UI.toast.done, fill(UI.windowDone, { w: w.name })), 1200);
 }

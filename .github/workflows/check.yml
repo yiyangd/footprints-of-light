@@ -21,6 +21,10 @@ jobs:
           node-version: 22
       - name: 安装依赖（正式工程）
         run: npm ci
+      - name: 检查内容（经文、剧情、界面文字有没有写错）
+        run: npm run validate:content
+      - name: 数一数正式工程的 ESV 经文（上限 500 节，超过就不发布）
+        run: npm run count:esv
       - name: 测试正式工程
         run: npm test
       - name: 检查类型，打包正式工程

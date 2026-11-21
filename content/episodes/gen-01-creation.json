@@ -1,10 +1,12 @@
 {
   "id": "gen-01-creation",
+  "chapter": 1,
   "title": {
     "en": "Seven Days of Creation",
     "zh": "创造七日"
   },
   "range": "Gen 1:1–2:3",
+  "hudRef": "Gen 1:1–2:3",
   "era": {
     "book": {
       "en": "Genesis",
@@ -17,10 +19,10 @@
     "yearAM": 0
   },
   "scripture": {
-    "en": "ESV (English Standard Version, © Crossway)",
+    "en": "BSB (Berean Standard Bible, public domain)",
     "zh": "和合本（新标点和合本，神版）"
   },
-  "note": "所有给玩家看的文字都是 { en, zh }。at 是地图上的 [x, z] 坐标（x 向东，z 向南）；r 是触发半径；fx 是剧情效果名；kind: scripture 经文 / history 考据 / imagination 游戏想象 / reflection 思考；ref 写成 Gen 1:3",
+  "note": "所有给玩家看的文字都是 { en, zh }。at 是地图上的 [x, z] 坐标（x 向东，z 向南）；r 是触发半径；fx 是剧情效果名；kind: scripture 经文 / history 考据 / imagination 游戏想象 / reflection 思考；ref 写成 Gen 1:3；hint 是这个节点结束后出现的操作提示（可以分 touch 手机 / desk 电脑两种）",
   "beats": [
     {
       "id": "begin",
@@ -44,7 +46,7 @@
           "kind": "scripture",
           "ref": "Gen 1:1",
           "text": {
-            "en": "In the beginning, God created the heavens and the earth.",
+            "en": "In the beginning God created the heavens and the earth.",
             "zh": "起初，神创造天地。"
           }
         },
@@ -52,7 +54,7 @@
           "kind": "scripture",
           "ref": "Gen 1:2",
           "text": {
-            "en": "The earth was without form and void, and darkness was over the face of the deep. And the Spirit of God was hovering over the face of the waters.",
+            "en": "Now the earth was formless and void, and darkness was over the surface of the deep. And the Spirit of God was hovering over the surface of the waters.",
             "zh": "地是空虚混沌，渊面黑暗；神的灵运行在水面上。"
           },
           "fx": "wind"
@@ -70,7 +72,17 @@
           "type": "verse",
           "ref": "Gen 1:1"
         }
-      ]
+      ],
+      "hint": {
+        "touch": {
+          "en": "Use the joystick at the bottom left to move. Follow the faint light.",
+          "zh": "用左下角的摇杆移动，跟着远处的微光走"
+        },
+        "desk": {
+          "en": "Press W or ↑ to walk. Follow the faint light in the distance.",
+          "zh": "按 W 或 ↑ 往前走，跟着远处的微光"
+        }
+      }
     },
     {
       "id": "day1",
@@ -103,7 +115,7 @@
           "kind": "scripture",
           "ref": "Gen 1:4",
           "text": {
-            "en": "And God saw that the light was good. And God separated the light from the darkness.",
+            "en": "And God saw that the light was good, and He separated the light from the darkness.",
             "zh": "神看光是好的，就把光暗分开了。"
           }
         },
@@ -111,7 +123,7 @@
           "kind": "scripture",
           "ref": "Gen 1:5",
           "text": {
-            "en": "God called the light Day, and the darkness he called Night. And there was evening and there was morning, the first day.",
+            "en": "God called the light “day,” and the darkness He called “night.” And there was evening, and there was morning—the first day.",
             "zh": "神称光为“昼”，称暗为“夜”。有晚上，有早晨，这是头一日。"
           }
         },
@@ -138,7 +150,17 @@
           "ref": "Gen 1:3"
         }
       ],
-      "after": "evening"
+      "after": "evening",
+      "hint": {
+        "touch": {
+          "en": "Your lamp is lit. Hold the button at the bottom right to jump and glide.",
+          "zh": "灯亮了。按住右下角的按钮，可以跳起来滑翔"
+        },
+        "desk": {
+          "en": "Your lamp is lit. Press Space to jump; hold Space in the air to glide.",
+          "zh": "灯亮了。按空格跳跃，在空中按住空格可以滑翔"
+        }
+      }
     },
     {
       "id": "day2",
@@ -162,7 +184,7 @@
           "kind": "scripture",
           "ref": "Gen 1:6",
           "text": {
-            "en": "And God said, “Let there be an expanse in the midst of the waters, and let it separate the waters from the waters.”",
+            "en": "And God said, “Let there be an expanse between the waters, to separate the waters from the waters.”",
             "zh": "神说：“诸水之间要有空气，将水分为上下。”"
           },
           "fx": "sky"
@@ -171,7 +193,7 @@
           "kind": "scripture",
           "ref": "Gen 1:7",
           "text": {
-            "en": "And God made the expanse and separated the waters that were under the expanse from the waters that were above the expanse. And it was so.",
+            "en": "So God made the expanse and separated the waters beneath it from the waters above. And it was so.",
             "zh": "神就造出空气，将空气以下的水、空气以上的水分开了。事就这样成了。"
           }
         },
@@ -179,7 +201,7 @@
           "kind": "scripture",
           "ref": "Gen 1:8",
           "text": {
-            "en": "And God called the expanse Heaven. And there was evening and there was morning, the second day.",
+            "en": "God called the expanse “sky.” And there was evening, and there was morning—the second day.",
             "zh": "神称空气为“天”。有晚上，有早晨，是第二日。"
           }
         }
@@ -215,7 +237,7 @@
           "kind": "scripture",
           "ref": "Gen 1:9",
           "text": {
-            "en": "And God said, “Let the waters under the heavens be gathered together into one place, and let the dry land appear.” And it was so.",
+            "en": "And God said, “Let the waters under the sky be gathered into one place, so that the dry land may appear.” And it was so.",
             "zh": "神说：“天下的水要聚在一处，使旱地露出来。”事就这样成了。"
           },
           "fx": "land"
@@ -224,7 +246,7 @@
           "kind": "scripture",
           "ref": "Gen 1:10",
           "text": {
-            "en": "God called the dry land Earth, and the waters that were gathered together he called Seas. And God saw that it was good.",
+            "en": "God called the dry land “earth,” and the gathering of waters He called “seas.” And God saw that it was good.",
             "zh": "神称旱地为“地”，称水的聚处为“海”。神看着是好的。"
           }
         },
@@ -232,16 +254,24 @@
           "kind": "scripture",
           "ref": "Gen 1:11",
           "text": {
-            "en": "And God said, “Let the earth sprout vegetation, plants yielding seed, and fruit trees bearing fruit in which is their seed, each according to its kind, on the earth.” And it was so.",
+            "en": "Then God said, “Let the earth bring forth vegetation: seed-bearing plants and fruit trees, each bearing fruit with seed according to its kind.” And it was so.",
             "zh": "神说：“地要发生青草和结种子的菜蔬，并结果子的树木，各从其类，果子都包着核。”事就这样成了。"
           },
           "fx": "plants"
         },
         {
           "kind": "scripture",
+          "ref": "Gen 1:12",
+          "text": {
+            "en": "The earth produced vegetation: seed-bearing plants according to their kinds and trees bearing fruit with seed according to their kinds. And God saw that it was good.",
+            "zh": "于是地发生了青草和结种子的菜蔬，各从其类；并结果子的树木，各从其类；果子都包着核。神看着是好的。"
+          }
+        },
+        {
+          "kind": "scripture",
           "ref": "Gen 1:13",
           "text": {
-            "en": "And there was evening and there was morning, the third day.",
+            "en": "And there was evening, and there was morning—the third day.",
             "zh": "有晚上，有早晨，是第三日。"
           }
         }
@@ -253,7 +283,11 @@
           "i": 2
         }
       ],
-      "after": "evening"
+      "after": "evening",
+      "hint": {
+        "en": "The land has risen! Explore freely — glowing potsherds are hidden around the map.",
+        "zh": "陆地升起来了！可以自由探索。地图上藏着发光的陶片"
+      }
     },
     {
       "id": "day4",
@@ -277,7 +311,7 @@
           "kind": "scripture",
           "ref": "Gen 1:14–15",
           "text": {
-            "en": "And God said, “Let there be lights in the expanse of the heavens to separate the day from the night. And let them be for signs and for seasons, and for days and years, and let them be lights in the expanse of the heavens to give light upon the earth.” And it was so.",
+            "en": "And God said, “Let there be lights in the expanse of the sky to distinguish between the day and the night, and let them be signs to mark the seasons and days and years. And let them serve as lights in the expanse of the sky to shine upon the earth.” And it was so.",
             "zh": "神说：“天上要有光体，可以分昼夜，作记号，定节令、日子、年岁，并要发光在天空，普照在地上。”事就这样成了。"
           },
           "fx": "lights"
@@ -286,7 +320,7 @@
           "kind": "scripture",
           "ref": "Gen 1:16–18",
           "text": {
-            "en": "And God made the two great lights—the greater light to rule the day and the lesser light to rule the night—and the stars. And God set them in the expanse of the heavens to give light on the earth, to rule over the day and over the night, and to separate the light from the darkness. And God saw that it was good.",
+            "en": "God made two great lights: the greater light to rule the day and the lesser light to rule the night. And He made the stars as well. God set these lights in the expanse of the sky to shine upon the earth, to preside over the day and the night, and to separate the light from the darkness. And God saw that it was good.",
             "zh": "于是神造了两个大光，大的管昼，小的管夜，又造众星，就把这些光摆列在天空，普照在地上，管理昼夜，分别明暗。神看着是好的。"
           }
         },
@@ -294,7 +328,7 @@
           "kind": "scripture",
           "ref": "Gen 1:19",
           "text": {
-            "en": "And there was evening and there was morning, the fourth day.",
+            "en": "And there was evening, and there was morning—the fourth day.",
             "zh": "有晚上，有早晨，是第四日。"
           }
         }
@@ -330,7 +364,7 @@
           "kind": "scripture",
           "ref": "Gen 1:20",
           "text": {
-            "en": "And God said, “Let the waters swarm with swarms of living creatures, and let birds fly above the earth across the expanse of the heavens.”",
+            "en": "And God said, “Let the waters teem with living creatures, and let birds fly above the earth in the open expanse of the sky.”",
             "zh": "神说：“水要多多滋生有生命的物；要有雀鸟飞在地面以上，天空之中。”"
           },
           "fx": "creatures"
@@ -339,7 +373,7 @@
           "kind": "scripture",
           "ref": "Gen 1:21",
           "text": {
-            "en": "So God created the great sea creatures and every living creature that moves, with which the waters swarm, according to their kinds, and every winged bird according to its kind. And God saw that it was good.",
+            "en": "So God created the great sea creatures and every living thing that moves, with which the waters teemed according to their kinds, and every winged bird after its kind. And God saw that it was good.",
             "zh": "神就造出大鱼和水中所滋生各样有生命的动物，各从其类；又造出各样飞鸟，各从其类。神看着是好的。"
           }
         },
@@ -347,7 +381,7 @@
           "kind": "scripture",
           "ref": "Gen 1:22",
           "text": {
-            "en": "And God blessed them, saying, “Be fruitful and multiply and fill the waters in the seas, and let birds multiply on the earth.”",
+            "en": "Then God blessed them and said, “Be fruitful and multiply and fill the waters of the seas, and let birds multiply on the earth.”",
             "zh": "神就赐福给这一切，说：“滋生繁多，充满海中的水；雀鸟也要多生在地上。”"
           }
         },
@@ -355,7 +389,7 @@
           "kind": "scripture",
           "ref": "Gen 1:23",
           "text": {
-            "en": "And there was evening and there was morning, the fifth day.",
+            "en": "And there was evening, and there was morning—the fifth day.",
             "zh": "有晚上，有早晨，是第五日。"
           }
         }
@@ -391,25 +425,65 @@
           "kind": "scripture",
           "ref": "Gen 1:24",
           "text": {
-            "en": "And God said, “Let the earth bring forth living creatures according to their kinds—livestock and creeping things and beasts of the earth according to their kinds.” And it was so.",
+            "en": "And God said, “Let the earth bring forth living creatures according to their kinds: livestock, land crawlers, and beasts of the earth according to their kinds.” And it was so.",
             "zh": "神说：“地要生出活物来，各从其类；牲畜、昆虫、野兽，各从其类。”事就这样成了。"
           },
           "fx": "animals"
         },
         {
           "kind": "scripture",
+          "ref": "Gen 1:25",
+          "text": {
+            "en": "God made the beasts of the earth according to their kinds, the livestock according to their kinds, and everything that crawls upon the earth according to its kind. And God saw that it was good.",
+            "zh": "于是神造出野兽，各从其类；牲畜，各从其类；地上一切昆虫，各从其类。神看着是好的。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 1:26",
+          "text": {
+            "en": "Then God said, “Let Us make man in Our image, after Our likeness, to rule over the fish of the sea and the birds of the air, over the livestock, and over all the earth itself and every creature that crawls upon it.”",
+            "zh": "神说：“我们要照着我们的形象、按着我们的样式造人，使他们管理海里的鱼、空中的鸟、地上的牲畜，和全地，并地上所爬的一切昆虫。”"
+          }
+        },
+        {
+          "kind": "scripture",
           "ref": "Gen 1:27",
           "text": {
-            "en": "So God created man in his own image, in the image of God he created him; male and female he created them.",
-            "zh": "神就照着自己的形像造人，乃是照着他的形像造男造女。"
+            "en": "So God created man in His own image; in the image of God He created him; male and female He created them.",
+            "zh": "神就照着自己的形象造人，乃是照着他的形象造男造女。"
           },
           "fx": "humans"
         },
         {
           "kind": "scripture",
+          "ref": "Gen 1:28",
+          "text": {
+            "en": "God blessed them and said to them, “Be fruitful and multiply, and fill the earth and subdue it; rule over the fish of the sea and the birds of the air and every creature that crawls upon the earth.”",
+            "zh": "神就赐福给他们，又对他们说：“要生养众多，遍满地面，治理这地，也要管理海里的鱼、空中的鸟，和地上各样行动的活物。”"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 1:29",
+          "text": {
+            "en": "Then God said, “Behold, I have given you every seed-bearing plant on the face of all the earth, and every tree whose fruit contains seed. They will be yours for food.",
+            "zh": "神说：“看哪，我将遍地上一切结种子的菜蔬和一切树上所结有核的果子全赐给你们作食物。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 1:30",
+          "text": {
+            "en": "And to every beast of the earth and every bird of the air and every creature that crawls upon the earth—everything that has the breath of life in it—I have given every green plant for food.” And it was so.",
+            "zh": "至于地上的走兽和空中的飞鸟，并各样爬在地上有生命的物，我将青草赐给它们作食物。”事就这样成了。"
+          }
+        },
+        {
+          "kind": "scripture",
           "ref": "Gen 1:31",
           "text": {
-            "en": "And God saw everything that he had made, and behold, it was very good. And there was evening and there was morning, the sixth day.",
+            "en": "And God looked upon all that He had made, and indeed, it was very good. And there was evening, and there was morning—the sixth day.",
             "zh": "神看着一切所造的都甚好。有晚上，有早晨，是第六日。"
           }
         }
@@ -449,7 +523,7 @@
           "kind": "scripture",
           "ref": "Gen 2:1",
           "text": {
-            "en": "Thus the heavens and the earth were finished, and all the host of them.",
+            "en": "Thus the heavens and the earth were completed in all their vast array.",
             "zh": "天地万物都造齐了。"
           },
           "fx": "rest"
@@ -458,7 +532,7 @@
           "kind": "scripture",
           "ref": "Gen 2:2",
           "text": {
-            "en": "And on the seventh day God finished his work that he had done, and he rested on the seventh day from all his work that he had done.",
+            "en": "And by the seventh day God had finished the work He had been doing; so on that day He rested from all His work.",
             "zh": "到第七日，神造物的工已经完毕，就在第七日歇了他一切的工，安息了。"
           }
         },
@@ -466,8 +540,8 @@
           "kind": "scripture",
           "ref": "Gen 2:3",
           "text": {
-            "en": "So God blessed the seventh day and made it holy, because on it God rested from all his work that he had done in creation.",
-            "zh": "神赐福给第七日，定为圣日；因为在这日神歇了他一切创造的工，就安息了。"
+            "en": "Then God blessed the seventh day and sanctified it, because on that day He rested from all the work of creation that He had accomplished.",
+            "zh": "神赐福给第七日，定为圣日；因为在这日，神歇了他一切创造的工，就安息了。"
           }
         },
         {
@@ -493,7 +567,11 @@
           "ref": "Gen 2:3"
         }
       ],
-      "after": "openEden"
+      "after": "openEden",
+      "hint": {
+        "en": "The garden in the east is open. Follow the light east.",
+        "zh": "东方的园子开启了。跟着光，往东走"
+      }
     }
   ],
   "cards": [
@@ -522,7 +600,7 @@
         "zh": "灵 · 风 · 气息"
       },
       "text": {
-        "en": "Genesis 1:2 says “the Spirit of God was hovering over the face of the waters.” The Hebrew word for “Spirit” is רוּחַ (ruach), which can also mean “wind” or “breath.” The verb translated “hovering” is used again in Deuteronomy 32:11, for an eagle fluttering over its young.",
+        "en": "Genesis 1:2 says “the Spirit of God was hovering over the surface of the waters.” The Hebrew word for “Spirit” is רוּחַ (ruach), which can also mean “wind” or “breath.” The verb translated “hovering” is used again in Deuteronomy 32:11, for an eagle hovering over its young.",
         "zh": "创 1:2“神的灵运行在水面上”。“灵”的希伯来文是 רוּחַ（ruach），这个词也可以指“风”或“气息”。“运行”这个动词，在申命记 32:11 用来形容鹰在雏鹰上方展翅。"
       },
       "at": [
@@ -539,7 +617,7 @@
         "zh": "先有光，后有太阳"
       },
       "text": {
-        "en": "Light appears on the first day, but the sun and moon are not made until the fourth day. Revelation 22:5 says that in the new creation “they will need no light of lamp or sun, for the Lord God will be their light.” Think about it: what is “light” in your life?",
+        "en": "Light appears on the first day, but the sun and moon are not made until the fourth day. Revelation 22:5 says that in the new creation “they will have no need for the light of a lamp or of the sun. For the Lord God will shine on them.” Think about it: what is “light” in your life?",
         "zh": "光在第一日出现，太阳和月亮却在第四日才被造。启示录 22:5 说，新天新地“也不用灯光、日光，因为主神要光照他们”。想一想：在你的生活中，什么是“光”？"
       },
       "at": [
@@ -555,7 +633,7 @@
         "zh": "“有晚上，有早晨”"
       },
       "text": {
-        "en": "Each day in Genesis 1 ends with “there was evening and there was morning.” To this day, the Jewish day begins at sunset, so the Sabbath begins on Friday evening.",
+        "en": "Each day in Genesis 1 ends with “there was evening, and there was morning.” To this day, the Jewish day begins at sunset, so the Sabbath begins on Friday evening.",
         "zh": "创世记第 1 章的每一日，都以“有晚上，有早晨”结束。直到今天，犹太人的一天仍从日落开始算起，所以安息日是从星期五傍晚开始的。"
       },
       "at": [
@@ -584,11 +662,11 @@
       "kind": "history",
       "title": {
         "en": "The “image” of God",
-        "zh": "神的“形像”"
+        "zh": "神的“形象”"
       },
       "text": {
         "en": "In the ancient Near East, kings often set up images of themselves in the lands they ruled, to show “this belongs to me.” Many scholars think that being made in God’s image also means representing God and caring for his world (see Genesis 1:26–28).",
-        "zh": "在古代近东，君王常在自己统治的地方立起自己的像，表明“这里归我管”。许多学者认为，人按神的形像被造，也带着“代表神照管这个世界”的意思（参创 1:26–28）。"
+        "zh": "在古代近东，君王常在自己统治的地方立起自己的像，表明“这里归我管”。许多学者认为，人按神的形象被造，也带着“代表神照管这个世界”的意思（参创 1:26–28）。"
       },
       "at": [
         13,
@@ -619,7 +697,7 @@
         "zh": "安息日"
       },
       "text": {
-        "en": "The Hebrew word שַׁבָּת (Shabbat) comes from a word meaning “to stop” or “to rest.” The fourth commandment, “Remember the Sabbath day, to keep it holy,” points back to the seventh day of creation (Exodus 20:8–11).",
+        "en": "The Hebrew word שַׁבָּת (Shabbat) comes from a word meaning “to stop” or “to rest.” The fourth commandment, “Remember the Sabbath day by keeping it holy,” points back to the seventh day of creation (Exodus 20:8–11).",
         "zh": "“安息日”的希伯来文 שַׁבָּת（Shabbat）来自“停止、歇息”的意思。十诫第四条“当记念安息日，守为圣日”，就回到了创造的第七日（出 20:8–11）。"
       },
       "at": [
@@ -639,7 +717,7 @@
       "kind": "imagination",
       "desc": {
         "en": "“And God said, ‘Let there be light,’ and there was light.” In this game, your lamp was lit by this first light (imagined for the game).",
-        "zh": "“神说：要有光，就有了光。”在这个游戏里，你的灯就是被这第一道光点亮的（游戏想象）。"
+        "zh": "“神说：‘要有光’，就有了光。”在这个游戏里，你的灯就是被这第一道光点亮的（游戏想象）。"
       }
     }
   ],

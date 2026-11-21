@@ -1,7 +1,19 @@
 // Vite 的设置：开发时的小服务器 + 打包。
+import fs from 'node:fs';
 import { defineConfig } from 'vitest/config';
+import { fillPageText } from './src/content/page-text.ts';
+import type { UiFile } from './src/content/types';
+
+/** 每次都重新读一遍 content/ui.json，这样开发时改了文字，刷新页面就能看到 */
+const readUi = (): UiFile => JSON.parse(fs.readFileSync(new URL('./content/ui.json', import.meta.url), 'utf8')) as UiFile;
 
 export default defineConfig({
+  plugins: [{
+    // 把 index.html 里的占位符（<!--ui:...--> 和 {{ui:...}}）换成 content/ui.json 里的文字，
+    // 这样页面上的文字只在 JSON 里写一次，玩家拿到的页面里文字又是现成的（见 src/content/page-text.ts）
+    name: 'page-text',
+    transformIndexHtml: (html) => fillPageText(html, readUi()),
+  }],
   // 用相对路径，这样打包结果放在网站的任何一层目录里（例如 /play/）都能打开
   base: './',
   build: {

@@ -1,7 +1,7 @@
 // 逐条比较新旧两版的样式规则（用浏览器自己解析后的结果比，所以写法不同但意思相同的不算差异）。
 const { chromium } = require('playwright');
 const path = require('path');
-const URLS = { old: 'file://' + path.resolve(__dirname, '../../prototype/dist/index.html'), new: 'http://localhost:4173/' };
+const URLS = { old: process.env.OLD_URL || 'file://' + path.resolve(__dirname, '../../prototype/dist/index.html'), new: 'http://localhost:4173/' };
 async function rules(which) {
   const browser = await chromium.launch(); const page = await browser.newPage();
   await page.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());

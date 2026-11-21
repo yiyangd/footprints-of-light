@@ -1,0 +1,694 @@
+{
+  "id": "gen-04-brothers",
+  "chapter": 4,
+  "title": {
+    "en": "Brothers",
+    "zh": "兄弟"
+  },
+  "range": "Gen 4:1–26",
+  "hudRef": "Gen 4",
+  "era": {
+    "book": {
+      "en": "Genesis",
+      "zh": "创世记"
+    },
+    "label": {
+      "en": "East of Eden",
+      "zh": "伊甸的东边"
+    },
+    "yearAM": 0
+  },
+  "scripture": {
+    "en": "BSB (Berean Standard Bible, public domain)",
+    "zh": "和合本（新标点和合本，神版）"
+  },
+  "note": "所有给玩家看的文字都是 { en, zh }。at 是地图上的 [x, z] 坐标（x 向东，z 向南）；r 是触发半径；fx 是剧情效果名；kind: scripture 经文 / history 考据 / imagination 游戏想象 / reflection 思考；ref 写成 Gen 1:3；hint 是这个节点结束后出现的操作提示（可以分 touch 手机 / desk 电脑两种）；card 的 after 是“哪个节点完成以后这块陶片才出现”；after（节点上的）是这个节点结束后触发的效果。第 3 章依据 docs/设计方案.md 第 4 节，创 3:1–24 一节不缺；用的是伊甸的地图。；第 4 章依据 docs/设计方案.md 第 4 节“第 4 章《兄弟》”，创 4:1–26 一节不缺；地点在伊甸东边那块地上（src/episodes/gen-04-spots.ts）。创 4:8 不呈现暴力：两兄弟走到远处的田间，天色变暗，风停了，只有经文。",
+  "beats": [
+    {
+      "id": "g1",
+      "at": [
+        93,
+        -12.5
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Two Brothers",
+          "zh": "两兄弟"
+        },
+        "sub": {
+          "en": "Outside the garden",
+          "zh": "园子外面"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:1",
+          "fx": "brothersBorn",
+          "text": {
+            "en": "And Adam had relations with his wife Eve, and she conceived and gave birth to Cain. “With the help of the LORD I have brought forth a man,” she said.",
+            "zh": "有一日，那人和他妻子夏娃同房，夏娃就怀孕，生了该隐，便说：“耶和华使我得了一个男子。”"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:2",
+          "fx": "brothersGrow",
+          "text": {
+            "en": "Later she gave birth to Cain’s brother Abel. Now Abel was a keeper of sheep, while Cain was a tiller of the soil.",
+            "zh": "又生了该隐的兄弟亚伯。亚伯是牧羊的；该隐是种地的。"
+          }
+        },
+        {
+          "kind": "imagination",
+          "text": {
+            "en": "Seasons come and go. The two boys grow up: one keeps the sheep, the other works the ground.",
+            "zh": "季节一年一年地过去，两个孩子长大了：一个放羊，一个种地。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "offering",
+          "i": 0
+        }
+      ],
+      "hint": {
+        "en": "You are outside the garden now. Follow the light.",
+        "zh": "现在是在园子外面了。跟着光走。"
+      }
+    },
+    {
+      "id": "g2",
+      "at": [
+        97.6,
+        -16.2
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "The Offerings",
+          "zh": "献祭"
+        },
+        "sub": {
+          "en": "Two brothers, two altars",
+          "zh": "两兄弟，两座坛"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:3",
+          "fx": "offerings",
+          "text": {
+            "en": "So in the course of time, Cain brought some of the fruit of the soil as an offering to the LORD,",
+            "zh": "有一日，该隐拿地里的出产为供物献给耶和华；"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:4",
+          "fx": "regard",
+          "text": {
+            "en": "while Abel brought the best portions of the firstborn of his flock. And the LORD looked with favor on Abel and his offering,",
+            "zh": "亚伯也将他羊群中头生的和羊的脂油献上。耶和华看中了亚伯和他的供物，"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:5",
+          "fx": "cainFalls",
+          "text": {
+            "en": "but He had no regard for Cain and his offering. So Cain became very angry, and his countenance fell.",
+            "zh": "只是看不中该隐和他的供物。该隐就大大地发怒，变了脸色。"
+          }
+        },
+        {
+          "kind": "imagination",
+          "text": {
+            "en": "You learned a gesture: Offer. Press O (or tap “Offer”) to lift up your lamp.",
+            "zh": "你学会了一个姿态：献上。按 O 键（或点“献上”按钮），把灯举起来。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "relic",
+          "id": "firstborn-lamb"
+        },
+        {
+          "type": "piece",
+          "win": "offering",
+          "i": 1
+        },
+        {
+          "type": "gesture",
+          "id": "offer"
+        }
+      ],
+      "hint": {
+        "touch": {
+          "en": "You learned “Offer”: tap the “Offer” button.",
+          "zh": "你学会了“献上”：点“献上”按钮"
+        },
+        "desk": {
+          "en": "You learned “Offer”: press O.",
+          "zh": "你学会了“献上”：按 O 键"
+        }
+      }
+    },
+    {
+      "id": "g3",
+      "at": [
+        97.2,
+        -9.8
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Sin at the Door",
+          "zh": "罪伏在门前"
+        },
+        "sub": {
+          "en": "The LORD speaks to Cain",
+          "zh": "耶和华对该隐说话"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:6",
+          "fx": "warnCain",
+          "text": {
+            "en": "“Why are you angry,” said the LORD to Cain, “and why has your countenance fallen?",
+            "zh": "耶和华对该隐说：“你为什么发怒呢？你为什么变了脸色呢？"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:7",
+          "fx": "sinAtDoor",
+          "text": {
+            "en": "If you do what is right, will you not be accepted? But if you refuse to do what is right, sin is crouching at your door; it desires you, but you must master it.”",
+            "zh": "你若行得好，岂不蒙悦纳？你若行得不好，罪就伏在门前。它必恋慕你，你却要制伏它。”"
+          }
+        },
+        {
+          "kind": "reflection",
+          "text": {
+            "en": "If you were Cain, how would you answer God’s question?",
+            "zh": "如果你是该隐，你会怎样回答神的问题？"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "offering",
+          "i": 2
+        },
+        {
+          "type": "verse",
+          "ref": "Gen 4:7"
+        }
+      ]
+    },
+    {
+      "id": "g4",
+      "at": [
+        98.6,
+        -12
+      ],
+      "r": 2.4,
+      "hud": {
+        "label": {
+          "en": "In the Field",
+          "zh": "田间"
+        },
+        "sub": {
+          "en": "Far away, in the field",
+          "zh": "远处的田间"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:8",
+          "fx": "intoField",
+          "text": {
+            "en": "Then Cain said to his brother Abel, “Let us go out to the field.” And while they were in the field, Cain rose up against his brother Abel and killed him.",
+            "zh": "该隐与他兄弟亚伯说话；二人正在田间。该隐起来打他兄弟亚伯，把他杀了。"
+          }
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "g5",
+      "at": [
+        103,
+        -2
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Where Is Your Brother?",
+          "zh": "你兄弟在哪里？"
+        },
+        "sub": {
+          "en": "The LORD asks Cain",
+          "zh": "耶和华问该隐"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:9",
+          "fx": "whereIsAbel",
+          "text": {
+            "en": "And the LORD said to Cain, “Where is your brother Abel?” “I do not know!” he answered. “Am I my brother’s keeper?”",
+            "zh": "耶和华对该隐说：“你兄弟亚伯在哪里？”他说：“我不知道！我岂是看守我兄弟的吗？”"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:10",
+          "fx": "groundCries",
+          "text": {
+            "en": "“What have you done?” replied the LORD. “The voice of your brother’s blood cries out to Me from the ground.",
+            "zh": "耶和华说：“你做了什么事呢？你兄弟的血有声音从地里向我哀告。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:11",
+          "text": {
+            "en": "Now you are cursed and banished from the ground, which has opened its mouth to receive your brother’s blood from your hand.",
+            "zh": "地开了口，从你手里接受你兄弟的血。现在你必从这地受咒诅。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:12",
+          "fx": "fieldWilts",
+          "text": {
+            "en": "When you till the ground, it will no longer yield its produce to you. You will be a fugitive and a wanderer on the earth.”",
+            "zh": "你种地，地不再给你效力；你必流离飘荡在地上。”"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "offering",
+          "i": 3
+        },
+        {
+          "type": "verse",
+          "ref": "Gen 4:9"
+        }
+      ]
+    },
+    {
+      "id": "g6",
+      "at": [
+        100.6,
+        1.5
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "The Mark",
+          "zh": "记号"
+        },
+        "sub": {
+          "en": "The LORD still protects Cain",
+          "zh": "神仍然保护该隐"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:13",
+          "text": {
+            "en": "But Cain said to the LORD, “My punishment is greater than I can bear.",
+            "zh": "该隐对耶和华说：“我的刑罚太重，过于我所能当的。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:14",
+          "text": {
+            "en": "Behold, this day You have driven me from the face of the earth, and from Your face I will be hidden; I will be a fugitive and a wanderer on the earth, and whoever finds me will kill me.”",
+            "zh": "你如今赶逐我离开这地，以致不见你面；我必流离飘荡在地上，凡遇见我的必杀我。”"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:15",
+          "fx": "markOfCain",
+          "text": {
+            "en": "“Not so!” replied the LORD. “If anyone slays Cain, then Cain will be avenged sevenfold.” And the LORD placed a mark on Cain, so that no one who found him would kill him.",
+            "zh": "耶和华对他说：“凡杀该隐的，必遭报七倍。”耶和华就给该隐立一个记号，免得人遇见他就杀他。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:16",
+          "fx": "toNod",
+          "text": {
+            "en": "So Cain went out from the presence of the LORD and settled in the land of Nod, east of Eden.",
+            "zh": "于是该隐离开耶和华的面，去住在伊甸东边挪得之地。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "offering",
+          "i": 4
+        }
+      ]
+    },
+    {
+      "id": "g7",
+      "at": [
+        98.6,
+        5.4
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "A City in Nod",
+          "zh": "挪得的城"
+        },
+        "sub": {
+          "en": "Cain builds a city",
+          "zh": "该隐建造了一座城"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:17",
+          "fx": "cityRises",
+          "text": {
+            "en": "And Cain had relations with his wife, and she conceived and gave birth to Enoch. Then Cain built a city and named it after his son Enoch.",
+            "zh": "该隐与妻子同房，他妻子就怀孕，生了以诺。该隐建造了一座城，就按着他儿子的名将那城叫做以诺。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:18",
+          "text": {
+            "en": "Now to Enoch was born Irad, and Irad was the father of Mehujael, and Mehujael was the father of Methusael, and Methusael was the father of Lamech.",
+            "zh": "以诺生以拿；以拿生米户雅利；米户雅利生玛土撒利；玛土撒利生拉麦。"
+          }
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "g8",
+      "at": [
+        104.5,
+        2.2
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Lamech’s Family",
+          "zh": "拉麦一家"
+        },
+        "sub": {
+          "en": "Tents, music, bronze and iron",
+          "zh": "帐棚、琴箫、铜铁"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:19",
+          "fx": "lamech",
+          "text": {
+            "en": "And Lamech married two women, one named Adah and the other Zillah.",
+            "zh": "拉麦娶了两个妻：一个名叫亚大，一个名叫洗拉。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:20",
+          "fx": "tents",
+          "text": {
+            "en": "Adah gave birth to Jabal; he was the father of those who dwell in tents and raise livestock.",
+            "zh": "亚大生雅八；雅八就是住帐棚、牧养牲畜之人的祖师。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:21",
+          "fx": "lyre",
+          "text": {
+            "en": "And his brother’s name was Jubal; he was the father of all who play the harp and flute.",
+            "zh": "雅八的兄弟名叫犹八；他是一切弹琴吹箫之人的祖师。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:22",
+          "fx": "forge",
+          "text": {
+            "en": "And Zillah gave birth to Tubal-cain, a forger of every implement of bronze and iron. And the sister of Tubal-cain was Naamah.",
+            "zh": "洗拉又生了土八·该隐；他是打造各样铜铁利器的。土八·该隐的妹子是拿玛。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:23",
+          "fx": "lamechSong",
+          "text": {
+            "en": "Then Lamech said to his wives: “Adah and Zillah, hear my voice; wives of Lamech, listen to my speech. For I have slain a man for wounding me, a young man for striking me.",
+            "zh": "拉麦对他两个妻子说：亚大、洗拉，听我的声音；拉麦的妻子，细听我的话语：壮年人伤我，我把他杀了；少年人损我，我把他害了。"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:24",
+          "text": {
+            "en": "If Cain is avenged sevenfold, then Lamech seventy-sevenfold.”",
+            "zh": "若杀该隐，遭报七倍，杀拉麦，必遭报七十七倍。"
+          }
+        },
+        {
+          "kind": "reflection",
+          "text": {
+            "en": "Cities, music and tools are good gifts. But Lamech boasts about getting even. What do you do when someone hurts you?",
+            "zh": "城市、音乐、工具都是好东西。拉麦却夸口要报仇。有人伤害你的时候，你会怎么做？"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "offering",
+          "i": 5
+        }
+      ]
+    },
+    {
+      "id": "g9",
+      "at": [
+        98,
+        -15.2
+      ],
+      "r": 3,
+      "hud": {
+        "label": {
+          "en": "Seth",
+          "zh": "塞特"
+        },
+        "sub": {
+          "en": "People call on the name of the LORD",
+          "zh": "人求告耶和华的名"
+        }
+      },
+      "lines": [
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:25",
+          "fx": "sethBorn",
+          "text": {
+            "en": "And Adam again had relations with his wife, and she gave birth to a son and named him Seth, saying, “God has granted me another seed in place of Abel, since Cain killed him.”",
+            "zh": "亚当又与妻子同房，她就生了一个儿子，起名叫塞特，意思说：“神另给我立了一个儿子代替亚伯，因为该隐杀了他。”"
+          }
+        },
+        {
+          "kind": "scripture",
+          "ref": "Gen 4:26",
+          "fx": "callOnName",
+          "text": {
+            "en": "And to Seth also a son was born, and he called him Enosh. At that time men began to call upon the name of the LORD.",
+            "zh": "塞特也生了一个儿子，起名叫以挪士。那时候，人才求告耶和华的名。"
+          }
+        },
+        {
+          "kind": "imagination",
+          "text": {
+            "en": "In the homes that call on the LORD, the lamps are lit again.",
+            "zh": "求告耶和华的人家里，灯又亮起来了。"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "type": "piece",
+          "win": "offering",
+          "i": 6
+        },
+        {
+          "type": "verse",
+          "ref": "Gen 4:26"
+        }
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "heart-offering",
+      "kind": "reflection",
+      "at": [
+        102.6,
+        -20.2
+      ],
+      "after": "g2",
+      "title": {
+        "en": "Why Abel’s offering?",
+        "zh": "为什么是亚伯的供物？"
+      },
+      "text": {
+        "en": "Genesis does not tell us exactly why the LORD looked with favor on Abel’s offering. Much later, Hebrews 11:4 says: “By faith Abel offered God a better sacrifice than Cain did.” What mattered most was the heart, not the gift. What do you bring to God, and with what kind of heart?",
+        "zh": "创世记没有直接说，耶和华为什么看中亚伯的供物。后来希伯来书 11:4 说：“亚伯因着信，献祭与神，比该隐所献的更美”。最要紧的是心，不是礼物。你会把什么献给神？带着怎样的心？"
+      }
+    },
+    {
+      "id": "keeper",
+      "kind": "reflection",
+      "at": [
+        106.6,
+        -1.6
+      ],
+      "after": "g5",
+      "title": {
+        "en": "My brother’s keeper",
+        "zh": "看守兄弟的人"
+      },
+      "text": {
+        "en": "“Am I my brother’s keeper?” Cain asked (Genesis 4:9). The rest of the Bible answers: yes, we are meant to look out for one another. Who has God put near you to care for?",
+        "zh": "该隐说：“我岂是看守我兄弟的吗？”（创 4:9）整本圣经接下去的回答是：是的，我们本来就要彼此照顾。神把谁放在你身边，要你去关心？"
+      }
+    },
+    {
+      "id": "nod",
+      "kind": "history",
+      "at": [
+        97.4,
+        3.2
+      ],
+      "after": "g6",
+      "title": {
+        "en": "The land of wandering",
+        "zh": "“流荡之地”"
+      },
+      "text": {
+        "en": "Twice in this chapter Cain is called “a fugitive and a wanderer” (Genesis 4:12, 14). The name of the land where he settled, Nod (נוֹד), sounds like the Hebrew word for “wandering.” He built a city, but the name of his land still meant “wandering.”",
+        "zh": "这一章两次说该隐要“流离飘荡”（创 4:12、14）。他住下的地方叫挪得（נוֹד），在希伯来文里听起来就像“飘荡”这个词。他建了一座城，可是他住的那片地，名字的意思还是“飘荡”。"
+      }
+    },
+    {
+      "id": "seventy-seven",
+      "kind": "reflection",
+      "at": [
+        107.6,
+        12.4
+      ],
+      "after": "g8",
+      "title": {
+        "en": "Seventy-seven",
+        "zh": "七十七"
+      },
+      "text": {
+        "en": "Lamech boasted that whoever hurt him would be paid back “seventy-sevenfold” (Genesis 4:24). Much later, when Peter asked how many times he should forgive, Jesus answered: “not just seven times, but seventy-seven times!” (Matthew 18:22). Revenge that keeps growing, or forgiveness that keeps going?",
+        "zh": "拉麦夸口说，谁伤害他，“必遭报七十七倍”（创 4:24）。后来彼得问耶稣，要饶恕弟兄几次，耶稣说：“不是到七次，乃是到七十个七次。”（太 18:22）是越报越多的仇，还是一直饶恕下去？"
+      }
+    }
+  ],
+  "relics": [
+    {
+      "id": "firstborn-lamb",
+      "name": {
+        "en": "The Firstborn Lamb",
+        "zh": "头生的羔羊"
+      },
+      "ref": "Gen 4:4",
+      "kind": "history",
+      "desc": {
+        "en": "Abel brought “the best portions of the firstborn of his flock” (Genesis 4:4): the first and the best. Many more lambs will appear in the Bible, all the way to the one John the Baptist called “the Lamb of God” (John 1:29).",
+        "zh": "亚伯献上的是“羊群中头生的和羊的脂油”（创 4:4）：最先的，也是最好的。圣经里以后还会出现许多羔羊，一直到施洗约翰所说的“神的羔羊”（约 1:29）。"
+      }
+    }
+  ],
+  "window": {
+    "id": "offering",
+    "name": {
+      "en": "Window of Offering",
+      "zh": "献祭之窗"
+    },
+    "ref": "Gen 4:1–26",
+    "pieces": [
+      {
+        "en": "Two Brothers",
+        "zh": "两兄弟"
+      },
+      {
+        "en": "Two Offerings",
+        "zh": "两份供物"
+      },
+      {
+        "en": "Sin at the Door",
+        "zh": "罪伏在门前"
+      },
+      {
+        "en": "Where Is Your Brother?",
+        "zh": "你兄弟在哪里？"
+      },
+      {
+        "en": "The Mark",
+        "zh": "记号"
+      },
+      {
+        "en": "Lyre and Pipe",
+        "zh": "琴和箫"
+      },
+      {
+        "en": "Calling on the LORD",
+        "zh": "求告耶和华"
+      }
+    ]
+  },
+  "gestures": [
+    {
+      "id": "offer",
+      "name": {
+        "en": "Offer",
+        "zh": "献上"
+      },
+      "key": "O",
+      "desc": {
+        "en": "Lift up your lamp, as an offering. Learned from: Abel’s offering (Genesis 4:4).",
+        "zh": "把手里的灯举起来，当作献上。学自：亚伯的献祭（创 4:4）。"
+      }
+    }
+  ]
+}

@@ -3,7 +3,7 @@
 ## 代码与工具
 - three.js 0.186.1 — MIT License，Copyright © 2010–2025 three.js authors（https://threejs.org）
 - esbuild — MIT License（只在打包时使用）
-- Vite — MIT License；Vitest — MIT License；TypeScript — Apache License 2.0（只在开发、测试和打包时使用）
+- Vite — MIT License；Vitest — MIT License；zod — MIT License；tsx — MIT License；TypeScript — Apache License 2.0（只在开发、测试和打包时使用）
 - topojson-client — ISC License；world-atlas — ISC License（只在生成底图时使用）
 
 ## 地图
@@ -13,22 +13,23 @@
 
 ## 经文
 
-### 英文：ESV
-游戏里显示的英文经文引自 ESV。按 Crossway 的要求，游戏里（标题页和图鉴的“经文”页）显示这段声明：
+### 英文：BSB
+游戏里显示的英文经文是 Berean Standard Bible（BSB）。
 
-> Scripture quotations marked (ESV) are from the ESV® Bible (The Holy Bible, English Standard Version®), © 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved.
+- BSB 从 2023 年 4 月 30 日起属于公有领域，可以自由使用，不需要申请许可，也没有节数的限制（官方说明：berean.bible/terms.htm）。
+- 官方希望（但不强制）使用时带上这段署名。游戏里（开始页、主页封面和图鉴的“经文”页）显示它：
 
-- ESV 有版权，不是公有领域。Crossway 的标准使用指引允许不经书面许可引用：整个作品不超过 500 节、不超过任何一卷书的一半、不超过作品全部文字的 25%，并且不是注释书或其他圣经参考书。
-- 小样剧情里用了 41 节（另有陶片、信物里的几处短句），远低于 500 节。但游戏的英文文字里经文占了四成多；按中英文全部文字算约两成。这一条有解释空间，正式公开发布前，建议带领人填写 Crossway 的许可申请（www.crossway.org/permissions）确认。
-- 完整游戏会超过 500 节，必须先取得 Crossway 的书面许可或正式授权。
-- 含 ESV 经文的作品不能用 Creative Commons 授权发布。如果以后要开源代码，代码可以用 MIT 之类的授权，但要写明 `content/` 里的 ESV 经文不在开源授权范围内。
-- “ESV”和“English Standard Version”是 Crossway 的注册商标，只用来标明经文出处，不要用在游戏名称或标志里。
-- 如果拿不到许可：英文可以换成公有领域的 Berean Standard Bible（BSB，2023 年献给公有领域，https://berean.bible/terms.htm），只需替换 `content/` 里经文的 `en` 文字。
+> The Holy Bible, Berean Standard Bible, BSB is produced in cooperation with Bible Hub, Discovery Bible, unfoldingWord, Bible Aquifer, OpenBible.com, and the Berean Bible Translation Committee. This text of God's Word has been dedicated to the public domain.
 
-### 中文：和合本
-- 中文经文：和合本（新标点和合本，神版）的文字。
-- 和合本 1919 年原版已属公有领域；1988 年的《新标点和合本》由香港圣经公会出版，与原版只在标点和个别用字上不同。
-- 正式公开发布前，请向圣经公会确认所用电子文本的使用许可，或改用标明公有领域的和合本数据。
+- 原文存在 `content/scripture/bsb.json`，是用 `scripts/import-bsb.ts` 从官方文本（bereanbible.com/bsb.txt，2026-11-21 下载）生成的，现在有创世记全卷和诗篇 77:19。游戏里每一行英文经文都由程序从这里按出处取，并自动核对一字不差。
+- 官方的请求：经文一字不改时可以用 Berean 的名字；改动过的文本不要再叫这个名字。我们只用原文。
+- 2026-11-21 以前英文用的是 ESV（有版权，Crossway）。正式工程里已经全部换成 BSB。最早的小样（`prototype/`，发布在 `/prologue/`）里还留着 41 节 ESV 和 Crossway 要求的版权声明，在免申请的范围之内；小样不再加内容，以后删掉时这一条也跟着删。
+
+### 中文：新标点和合本
+- 中文经文：《新标点和合本》（简体，神版）。2026-11-21 带领人定的。
+- 电子文本来自 eBible.org（译本代号 cmn-cu89s，文件 ebible.org/Scriptures/cmn-cu89s_usfm.zip），由 `scripts/import-cuv.ts` 存进 `content/scripture/cuv.json`。导入时只整理排版：去掉“神”字前的空格和诗歌分行的空格，引号 「」『』 换成 “”‘’，去掉表示“补充的字”和专有名词的记号；字和其余标点照原文。
+- 授权还有疑问：eBible.org 把这份电子文本标为公有领域（Public Domain）；而 1988 年的《新标点和合本》由香港圣经公会出版并代理版权。两边说法不一致。
+- 正式公开宣传之前，请向圣经公会确认使用许可。如果不能用，要换成 1919 年的老版和合本（公有领域），那时需要一份可靠的电子文本。
 
 ## 字体（通过 Google Fonts 加载，SIL Open Font License）
 - EB Garamond（英文经文与标题）、Nunito（英文界面）

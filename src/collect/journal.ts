@@ -22,11 +22,11 @@ let bookTab: Tab = 'windows';
 const LOCK = '<span class="q">???</span>';
 
 /**
- * 版权声明：Crossway 要求在引用 ESV 的作品里写明（AGENTS.md 第 2 条），不能删。
+ * 经文的来源说明：英文是 BSB（公有领域），中文是和合本（AGENTS.md 第 2 条），不能删。
  * 网址只写成文字，不做成链接（AGENTS.md 第 7 条）。
  */
 const notices = (): string =>
-  `<div class="notice"><p>${esc(UI.esvNotice)} <span class="site">www.esv.org</span></p><p class="zh" lang="zh-CN">${esc(UI.cuvNotice)}</p></div>`;
+  `<div class="notice"><p>${esc(UI.bibleNotice)} <span class="site">${esc(UI.bibleSite)}</span></p><p class="zh" lang="zh-CN">${esc(UI.cuvNotice)}</p></div>`;
 
 /** 打开一块知识陶片 */
 export function openCard(c: Card): void {
@@ -60,7 +60,7 @@ function windowsPage(body: HTMLElement): void {
     const card = document.createElement('div');
     card.className = 'window-card';
     const meta = join(refText(w.ref), ' · ', fill(UI.collected, { n: `${got.length}/${w.pieces.length}` }));
-    const art = WINDOW_ART[key]?.(got) ?? '';
+    const art = WINDOW_ART[key]?.(got, w.name.en) ?? '';
     const pieces = w.pieces.map((p, i) => `<li class="${got.includes(i) ? 'got' : ''}">${got.includes(i) ? bi(p) : LOCK}</li>`).join('');
     card.innerHTML = `<h3>${bi(w.name)}</h3><div class="meta">${bi(meta, 'blk')}</div>${art}<ol>${pieces}</ol>`;
     wrap.appendChild(card);
@@ -77,7 +77,7 @@ function relicsPage(body: HTMLElement): void {
     const it = document.createElement('div');
     it.className = 'item' + (on ? '' : ' locked');
     const title = on ? `${bi(r.name)}<span class="ref">${bi(refText(r.ref))}</span>` : bi(UI.notFound);
-    const text = on ? bi(r.desc, 'blk') : bi(UI.relicHint[id], 'blk');
+    const text = on ? bi(r.desc, 'blk') : bi(UI.relicHint[id] ?? UI.notFound, 'blk'); // 草稿里的信物还没写提示时，先显示“还没找到”
     it.innerHTML = `<div class="ico">${on ? relicIcon(id) : '?'}</div><div><h4>${title}</h4><p>${text}</p></div>`;
     list.appendChild(it);
   }
@@ -114,7 +114,7 @@ function versesPage(body: HTMLElement): void {
     const r = refText(ref);
     const d = document.createElement('div');
     d.className = 'verse';
-    d.innerHTML = `<div class="vt">${bi(t, 'blk')}</div><div class="vr">${bi({ en: `${r.en} (ESV)`, zh: `${r.zh}（和合本）` })}</div>`;
+    d.innerHTML = `<div class="vt">${bi(t, 'blk')}</div><div class="vr">${bi({ en: `${r.en} (${UI.version.en})`, zh: `${r.zh}（${UI.version.zh}）` })}</div>`;
     list.appendChild(d);
   }
   body.appendChild(list);

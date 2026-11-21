@@ -2,10 +2,10 @@
 
 一个由教会青少年一起制作的圣经探索游戏：像《光遇》一样安静、可以同行，从“起初”一直走到新天新地。
 
-游戏有两种语言模式：**English**（经文用 ESV）和 **English + 中文**（英文在上，中文在下，中文经文用和合本）。默认是双语；在标题页选，游戏里点右上角的地球按钮或按 `L` 键随时切换，会记住上次的选择。
+游戏有两种语言模式：**English**（经文用 BSB，公有领域）和 **English + 中文**（英文在上，中文在下，中文经文用新标点和合本）。默认是双语；在标题页选，游戏里点右上角的地球按钮或按 `L` 键随时切换，会记住上次的选择。
 
 **在线试玩：** https://yiyangd.github.io/footprints-of-light/ （电脑和手机浏览器都能直接玩，不用安装）
-打开先看到封面，点“开始旅程”进入“光之地图”：一张古代世界地图加一条时间之河，66 卷书是 66 盏灯，这就是游戏的目录。点创世记那盏灯进入序章《起初》。
+打开先看到封面，点“开始旅程”进入“光之地图”：一张古代世界地图加一条时间之河，66 卷书是 66 盏灯，这就是游戏的目录。点创世记那盏灯，进入创世记第 1—5 章（创造七日、伊甸园、你在哪里？、兄弟、与神同行）。
 设计文档（可评论、可编辑）：https://claude.ai/artifact/TGNk2b8UR2LjTbkTbHRMxc
 
 ## 里面有什么
@@ -27,25 +27,28 @@
 | `index.html`、`src/`、`package.json` | **正式工程**（Vite + TypeScript + Three.js）。`src/` 里按功能分了文件夹，`src/main.ts` 是入口，开头有一段说明每个文件夹管什么 |
 | `.github/workflows/deploy.yml` | 自动发布：每次推送到 `main`，GitHub 自动打包主页、序章小样和正式工程并更新上面的网站 |
 | `.github/workflows/check.yml` | 自动检查：每次开 PR，GitHub 先测试、打包一遍，合并前就知道会不会出错 |
-| `prototype/src/` | 序章小样的源代码：`main.js`（游戏）、`content.js`（内容，中英双语）、`index.html`（界面） |
-| `CREDITS.md` | 授权说明，特别是 ESV 经文的使用条件 |
+| `content/ui.json` | 界面上的文字（封面、按钮、图鉴……）和书卷的名字（中英双语） |
+| `scripts/` | 两个检查用的小程序：`npm run validate:content`（内容有没有写错）、`npm run fill:scripture`（照出处填英文和中文经文）、`npm run count:verses`（经文用了多少节、还缺哪些） |
+| `prototype/src/` | 最早的序章小样的源代码，只作参考，不再修改 |
+| `content/scripture/bsb.json` | 英文经文的原文（BSB，公有领域），程序从这里按出处取 |
+| `CREDITS.md` | 授权说明，特别是经文的来源 |
 
 ## 第一次怎么开始
 
 1. 先玩：打开上面的在线试玩链接。
 2. 改一行试试：按下面“网站怎么更新”的做法，改一句提示文字，看网站跟着变。
-3. 接着做：先读 `docs/STATUS.md`，里面写着做到哪了、下一步是什么。把小样变成正式工程的 **M0** 分三步，现在做完了第 1 步。
+3. 接着做：先读 `docs/STATUS.md`，里面写着做到哪了、下一步是什么。把小样变成正式工程的 **M0** 已经做完，主页上点创世记进的就是正式工程。
 4. 每做完一步，在电脑和手机上各玩一遍；有问题就用“修 bug 模板”告诉 Codex。
 
 ## 网站怎么更新
 
 网站用 GitHub Pages 发布，不用自己上传：
 
-1. 修改文件并推送到 `main` 分支。不会用 git 也可以：在 GitHub 网页上打开文件（例如 `prototype/src/content.js`），点铅笔图标修改，再点 Commit changes。
+1. 修改文件并推送到 `main` 分支。不会用 git 也可以：在 GitHub 网页上打开文件（例如 `content/episodes/gen-01-creation.json`），点铅笔图标修改，再点 Commit changes。
 2. GitHub 会自动打包并发布（见 `.github/workflows/deploy.yml`），进度在仓库的 **Actions** 页面。
 3. 一般 1–2 分钟后，刷新在线试玩的网址就能看到新版本。
 
-如果 Actions 里出现红色的叉，点进去看是哪一步出错（最常见的是 `content.js` 或 `timeline.json` 里少了逗号或引号），改好再提交一次就行。
+如果 Actions 里出现红色的叉，点进去看是哪一步出错（最常见的是 `content/` 下某个 JSON 文件里少了逗号或引号，或者某段文字漏了中文；出错的那一步会写明是哪个文件、哪一项），改好再提交一次就行。
 
 ## 想改主页（光之地图）？
 
@@ -76,29 +79,32 @@ npm run dev
 终端里会显示一个网址（一般是 `http://localhost:5173/`），用浏览器打开就是游戏。改了 `src/` 里的代码，页面会自己刷新。
 
 - **在手机上试**：手机和电脑连同一个 Wi-Fi，运行 `npm run dev -- --host`，用手机浏览器打开终端里 `Network` 后面的那个网址。
-- **改完检查**：`npm test`（自动测试）和 `npm run build`（检查类型并打包）都要通过。
+- **改完检查**：`npm test`（自动测试）和 `npm run build`（检查内容和类型并打包）都要通过。
 - **调试**：网址末尾加 `#debug` 会显示帧率，并可在浏览器控制台用 `__gzy.completeNext()` 跳过一段剧情。
-- 正式工程打包以后发布在网站的 `/play/`。主页上的入口暂时还指向小样（`/prologue/`），等 M0 做完再换过来。
+- 正式工程打包以后发布在网站的 `/play/`，主页上创世记那盏灯进的就是它。
 
-## 想在自己电脑上改小样？（在 M0 全部做完之前，内容还是先改这里）
+## 想改剧情、经文、陶片或者界面上的字？
 
-需要先安装 Node.js（https://nodejs.org ，选 LTS 版本）。
+都在 `content/` 里，不用碰代码，不会编程也可以改：
+
+- 剧情、经文、陶片、信物、彩窗：`content/episodes/` 下每一章一个 JSON 文件。
+- 界面上的字（封面、按钮、图鉴……）：`content/ui.json`。
+- 每个字段是什么意思：`content/README.md`。
+
+每段文字都有 `en` 和 `zh` 两份。经文一个字都不能改，一节都不跳过。英文和中文经文都不用手写：写好出处，两边先写 `TODO(经文)`，让程序填。改完在仓库最外层运行：
 
 ```bash
-cd prototype
-npm install
-# 改 src/content.js（剧情和陶片）或 src/main.js（玩法）以后：
-npm run build
-npm run count:esv   # 加了经文就数一下 ESV 节数
-npm run export      # 把内容同步到 content/episodes/*.json
-# 然后双击新生成的 prototype/起初-双击打开.html 看效果
+npm run validate:content   # 写错的地方会列出来：哪个文件、哪一项、怎么了
+npm run fill:scripture     # 写好出处以后，让程序把英文（BSB）和中文（和合本）经文填进去
+npm run count:verses       # 看每一章的经文齐了没有，还缺哪些节
 ```
 
-- 剧情文字、经文、陶片都在 `src/content.js`，每段都有 `en` 和 `zh` 两份，不会编程也可以改（改完记得请属灵顾问核对）。
-- 地址后面加 `#debug` 会显示帧率，并可在浏览器控制台用 `__gzy.completeNext()` 跳过剧情（方便测试）。
+改完记得请属灵顾问核对。
+
+`prototype/` 是最早的小样，现在只作参考：它自己的 `content.js` 是旧副本，改它不会影响正式工程，也**不要再运行它的 `npm run export`**（会把 `content/episodes/` 里新加的字段冲掉）。
 
 ## 三条规矩（详见 AGENTS.md）
 
-1. 英文经文用 ESV，中文经文用和合本，标出处，不改一个字。ESV 有版权：整个游戏不超过 500 节，正式发布前向 Crossway 申请许可（见 `CREDITS.md`）。
+1. 英文经文用 BSB（公有领域），中文经文用新标点和合本，标出处，不改一个字，不跳过一节（见 `CREDITS.md`）。
 2. 每一行文字都标颜色：经文（金）、考据（蓝）、游戏想象（灰）、思考（绿）。
 3. 原创美术和音乐，不使用《光遇》的任何素材；不做自由聊天，保护孩子。

@@ -22,12 +22,12 @@ const pickups = CARDS.map((card) => {
 
 /**
  * 这块陶片现在能不能捡：
- * - 伊甸的陶片：走进园子（完成节点 e1）之后才出现；
+ * - 写了 after 的：等那个剧情节点完成才出现（例如伊甸的陶片要走进园子以后）；
  * - 放在光之路上的：一开始就在；
  * - 其余的：要等陆地升起来。
  */
 function cardAvailable(c: Card): boolean {
-  if (c.ep === 'eden') return isDone('e1');
+  if (c.after) return isDone(c.after);
   return c.onPath ? true : W.land > 0.97;
 }
 

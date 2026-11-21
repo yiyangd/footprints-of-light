@@ -1,11 +1,14 @@
 // 存档：玩家现在的进度，以及把它存进浏览器、从浏览器读出来。
 // 存在玩家自己浏览器的 localStorage 里，不会上传到任何地方（AGENTS.md 第 7 条）。
-import { BEATS, WINDOWS } from '../content';
+import { BEATS, DRAFT_ID, WINDOWS } from '../content';
 import type { Beat } from '../content/types';
 import { player } from '../player/player';
 import { emptySave, parseSave, SAVE_KEY, type SaveData } from './save-data';
 
 const WINDOW_IDS = Object.keys(WINDOWS);
+
+// 开发时预览草稿，进度另外存一份，不碰平时的存档
+const KEY = DRAFT_ID ? `guangzhiyue-draft-${DRAFT_ID}` : SAVE_KEY;
 
 /** 玩家现在的进度。整个游戏共用这一份 */
 export const save: SaveData = emptySave(WINDOW_IDS);
@@ -22,16 +25,25 @@ export const pieceCount = (): number => Object.values(save.pieces).reduce((sum, 
 /** 把进度存进浏览器（连同玩家现在站的位置） */
 export function persist(): void {
   try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify({ ...save, pos: [player.pos.x, player.pos.y, player.pos.z] }));
+    localStorage.setItem(KEY, JSON.stringify({ ...save, pos: [player.pos.x, player.pos.y, player.pos.z] }));
   } catch { /* 存不了也没关系（例如浏览器开了无痕模式） */ }
 }
 
-/** 从浏览器读出上次的进度；没有就返回 null */
+const BEAT_IDS = new Set(BEATS.map((b) => b.id));
+
+/**
+ * 从浏览器读出上次的进度；没有就返回 null。
+ * 已经不存在的剧情节点会被去掉：例如旧版第 2 章最后的“下一章预告”（e6），现在它的经文挪进了第 3 章。
+ */
 export function loadSave(): SaveData | null {
-  try { return parseSave(localStorage.getItem(SAVE_KEY), WINDOW_IDS); } catch { return null; }
+  try {
+    const data = parseSave(localStorage.getItem(KEY), WINDOW_IDS);
+    if (data) data.done = data.done.filter((id) => BEAT_IDS.has(id));
+    return data;
+  } catch { return null; }
 }
 
 /** 删掉存档（“从头开始”时用） */
 export function clearSave(): void {
-  try { localStorage.removeItem(SAVE_KEY); } catch { /* 删不了也没关系 */ }
+  try { localStorage.removeItem(KEY); } catch { /* 删不了也没关系 */ }
 }

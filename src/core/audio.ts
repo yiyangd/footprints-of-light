@@ -48,6 +48,12 @@ export const music = {
     musicGain.gain.setTargetAtTime(name === 'dark' ? 0.05 : 0.11, t, 2);
     musicFilter.frequency.setTargetAtTime(name === 'dark' ? 380 : 1300, t, 2.5);
   },
+  /** 全场安静几秒，再慢慢回来（“你在哪里？”） */
+  hush(seconds: number): void {
+    if (!actx || !musicGain) return;
+    musicGain.gain.setTargetAtTime(0, actx.currentTime, 0.3);
+    musicGain.gain.setTargetAtTime(0.11, actx.currentTime + seconds, 1.5);
+  },
   /** 把音乐压低（安息时）或放回原来的音量 */
   duck(on: boolean): void {
     if (actx && musicGain) musicGain.gain.setTargetAtTime(on ? 0.04 : 0.11, actx.currentTime, 1.2);
@@ -182,6 +188,36 @@ export const sfx = {
     if (!actx || !windGain) return;
     windGain.gain.setTargetAtTime(0.16, actx.currentTime, 0.4);
     windGain.gain.setTargetAtTime(0.05, actx.currentTime + 3, 1.5);
+  },
+  /** 一个慢慢沉下去的音：光熄灭了 */
+  sink(): void {
+    if (!actx) return;
+    const t = actx.currentTime;
+    this.tone(220, t, 4, 0.05, 'triangle');
+    this.tone(196, t + 1.2, 4, 0.05, 'triangle');
+    this.tone(164.8, t + 2.4, 5, 0.05, 'triangle');
+  },
+  /** 一段旋律：一个音接一个音（第 4 章犹八弹琴吹箫） */
+  melody(notes: number[], gap = 0.32): void {
+    if (!actx) return;
+    const t = actx.currentTime;
+    notes.forEach((f, i) => this.tone(f, t + i * gap, 1.1, 0.06, 'triangle'));
+  },
+  /** 叮当：打铜铁的声音（第 4 章土八该隐） */
+  clang(times = 3): void {
+    if (!actx) return;
+    const t = actx.currentTime;
+    for (let i = 0; i < times; i++) {
+      this.tone(1318.5, t + i * 0.45, 0.35, 0.03, 'square');
+      this.tone(1975.5, t + i * 0.45, 0.25, 0.02, 'square');
+    }
+  },
+  /** 一声低沉的钟声：第 5 章每一次“就死了” */
+  toll(): void {
+    if (!actx) return;
+    const t = actx.currentTime;
+    this.tone(146.8, t, 3.2, 0.06, 'sine');
+    this.tone(220, t + 0.02, 2.6, 0.03, 'sine');
   },
   /** 低沉的隆隆声：旱地露出来 */
   rumble(): void {

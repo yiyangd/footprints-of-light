@@ -2,8 +2,8 @@
 # 每次有人把修改推送到 main 分支（包括在 GitHub 网页上直接改文件），
 # 这里就会自动打包主页（home/）、序章小样（prototype/）和正式工程（仓库最外层），
 # 并发布到 https://<用户名>.github.io/<仓库名>/
-# 网站的结构：/ 是主页“光之地图”，/prologue/ 是序章《起初》（小样），
-#             /play/ 是正式工程打包出来的序章（试看用，主页的入口暂时还指向 /prologue/）。
+# 网站的结构：/ 是主页“光之地图”，/play/ 是正式工程打包出来的序章《起初》（主页上创世记那盏灯进的就是它），
+#             /prologue/ 是最早的小样（只作参考，主页已经不通到那里）。
 # 一般 1–2 分钟后网站就更新了。进度可以在仓库的 Actions 页面看。
 name: Deploy to GitHub Pages
 
@@ -35,7 +35,7 @@ jobs:
       - name: 安装依赖（序章）
         working-directory: prototype
         run: npm ci
-      - name: 数一数 ESV 经文（上限 500 节）
+      - name: 数一数小样里的 ESV 经文
         working-directory: prototype
         run: npm run count:esv
       - name: 打包序章
@@ -51,7 +51,9 @@ jobs:
         run: npm ci
       - name: 测试正式工程
         run: npm test
-      - name: 检查类型，打包正式工程
+      - name: 数一数经文，看每一章还缺哪些节
+        run: npm run count:verses
+      - name: 检查内容和类型，打包正式工程
         run: npm run build
       - name: 拼成一个网站：主页在最外面，小样在 prologue/ 里，正式工程在 play/ 里
         run: |

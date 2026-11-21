@@ -17,7 +17,7 @@
   ],
   "books": [
     { "id": "gen", "name": { "en": "Genesis", "zh": "创世记" }, "abbr": { "en": "Gen", "zh": "创" }, "testament": "OT", "type": "trunk", "season": 1, "parts": [{ "season": 1, "ch": "1–11" }, { "season": 2, "ch": "12–50" }], "start": null, "end": -1805, "when": { "en": "The beginning – c. 1805 BC", "zh": "太初—约前 1805 年" }, "maps": ["eden", "ararat-shinar", "ur-haran", "patriarchs-road", "jerusalem", "goshen"], "size": "L",
-      "play": { "url": "./prologue/", "beats": 14, "maps": ["eden"], "saveKey": "guangzhiyue-proto-v1", "title": { "en": "Prologue: Creation and Eden (Genesis 1–2)", "zh": "序章：创造与伊甸（创 1—2 章）" } } },
+      "play": { "url": "./play/", "beats": 39, "maps": ["eden"], "saveKey": "guangzhiyue-proto-v1", "title": { "en": "Chapters 1–5: The Seven Days · Eden · Where Are You? · Brothers · Walking with God (Genesis 1–5)", "zh": "第 1—5 章：创造七日 · 伊甸园 · 你在哪里？ · 兄弟 · 与神同行（创 1—5 章）" } } },
     { "id": "job", "name": { "en": "Job", "zh": "约伯记" }, "abbr": { "en": "Job", "zh": "伯" }, "testament": "OT", "type": "insert", "season": 2, "start": null, "end": null, "when": { "en": "Age of the patriarchs; year unknown", "zh": "族长时代，年份不详" }, "anchor": { "en": "Between Genesis 11 and 12", "zh": "创 11 与创 12 之间" }, "maps": ["edom-uz"], "size": "M" },
 
     { "id": "exo", "name": { "en": "Exodus", "zh": "出埃及记" }, "abbr": { "en": "Exod", "zh": "出" }, "testament": "OT", "type": "trunk", "season": 3, "start": -1526, "end": -1445, "maps": ["goshen", "red-sea", "sinai"], "size": "L" },

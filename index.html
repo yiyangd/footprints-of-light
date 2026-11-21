@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Footprints of Light 光之踪迹 · Prologue 序章</title>
+<title>{{ui:text.title.bi}}</title>
 <!-- 语言：先读上次的选择，避免页面一打开先闪一下中文 -->
 <script>try { if (localStorage.getItem('guangzhiyue-lang') === 'en') document.documentElement.className = 'lang-en'; } catch (e) {}</script>
 <!-- 标签页上的小图标：一盏灯（直接写在这里，不用另外的文件） -->
@@ -14,22 +14,22 @@
 <link rel="stylesheet" href="/src/style.css">
 </head>
 <body>
-<canvas id="scene" aria-label="Game view"></canvas>
+<canvas id="scene" aria-label="{{ui:page.aria.game}}"></canvas>
 
 <div id="hud" hidden>
   <div id="timeline">
-    <div class="tl-book" id="tl-book">Genesis 1</div>
-    <div class="tl-label" id="tl-label">In the Beginning</div>
+    <div class="tl-book" id="tl-book"></div>
+    <div class="tl-label" id="tl-label"></div>
     <div class="tl-sub" id="tl-sub"></div>
     <div class="tl-days" id="tl-days"></div>
   </div>
   <div id="topright">
     <div id="counts"></div>
     <!-- “地图”和下面两个“回到光之地图”按钮：只有从主页进来（网址带 ?from=map）才显示 -->
-    <button class="chip-btn" id="btn-map" hidden aria-label="Back to the Map of Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6z"/><path d="M9 4v14M15 6v14"/></svg><span class="en">Map</span><span class="zh" lang="zh-CN">地图</span></button>
-    <button class="chip-btn" id="btn-book" aria-label="Open journal (B)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5C4.7 20 4 19.3 4 18.5z"/><path d="M20 5.5C20 4.7 19.3 4 18.5 4H13v16h5.5c.8 0 1.5-.7 1.5-1.5z"/></svg><span class="en">Journal</span><span class="zh" lang="zh-CN">图鉴</span></button>
-    <button class="chip-btn" id="btn-sound" aria-label="Sound on/off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10v4h4l5 4V6L8 10z"/><path id="snd-wave" d="M16 9a4 4 0 0 1 0 6"/></svg><span id="snd-text"><span class="en">Sound</span><span class="zh" lang="zh-CN">声音</span></span></button>
-    <button class="chip-btn" id="btn-lang" aria-label="Language: English, or English + Chinese (L)" title="English / English + 中文 (L)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.6 3.6 5.6 3.6 8.5s-1 5.9-3.6 8.5M12 3.5C9.4 6.1 8.4 9.1 8.4 12s1 5.9 3.6 8.5"/></svg><span id="lang-text">EN + 中</span></button>
+    <button class="chip-btn" id="btn-map" hidden aria-label="{{ui:page.backToMap.en}}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6z"/><path d="M9 4v14M15 6v14"/></svg><!--ui:page.hud.map--></button>
+    <button class="chip-btn" id="btn-book" aria-label="{{ui:page.aria.journal}}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5C4.7 20 4 19.3 4 18.5z"/><path d="M20 5.5C20 4.7 19.3 4 18.5 4H13v16h5.5c.8 0 1.5-.7 1.5-1.5z"/></svg><!--ui:page.journal--></button>
+    <button class="chip-btn" id="btn-sound" aria-label="{{ui:page.aria.sound}}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10v4h4l5 4V6L8 10z"/><path id="snd-wave" d="M16 9a4 4 0 0 1 0 6"/></svg><span id="snd-text"><!--ui:text.sound--></span></button>
+    <button class="chip-btn" id="btn-lang" aria-label="{{ui:page.aria.language}}" title="{{ui:page.aria.languageTitle}}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.6 3.6 5.6 3.6 8.5s-1 5.9-3.6 8.5M12 3.5C9.4 6.1 8.4 9.1 8.4 12s1 5.9 3.6 8.5"/></svg><span id="lang-text">{{ui:text.langShort.bi}}</span></button>
   </div>
   <div id="hint"></div>
   <div id="toasts"></div>
@@ -41,19 +41,24 @@
 <div id="touch" hidden>
   <div id="joy"><div id="joy-knob"></div></div>
   <div id="touch-buttons">
-    <button class="tbtn small" id="t-name" hidden><span class="en">Name</span><span class="zh blk" lang="zh-CN">命名</span></button>
-    <button class="tbtn small" id="t-rest" hidden><span class="en">Rest</span><span class="zh blk" lang="zh-CN">安息</span></button>
-    <button class="tbtn" id="t-jump"><span class="en">Jump</span><span class="zh blk" lang="zh-CN">跳跃</span></button>
+    <!-- 学会的姿态，两个一排（姿态多了，手机横屏也放得下） -->
+    <div id="gesture-buttons">
+      <button class="tbtn small" id="t-walkwith" hidden></button>
+      <button class="tbtn small" id="t-offer" hidden></button>
+      <button class="tbtn small" id="t-name" hidden></button>
+      <button class="tbtn small" id="t-rest" hidden></button>
+    </div>
+    <button class="tbtn" id="t-jump"><!--ui:page.touch.jump:blk--></button>
   </div>
 </div>
 
 <div id="story" hidden>
   <div class="bar top"></div><div class="bar bottom"></div>
-  <button id="story-skip"><span class="en">Skip this part</span><span class="zh" lang="zh-CN">跳过这一段</span></button>
+  <button id="story-skip"><!--ui:page.story.skip--></button>
   <div id="story-box">
     <div id="story-tag" data-k="scripture"></div>
     <div id="story-text"></div>
-    <div id="story-next"><span class="en">Tap or press Space</span><span class="zh" lang="zh-CN">点击或按空格继续</span> ▸</div>
+    <div id="story-next"><!--ui:page.story.next--> ▸</div>
   </div>
 </div>
 
@@ -64,13 +69,13 @@
       <h3 id="card-title"></h3>
       <p id="card-text"></p>
     </div>
-    <div class="card-actions"><button class="primary" id="card-ok"><span class="en">Keep this potsherd</span><span class="zh" lang="zh-CN">收下这块陶片</span></button></div>
+    <div class="card-actions"><button class="primary" id="card-ok"><!--ui:page.card.keep--></button></div>
   </div>
 </div>
 
 <div id="book" class="modal" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="book-title">
-    <div class="sheet-head"><h2 id="book-title"><span class="en">Journal</span><span class="zh" lang="zh-CN">图鉴</span></h2><button class="x-btn" id="book-close"><span class="en">Close (B)</span><span class="zh" lang="zh-CN">关闭</span></button></div>
+    <div class="sheet-head"><h2 id="book-title"><!--ui:page.journal--></h2><button class="x-btn" id="book-close"><!--ui:page.close--></button></div>
     <div class="tabs" role="tablist" id="book-tabs"></div>
     <div class="sheet-body" id="book-body"></div>
   </div>
@@ -80,15 +85,15 @@
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="end-title">
     <div class="sheet-body">
       <div class="end-hero">
-        <h2 id="end-title"><span class="en">Prologue Complete</span><span class="zh blk" lang="zh-CN">序章《起初》完</span></h2>
-        <p><span class="en">You witnessed the seven days of creation and walked into the garden in the east.</span><span class="zh blk" lang="zh-CN">你见证了创造的七日，走进了东方的园子。</span></p>
-        <p><span class="en">The next chapter, “Where Are You?” (Genesis 3), is being made by all of us together.</span><span class="zh blk" lang="zh-CN">下一章《你在哪里？》（创世记 3 章），正在由我们一起制作。</span></p>
+        <h2 id="end-title"><!--ui:page.end.title:blk--></h2>
+        <p><!--ui:page.end.line1:blk--></p>
+        <p><!--ui:page.end.line2:blk--></p>
       </div>
       <div class="stats" id="end-stats"></div>
       <div class="end-actions">
-        <button class="primary" id="end-book"><span class="en">Open Journal</span><span class="zh" lang="zh-CN">打开图鉴</span></button>
-        <button class="ghost" id="end-continue"><span class="en">Keep walking in the garden</span><span class="zh" lang="zh-CN">继续在园子里走走</span></button>
-        <button class="ghost" id="end-map" hidden><span class="en">Back to the Map of Light</span><span class="zh" lang="zh-CN">回到光之地图</span></button>
+        <button class="primary" id="end-book"><!--ui:page.end.openJournal--></button>
+        <button class="ghost" id="end-continue"><!--ui:page.end.keepWalking--></button>
+        <button class="ghost" id="end-map" hidden><!--ui:page.backToMap--></button>
       </div>
     </div>
   </div>
@@ -103,27 +108,27 @@
       <path d="M18 56c10 10 54 10 64 0c-2 14-14 22-32 22S20 70 18 56z" fill="#b4683f"/>
       <path d="M78 57c6-2 12-1 14 2c-5 2-9 4-14 4z" fill="#9c5634"/>
     </svg>
-    <h1><span class="en">Footprints of Light</span><span class="zh blk" lang="zh-CN">光之踪迹</span></h1>
-    <div class="sub"><span class="en">Prologue · In the Beginning</span><span class="zh" lang="zh-CN">序章 · 起初</span></div>
-    <div class="verse-line"><span class="en">“Your way was through the sea, your path through the great waters; yet your footprints were unseen.” (Psalm 77:19, ESV)</span><span class="zh blk" lang="zh-CN">“你的道在海中；你的路在大水中；你的脚踪无人知道。”（诗篇 77:19）</span></div>
-    <div class="lang-pick" role="radiogroup" aria-label="Language 语言">
-      <button type="button" role="radio" data-lang="en" aria-checked="false">English</button>
-      <button type="button" role="radio" data-lang="bi" aria-checked="true">English + 中文</button>
+    <h1><!--ui:page.cover.title:blk--></h1>
+    <div class="sub"><!--ui:page.cover.sub--></div>
+    <div class="verse-line"><!--ui:page.cover.verse:blk--></div>
+    <div class="lang-pick" role="radiogroup" aria-label="{{ui:page.aria.languagePick}}">
+      <button type="button" role="radio" data-lang="en" aria-checked="false">{{ui:page.cover.langNames.en}}</button>
+      <button type="button" role="radio" data-lang="bi" aria-checked="true">{{ui:page.cover.langNames.bi}}</button>
     </div>
-    <div class="lang-note" id="lang-note">Scripture: ESV · 中文经文：和合本</div>
+    <div class="lang-note" id="lang-note">{{ui:text.langNote.bi}}</div>
     <div class="actions">
-      <button class="primary" id="btn-start"><span class="en">Begin the Journey</span><span class="zh" lang="zh-CN">开始旅程</span></button>
-      <button class="ghost" id="btn-continue" hidden><span class="en">Continue</span><span class="zh" lang="zh-CN">继续上次的旅程</span></button>
-      <button class="ghost" id="title-map" hidden><span class="en">Back to the Map of Light</span><span class="zh" lang="zh-CN">回到光之地图</span></button>
+      <button class="primary" id="btn-start"><!--ui:page.cover.begin--></button>
+      <button class="ghost" id="btn-continue" hidden><!--ui:page.cover.continue--></button>
+      <button class="ghost" id="title-map" hidden><!--ui:page.backToMap--></button>
     </div>
     <div class="help">
-      <p><span class="en">Computer: <kbd>W A S D</kbd> or arrow keys to move, hold <kbd>Shift</kbd> to run, <kbd>Space</kbd> to jump (hold it in the air to glide), drag the mouse to look around, scroll to zoom, <kbd>B</kbd> opens the journal, <kbd>L</kbd> switches language.</span><span class="zh blk" lang="zh-CN">电脑：<kbd>W A S D</kbd> 或方向键移动，按住 <kbd>Shift</kbd> 奔跑，<kbd>空格</kbd> 跳跃（在空中按住滑翔），拖动鼠标看四周，滚轮拉近拉远，<kbd>B</kbd> 打开图鉴，<kbd>L</kbd> 切换语言。</span></p>
-      <p><span class="en">Phone: use the joystick at the bottom left to move, drag the right half of the screen to look around, and tap the button at the bottom right to jump. Headphones recommended.</span><span class="zh blk" lang="zh-CN">手机：左下角摇杆移动，右半边屏幕拖动看四周，右下角按钮跳跃。建议戴上耳机。</span></p>
+      <p><!--ui:page.cover.helpDesk:blk:rich--></p>
+      <p><!--ui:page.cover.helpPhone:blk--></p>
     </div>
     <div class="credit">
-      <p>Prologue v0.4 · A church youth project<span class="zh" lang="zh-CN">序章 v0.4 · 教会青少年项目</span></p>
-      <p>Scripture quotations marked (ESV) are from the ESV® Bible (The Holy Bible, English Standard Version®), © 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved. <span class="site">www.esv.org</span></p>
-      <p class="zh" lang="zh-CN">中文经文引自和合本（新标点和合本，神版）。</p>
+      <p><!--ui:page.cover.credit--></p>
+      <p>{{ui:text.bibleNotice}} <span class="site">{{ui:text.bibleSite}}</span></p>
+      <p class="zh" lang="zh-CN">{{ui:text.cuvNotice}}</p>
     </div>
   </div>
 </div>

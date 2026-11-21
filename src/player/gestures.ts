@@ -3,6 +3,7 @@ import { save } from '../collect/save';
 import { GESTURES, UI } from '../content';
 import { music } from '../core/audio';
 import { IS_TOUCH } from '../core/env';
+import { bi } from '../core/i18n';
 import { game } from '../core/state';
 import { hint } from '../story/hint';
 import { player } from './player';
@@ -20,7 +21,15 @@ export function doGesture(id: string): void {
   }
 }
 
-/** 触屏上的姿态按钮：学会了哪个姿态，就显示哪个按钮（按钮的 id 是 t-姿态名） */
+/** 给触屏上的姿态按钮写上姿态的名字（按钮的 id 是 t-姿态名，例如 t-rest）。游戏打开时调用一次 */
+export function labelGestureButtons(): void {
+  for (const g of Object.values(GESTURES)) {
+    const button = document.getElementById(`t-${g.id}`);
+    if (button) button.innerHTML = bi(g.name, 'blk');
+  }
+}
+
+/** 触屏上的姿态按钮：学会了哪个姿态，就显示哪个按钮 */
 export function updateGestureButtons(): void {
   if (!IS_TOUCH) return;
   for (const id of Object.keys(GESTURES)) {

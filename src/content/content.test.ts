@@ -1,6 +1,7 @@
 // 内容数据的测试：确认 content/episodes/*.json 读进来以后是完整、自洽的。运行：npm test
 // （下一步会有专门的 npm run validate:content，报错会更详细。）
 import { describe, expect, it } from 'vitest';
+import timelineJson from '../../content/timeline.json';
 import { BEATS, CARDS, EPISODES, GESTURES, KIND_LABEL, refText, RELICS, UI, verseText, WINDOWS } from './index';
 
 const KINDS = ['scripture', 'history', 'imagination', 'reflection'];
@@ -9,8 +10,10 @@ const isBi = (t: unknown): boolean =>
   && (t as { en: string }).en.length > 0 && (t as { zh: string }).zh.length > 0;
 
 describe('剧情节点', () => {
-  it('序章一共 14 段（主页的 timeline.json 里 play.beats 也是 14）', () => {
-    expect(BEATS).toHaveLength(14);
+  it('创世记 1—5 章一共 39 段，和主页 timeline.json 里的 play.beats 一样（主页靠它算“走过几段”）', () => {
+    const genesis = timelineJson.books.find((b) => b.id === 'gen') as { play?: { beats: number } } | undefined;
+    expect(BEATS).toHaveLength(39);
+    expect(genesis?.play?.beats).toBe(BEATS.length);
   });
 
   it('每个节点的 id 都不重复，并且属于一个已知的章节', () => {
@@ -83,9 +86,9 @@ describe('界面文字', () => {
     for (const kind of KINDS) expect(isBi(KIND_LABEL[kind as keyof typeof KIND_LABEL])).toBe(true);
   });
 
-  it('ESV 的版权声明还在（AGENTS.md 第 2 条：必须保留）', () => {
-    expect(UI.esvNotice).toContain('ESV');
-    expect(UI.esvNotice).toContain('Crossway');
-    expect(UI.esvNotice).toContain('All rights reserved');
+  it('英文经文的来源说明还在（AGENTS.md 第 2 条：必须保留）', () => {
+    expect(UI.bibleNotice).toContain('Berean Standard Bible');
+    expect(UI.bibleNotice).toContain('public domain');
+    expect(UI.version.en).toBe('BSB');
   });
 });

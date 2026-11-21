@@ -4,11 +4,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { findScripture, sourceText } from '../src/content/scripture';
-import { episodeFiles, readJson, ROOT } from './read-content';
+import { draftFiles, episodeFiles, readJson, ROOT } from './read-content';
 
 const source = (readJson('content/scripture/bsb.json') as { verses: Record<string, string> }).verses;
 let changed = 0;
-for (const file of [...episodeFiles(), 'content/ui.json']) {
+for (const file of [...episodeFiles(), ...draftFiles(), 'content/ui.json']) {
   const data = readJson(file);
   let here = 0;
   for (const { where, line } of findScripture(data)) {

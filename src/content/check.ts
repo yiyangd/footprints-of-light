@@ -169,6 +169,11 @@ export function checkContent(input: ContentInput): Problem[] {
   const episodes = Object.entries(input.episodes).map(([file, data]) => ({ file, data: data as EpisodeFile }));
   const ui = input.ui.data as UiFile;
   problems.push(...crossProblems(episodes, input.ui.file, ui, input.effectNames));
+  // 带着 TODO 的内容不能进游戏（AGENTS.md 第 1 条）
+  for (const { file, data } of [...episodes, { file: input.ui.file, data: ui }]) {
+    const count = (JSON.stringify(data).match(/TODO\(/g) ?? []).length;
+    if (count) problems.push({ file, where: '（整个文件）', message: `还有 ${count} 处 TODO 没有补上，补完才能进游戏` });
+  }
   if (input.scripture) {
     for (const { file, data } of [...episodes, { file: input.ui.file, data: ui }]) problems.push(...scriptureProblems(file, data, input.scripture));
   }

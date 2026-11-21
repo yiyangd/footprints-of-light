@@ -3,7 +3,8 @@
 // 检查的规则在 src/content/schema.ts 和 src/content/check.ts。
 import { checkContent, formatProblem } from '../src/content/check';
 import { EFFECT_NAMES } from '../src/episodes/effect-names';
-import { episodeFiles, readJson, readText } from './read-content';
+import { EpisodeFileSchema } from '../src/content/schema';
+import { draftFiles, episodeFiles, readJson, readText } from './read-content';
 
 function main(): number {
   const files = episodeFiles();
@@ -26,6 +27,13 @@ function main(): number {
   const loader = readText('src/content/index.ts');
   for (const file of files) {
     if (!loader.includes(file.replace('content/', ''))) console.warn(`提醒：${file} 还没有在 src/content/index.ts 里登记，游戏里看不到它`);
+  }
+
+  // 草稿（content/drafts/）还没有进游戏：只看格式，有问题也只是提醒
+  for (const file of draftFiles()) {
+    const result = EpisodeFileSchema.safeParse(readJson(file));
+    const todo = (readText(file).match(/TODO\(经文\)/g) ?? []).length;
+    console.log(`草稿 ${file}：${result.success ? '格式没问题' : `格式有 ${result.error.issues.length} 处问题`}，还有 ${todo} 处 TODO(经文) 等人补`);
   }
 
   if (problems.length) {

@@ -21,5 +21,12 @@ export function episodeFiles(): string[] {
   return fs.readdirSync(path.join(ROOT, dir)).filter((name) => name.endsWith('.json')).sort().map((name) => `${dir}/${name}`);
 }
 
+/** content/drafts/ 下的草稿（还没有进游戏的章节），按名字排 */
+export function draftFiles(): string[] {
+  const dir = 'content/drafts';
+  if (!fs.existsSync(path.join(ROOT, dir))) return [];
+  return fs.readdirSync(path.join(ROOT, dir)).filter((name) => name.endsWith('.json')).sort().map((name) => `${dir}/${name}`);
+}
+
 /** 读一个普通的文本文件 */
 export const readText = (relativePath: string): string => fs.readFileSync(path.join(ROOT, relativePath), 'utf8');

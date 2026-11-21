@@ -37,6 +37,7 @@
 - `content/scripture/bsb.json` 英文经文的原文（BSB，公有领域）。由 `scripts/import-bsb.ts` 生成，不要手改
 - `content/ui.json` 界面上的文字和书卷的名字（中英双语）
 - `content/episodes/<id>.json` 每章的经文、节点、收集品（中英双语）
+- `content/drafts/<id>.json` 还没有进游戏的章节草稿（可以带着 `TODO(经文)`）
 - `docs/STATUS.md` 现状与下一步；`docs/时间线与地图调研.md` 66 卷书按年代的排法和 41 张地图的依据
 - `content/timeline.json` 全书时间线：12 季、66 卷书、41 张场景地图（主页直接读它）
 - `home/` 主页“光之地图”（游戏目录）：地图 + 时间之河 + 66 盏灯；单独打包，发布在网站最外层

@@ -158,6 +158,14 @@ describe('经文一字不改（AGENTS.md 第 1 条）', () => {
     expect(p.message).toContain('npm run fill:scripture');
   });
 
+  it('中文还写着 TODO(经文) 的内容不能进游戏', () => {
+    const c = content();
+    c.eden.beats[0].lines[0].text.zh = 'TODO(经文)';
+    const [p] = checkContent(c);
+    expect(p.file).toBe(EDEN);
+    expect(p.message).toContain('1 处 TODO');
+  });
+
   it('封面上的那节经文也一样要核对', () => {
     const c = content();
     c.uiData.page.cover.verse.text.en += '!';

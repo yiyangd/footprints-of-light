@@ -23,8 +23,8 @@ jobs:
         run: npm ci
       - name: 测试正式工程
         run: npm test
-      - name: 数一数 ESV 经文（上限 500 节）
-        run: npm run count:esv
+      - name: 数一数经文，看每一章还缺哪些节
+        run: npm run count:verses
       - name: 检查内容和类型，打包正式工程
         run: npm run build
       - name: 安装依赖（序章小样）

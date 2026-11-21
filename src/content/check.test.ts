@@ -2,6 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import creationJson from '../../content/episodes/gen-01-creation.json';
 import edenJson from '../../content/episodes/gen-02-eden.json';
+import bsbJson from '../../content/scripture/bsb.json';
 import uiJson from '../../content/ui.json';
 import { EFFECT_NAMES } from '../episodes/effect-names';
 import { checkContent, formatProblem, type ContentInput } from './check';
@@ -16,6 +17,7 @@ function content(): ContentInput & { creation: any; eden: any; uiData: any } {
     episodes: { [CREATION]: creation, [EDEN]: eden },
     ui: { file: 'content/ui.json', data: uiData },
     effectNames: EFFECT_NAMES,
+    scripture: bsbJson.verses,
   };
 }
 
@@ -82,12 +84,12 @@ describe('每个文件自己的规则', () => {
     expect(p.message).toContain('rewads');
   });
 
-  it('ESV 的版权声明不能删改（AGENTS.md 第 2 条）', () => {
+  it('英文经文的来源说明不能删改（AGENTS.md 第 2 条）', () => {
     const c = content();
-    c.uiData.text.esvNotice = 'Scripture from the ESV.';
+    c.uiData.text.bibleNotice = 'Scripture from some Bible.';
     const [p] = checkContent(c);
     expect(p.file).toBe('content/ui.json');
-    expect(p.where).toBe('text › esvNotice');
+    expect(p.where).toBe('text › bibleNotice');
   });
 });
 
@@ -142,6 +144,33 @@ describe('文件之间对不对得上', () => {
     const [p] = checkContent(c);
     expect(p.file).toBe('content/ui.json');
     expect(p.where).toBe('text › relicHint › onyx');
+  });
+});
+
+describe('经文一字不改（AGENTS.md 第 1 条）', () => {
+  it('英文经文被改动了一个词，就会被查出来', () => {
+    const c = content();
+    c.creation.beats[1].lines[0].text.en = c.creation.beats[1].lines[0].text.en.replace('light', 'lamp');
+    const [p] = checkContent(c);
+    expect(p.file).toBe(CREATION);
+    expect(p.where).toBe('beats › day1 › lines › 第 1 项');
+    expect(p.message).toContain('Gen 1:3 的英文和 BSB 原文不一样');
+    expect(p.message).toContain('npm run fill:scripture');
+  });
+
+  it('封面上的那节经文也一样要核对', () => {
+    const c = content();
+    c.uiData.page.cover.verse.text.en += '!';
+    const [p] = checkContent(c);
+    expect(p.file).toBe('content/ui.json');
+    expect(p.where).toBe('page › cover › verse');
+  });
+
+  it('出处指向一卷还没有导入原文的书，会说明该怎么办', () => {
+    const c = content();
+    c.creation.beats[0].lines[0].ref = 'Ps 1:1';
+    const messages = checkContent(c).map((p) => p.message).join('\n');
+    expect(messages).toContain('content/scripture/bsb.json 里没有 Ps 1:1');
   });
 });
 

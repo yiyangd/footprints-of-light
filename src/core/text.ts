@@ -9,7 +9,7 @@ const ESCAPES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;'
 /** 把文字里的 < > & " 换掉，这样文字放进 HTML 里不会被当成标签 */
 export const esc = (s: unknown): string => String(s).replace(/[&<>"]/g, (c) => ESCAPES[c] ?? c);
 
-/** ESV 用小型大写字母印 LORD（耶和华）。这里只改显示的样子，不改文字本身 */
+/** 英文圣经用小型大写字母印 LORD（耶和华）。这里只改显示的样子，不改文字本身 */
 const smallCapsLord = (s: string): string => s.replace(/\bLORD\b/g, '<span class="sc">Lord</span>');
 
 /**

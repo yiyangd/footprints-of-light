@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "validate:content": "tsx scripts/validate-content.ts",
-    "count:esv": "tsx scripts/count-esv.ts",
+    "fill:scripture": "tsx scripts/fill-scripture.ts",
+    "count:verses": "tsx scripts/count-verses.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

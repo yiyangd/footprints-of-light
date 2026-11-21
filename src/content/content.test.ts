@@ -83,9 +83,9 @@ describe('界面文字', () => {
     for (const kind of KINDS) expect(isBi(KIND_LABEL[kind as keyof typeof KIND_LABEL])).toBe(true);
   });
 
-  it('ESV 的版权声明还在（AGENTS.md 第 2 条：必须保留）', () => {
-    expect(UI.esvNotice).toContain('ESV');
-    expect(UI.esvNotice).toContain('Crossway');
-    expect(UI.esvNotice).toContain('All rights reserved');
+  it('英文经文的来源说明还在（AGENTS.md 第 2 条：必须保留）', () => {
+    expect(UI.bibleNotice).toContain('Berean Standard Bible');
+    expect(UI.bibleNotice).toContain('public domain');
+    expect(UI.version.en).toBe('BSB');
   });
 });

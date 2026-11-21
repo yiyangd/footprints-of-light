@@ -6,7 +6,7 @@
 //   <!--ui:page.cover.title-->         一段双语文字，变成英文、中文两个 <span>
 //   <!--ui:page.cover.title:blk-->     同上，中文另起一行
 //   <!--ui:page.cover.helpDesk:rich--> 同上，文字里的 [[W A S D]] 显示成键盘按键的样子
-//   {{ui:text.esvNotice}}              一句单语的文字（标题、版权声明、读屏软件念的文字），原样放进去
+//   {{ui:text.bibleNotice}}            一句单语的文字（标题、版权声明、读屏软件念的文字），原样放进去
 // 名字就是它在 ui.json 里的位置。如果那一项是一节经文（有 kind、ref、text），
 // 会照旁边名字加 Format 的那一项（例如 verseFormat）拼上引号、出处和译本。
 // 下面两行特意写了 .ts：这个文件会被打包配置（vite.config.ts）直接读取，那里要求写全文件名
@@ -29,7 +29,7 @@ function lookup(ui: UiFile, key: string): unknown {
   return node;
 }
 
-/** 一节经文：照 Format 那一项拼上引号、出处和译本的名字（AGENTS.md 第 2 条：经文旁要标出 ESV） */
+/** 一节经文：照 Format 那一项拼上引号、出处和译本的名字（AGENTS.md 第 2 条：经文旁要标出译本） */
 function formatScripture(ui: UiFile, key: string, line: Line): Bi {
   const format = lookup(ui, key + 'Format');
   if (!isBi(format)) throw new Error(`content/ui.json 里 "${key}" 是一节经文，旁边还需要一项 "${key}Format" 说明怎么显示它`);

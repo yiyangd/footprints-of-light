@@ -20,7 +20,7 @@ export function refText(books: Record<string, BookName>, ref: string, mode?: 'fu
 
 /**
  * 把一个出处拆成一节一节：versesIn('Gen 1:14–15') → ['Gen 1:14', 'Gen 1:15']
- * 数 ESV 用了多少节的时候用。只认同一章里的出处（Gen 1:3 或 Gen 1:14–15）。
+ * 按出处取原文、数用了多少节的时候用。只认同一章里的出处（Gen 1:3 或 Gen 1:14–15）。
  */
 export function versesIn(ref: string): string[] {
   const m = /^([1-3]?[A-Za-z]+) (\d+):(\d+)(?:–(\d+))?$/.exec(ref);

@@ -22,7 +22,8 @@
 - `npm run build`
 - `npm test`
 - `npm run validate:content`
-- `npm run count:esv`（统计用了多少节 ESV 经文，见第 2 条）
+- `npm run fill:scripture`（照出处把英文经文从 BSB 原文填进去，见第 1 条）
+- `npm run count:verses`（数用了多少节经文，列出每一章还缺哪些节，见第 1 条）
 
 ## 目录
 - `src/core` 渲染、主循环、输入、音频
@@ -31,8 +32,9 @@
 - `src/story` 剧情节点（BeatRunner）、字幕、效果注册表
 - `src/collect` 收集、存档、图鉴界面
 - `src/episodes/<id>.ts` 每章专属的场景和效果（新的一章要在 `src/episodes/index.ts` 里登记）
-- `src/content` 读 `content/` 下的 JSON；`schema.ts` 是内容的规则（zod），`check.ts` 检查内容，`esv-count.ts` 数 ESV，`page-text.ts` 把 `index.html` 里的占位符换成 `content/ui.json` 里的文字
-- `scripts/` 命令行脚本：`validate-content.ts`、`count-esv.ts`
+- `src/content` 读 `content/` 下的 JSON；`schema.ts` 是内容的规则（zod），`check.ts` 检查内容，`scripture.ts` 按出处取经文原文，`verse-count.ts` 数经文，`page-text.ts` 把 `index.html` 里的占位符换成 `content/ui.json` 里的文字
+- `scripts/` 命令行脚本：`validate-content.ts`、`fill-scripture.ts`、`count-verses.ts`、`import-bsb.ts`
+- `content/scripture/bsb.json` 英文经文的原文（BSB，公有领域）。由 `scripts/import-bsb.ts` 生成，不要手改
 - `content/ui.json` 界面上的文字和书卷的名字（中英双语）
 - `content/episodes/<id>.json` 每章的经文、节点、收集品（中英双语）
 - `docs/STATUS.md` 现状与下一步；`docs/时间线与地图调研.md` 66 卷书按年代的排法和 41 张地图的依据
@@ -41,8 +43,8 @@
 - `prototype/` 最早的单文件小样，现在发布在 `/prologue/`（只作参考；除了“回到光之地图”的按钮，不再修改）
 
 ## 必须遵守
-1. 经文：只能使用 `content/` 里 kind 为 `scripture` 的文字，必须带出处（`ref` 写成 `Gen 1:3`）。英文用 ESV，中文用和合本（新标点和合本，神版），两种都一字不改，标点照抄。绝不编造、改写、凭记忆补全或自己翻译经文；缺少时写 `TODO(经文)`，并在回复里提醒人工补充。
-2. ESV 有版权（Crossway）。按 Crossway 的标准使用指引：整个游戏引用 ESV 不超过 500 节、不超过任何一卷书的一半、不超过游戏全部文字的 25%；游戏里必须保留版权声明（`UI.esvNotice`），并在每段经文旁标出 ESV；含 ESV 经文的内容不能用 Creative Commons 授权发布。每次加经文后运行 `npm run count:esv`，把结果写进回复；超过上限之前停下来，提醒带领人先向 Crossway 申请书面许可。
+1. 经文：只能使用 `content/` 里 kind 为 `scripture` 的文字，必须带出处（`ref` 写成 `Gen 1:3`）。英文用 BSB（Berean Standard Bible），中文用和合本，两种都一字不改，标点照抄。绝不编造、改写、凭记忆补全或自己翻译经文。英文不用手写：写好出处，运行 `npm run fill:scripture`，程序会从 `content/scripture/bsb.json` 把原文填进去；`npm run validate:content` 会核对每一行英文都和原文一样。中文缺少时写 `TODO(经文)`，并在回复里提醒人工补充；带着 `TODO(经文)` 的内容不要合并到 `main`。**经文一节都不跳过**：一章的经文范围（`range`）里的每一节都要出现在剧情里，`npm run count:verses` 会列出还缺哪些节。
+2. 英文经文的来源：BSB 从 2023 年 4 月 30 日起属于公有领域，可以自由使用，没有节数的限制。游戏里要保留来源说明（`UI.bibleNotice`），并在每段经文旁标出译本（BSB / 和合本）。要用到新的书卷时，照 `scripts/import-bsb.ts` 开头的说明把它的原文导入。2026-11-21 以前英文用的是 ESV（有版权，Crossway）：正式工程里已经全部换掉；小样 `prototype/` 里还留着 41 节 ESV 和它的版权声明，不要再往小样里加经文。中文和合本的来源和授权还没有定，见 `docs/STATUS.md` 的“还没定”。
 3. 双语：所有给玩家看的文字都写成 `{ "en": "...", "zh": "..." }`，放在 `content/`，代码里不写死任何一种语言的文字。游戏只有两种模式：`en`（只显示英文）和 `bi`（英文在上、中文在下），默认 `bi`，选择存在 localStorage，切换时不需要重新加载。非经文文字（考据、想象、思考）两种语言意思一致即可。新界面要在两种模式、手机竖屏和横屏下都检查一遍。
 4. 每一行显示给玩家的文字都有 kind：`scripture`（金）、`history`（蓝）、`imagination`（灰）、`reflection`（绿）。新功能沿用这四种样式。
 5. 内容与代码分离：剧情文字、收集品、坐标写在 JSON 里，不要硬编码在 TS 中。
@@ -55,6 +57,6 @@
 12. 小步前进：一次只做一个任务；不要顺手大改无关的代码。
 
 ## 完成任务前
-- `npm run build`、`npm test`、`npm run validate:content` 全部通过；改了经文就附上 `npm run count:esv` 的结果
+- `npm run build`、`npm test`、`npm run validate:content` 全部通过；改了经文就附上 `npm run count:verses` 的结果
 - 在回复里写清楚：改了什么、怎么在电脑和手机上手动测试、还有什么已知问题
 - 改了玩法就更新 `docs/CHANGELOG.md`

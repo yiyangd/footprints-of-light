@@ -4,13 +4,15 @@
 
 - `episodes/*.json`：每一章一个文件，里面是剧情、经文、陶片、信物、彩窗、姿态。考据组和关卡组只改这里，就能改剧情；改完请属灵顾问核对经文。
 - `ui.json`：界面上的文字（按钮、封面、图鉴……）和书卷的名字。
+- `scripture/bsb.json`：英文经文的原文（BSB，公有领域）。程序生成的，不要手改。
 - `timeline.json`、`home-ui.json`：主页“光之地图”用的，见本页最后。
 
 **改完一定要检查**（在仓库最外层运行）：
 
 ```bash
 npm run validate:content   # 写错的地方会列出来：哪个文件、哪一项、怎么了
-npm run count:esv          # 加了经文就数一下 ESV 用了多少节
+npm run fill:scripture     # 写好出处以后，让程序把英文经文（BSB）填进去
+npm run count:verses       # 看每一章的经文齐了没有，还缺哪些节
 ```
 
 `npm run build` 和网站的自动发布也会先检查一遍，内容有错就不会发布。
@@ -25,9 +27,10 @@ npm run count:esv          # 加了经文就数一下 ESV 用了多少节
 { "en": "And God said, “Let there be light,” and there was light.", "zh": "神说：“要有光”，就有了光。" }
 ```
 
-- 经文（`scripture`）：`en` 必须是 ESV 原文，`zh` 必须是和合本（新标点和合本，神版）原文，一个字、一个标点都不改。
+- 经文（`scripture`）：`en` 必须是 BSB 原文，`zh` 必须是和合本原文，一个字、一个标点都不改。
+- 英文经文不用自己写：只要写好 `kind` 和 `ref`，`en` 先写 `"TODO(经文)"` 占位，运行 `npm run fill:scripture`，程序会从 `scripture/bsb.json` 把原文填进去。检查脚本会核对每一行英文都和原文一样，改动一个词都会报错。
+- 经文一节都不跳过：一章的 `range` 里每一节都要出现在剧情里。`npm run count:verses` 会列出还缺哪些节。
 - 考据、想象、思考：两种语言意思一致就行，不需要逐字对译。英文要写给 8 岁以上的孩子看得懂。
-- ESV 有版权：整个游戏不超过 500 节，加经文前后都运行 `npm run count:esv` 看一下总数（详见 `CREDITS.md`）。
 - 缺经文的时候写 `TODO(经文)` 占位，请人照着圣经补上，不要凭记忆写。
 
 ## 章节文件的顶层字段
@@ -40,7 +43,7 @@ npm run count:esv          # 加了经文就数一下 ESV 用了多少节
 | `range` | 经文范围，例如 `Gen 1:1–2:3` |
 | `hudRef` | 左上角显示的经文范围，例如 `Gen 2` |
 | `era` | 时间轴上显示的书卷、标签、创世纪年 |
-| `scripture` | 这一章用的译本（ESV / 和合本） |
+| `scripture` | 这一章用的译本（BSB / 和合本） |
 | `beats` | 剧情节点，按顺序触发 |
 | `cards` | 藏在地图上的知识陶片 |
 | `relics` | 信物 |
@@ -81,7 +84,7 @@ npm run count:esv          # 加了经文就数一下 ESV 用了多少节
 | --- | --- |
 | `books` | 书卷的名字，按出处里用的缩写查：英文全名 `en`、中文简称 `zh`、中文全名 `zhFull` |
 | `kinds` | 四种文字的名字（经文 / 考据 / 游戏想象 / 思考） |
-| `text` | 游戏里用到的零散文字。文字里的 `{n}` `{w}` `{t}` 会被换成实际的值，不要删。`esvNotice` 是 Crossway 要求显示的版权声明，不能删改 |
+| `text` | 游戏里用到的零散文字。文字里的 `{n}` `{w}` `{t}` 会被换成实际的值，不要删。`bibleNotice` 是英文经文的来源说明（BSB 的署名），要一直留着 |
 | `page` | 页面上固定的文字：封面、按钮、结尾画面。`index.html` 里用占位符按名字来取，例如 `<!--ui:page.cover.title-->` 取的是 `page` → `cover` → `title` |
 
 `page` 里几处特别的写法：

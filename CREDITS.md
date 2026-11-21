@@ -13,17 +13,17 @@
 
 ## 经文
 
-### 英文：ESV
-游戏里显示的英文经文引自 ESV。按 Crossway 的要求，游戏里（标题页和图鉴的“经文”页）显示这段声明：
+### 英文：BSB
+游戏里显示的英文经文是 Berean Standard Bible（BSB）。
 
-> Scripture quotations marked (ESV) are from the ESV® Bible (The Holy Bible, English Standard Version®), © 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved.
+- BSB 从 2023 年 4 月 30 日起属于公有领域，可以自由使用，不需要申请许可，也没有节数的限制（官方说明：berean.bible/terms.htm）。
+- 官方希望（但不强制）使用时带上这段署名。游戏里（开始页、主页封面和图鉴的“经文”页）显示它：
 
-- ESV 有版权，不是公有领域。Crossway 的标准使用指引允许不经书面许可引用：整个作品不超过 500 节、不超过任何一卷书的一半、不超过作品全部文字的 25%，并且不是注释书或其他圣经参考书。
-- 现在用了 42 节（创世记 41 节，加上封面上的诗 77:19；另有陶片、信物里的几处短句），远低于 500 节。运行 `npm run count:esv` 可以看到最新的数字。但游戏的英文文字里经文占了四成多；按中英文全部文字算约两成。这一条有解释空间，正式公开发布前，建议带领人填写 Crossway 的许可申请（www.crossway.org/permissions）确认。
-- 完整游戏会超过 500 节，必须先取得 Crossway 的书面许可或正式授权。
-- 含 ESV 经文的作品不能用 Creative Commons 授权发布。如果以后要开源代码，代码可以用 MIT 之类的授权，但要写明 `content/` 里的 ESV 经文不在开源授权范围内。
-- “ESV”和“English Standard Version”是 Crossway 的注册商标，只用来标明经文出处，不要用在游戏名称或标志里。
-- 如果拿不到许可：英文可以换成公有领域的 Berean Standard Bible（BSB，2023 年献给公有领域，https://berean.bible/terms.htm），只需替换 `content/` 里经文的 `en` 文字。
+> The Holy Bible, Berean Standard Bible, BSB is produced in cooperation with Bible Hub, Discovery Bible, unfoldingWord, Bible Aquifer, OpenBible.com, and the Berean Bible Translation Committee. This text of God's Word has been dedicated to the public domain.
+
+- 原文存在 `content/scripture/bsb.json`，是用 `scripts/import-bsb.ts` 从官方文本（bereanbible.com/bsb.txt，2026-11-21 下载）生成的，现在有创世记全卷和诗篇 77:19。游戏里每一行英文经文都由程序从这里按出处取，并自动核对一字不差。
+- 官方的请求：经文一字不改时可以用 Berean 的名字；改动过的文本不要再叫这个名字。我们只用原文。
+- 2026-11-21 以前英文用的是 ESV（有版权，Crossway）。正式工程里已经全部换成 BSB。最早的小样（`prototype/`，发布在 `/prologue/`）里还留着 41 节 ESV 和 Crossway 要求的版权声明，在免申请的范围之内；小样不再加内容，以后删掉时这一条也跟着删。
 
 ### 中文：和合本
 - 中文经文：和合本（新标点和合本，神版）的文字。

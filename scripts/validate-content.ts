@@ -14,6 +14,7 @@ function main(): number {
       ui: { file: 'content/ui.json', data: readJson('content/ui.json') },
       pageHtml: readText('index.html'),
       effectNames: EFFECT_NAMES,
+      scripture: (readJson('content/scripture/bsb.json') as { verses: Record<string, string> }).verses,
     };
   } catch (e) {
     console.error(`✗ ${(e as Error).message}`);

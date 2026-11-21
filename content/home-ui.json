@@ -1,5 +1,5 @@
 {
-  "about": "主页（封面 + 光之地图）界面上的文字。cover 是封面；封面上的经文和序章标题页是同一节，ESV 和和合本一字不改。每一条都是 { en, zh }；{n}、{a}、{b} 会被换成数字。",
+  "about": "主页（封面 + 光之地图）界面上的文字。cover 是封面；封面上的经文和序章标题页是同一节，BSB 和和合本一字不改。每一条都是 { en, zh }；{n}、{a}、{b} 会被换成数字。",
   "title": { "en": "Footprints of Light", "zh": "光之踪迹" },
   "subtitle": { "en": "Map of Light", "zh": "光之地图" },
   "docTitle": { "en": "Footprints of Light · Map of Light", "zh": "Footprints of Light 光之踪迹 · Map of Light 光之地图" },
@@ -61,11 +61,11 @@
   "backToCover": { "en": "Back to the title page", "zh": "回到封面" },
   "cover": {
     "sub": { "en": "Sixty-six books, one road", "zh": "六十六卷书，一条路" },
-    "verse": { "kind": "scripture", "ref": "Ps 77:19", "en": "“Your way was through the sea, your path through the great waters; yet your footprints were unseen.” (Psalm 77:19, ESV)", "zh": "“你的道在海中；你的路在大水中；你的脚踪无人知道。”（诗篇 77:19）" },
+    "verse": {"kind": "scripture", "ref": "Ps 77:19", "en": "“Your path led through the sea, Your way through the mighty waters, but Your footprints were not to be found.” (Psalm 77:19, BSB)", "zh": "“你的道在海中；你的路在大水中；你的脚踪无人知道。”（诗篇 77:19）"},
     "begin": { "en": "Begin the Journey", "zh": "开始旅程" },
-    "langNote": { "en": "Scripture: ESV", "zh": "Scripture: ESV · 中文经文：和合本" },
+    "langNote": {"en": "Scripture: BSB", "zh": "Scripture: BSB · 中文经文：和合本"},
     "credit": { "en": "Playable prototype · A church youth project", "zh": "可玩小样 · 教会青少年项目" },
-    "notice": { "en": "Scripture quotations marked (ESV) are from the ESV® Bible (The Holy Bible, English Standard Version®), © 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved.", "zh": "中文经文引自和合本（新标点和合本，神版）。" },
-    "site": { "en": "www.esv.org", "zh": "www.esv.org" }
+    "notice": {"en": "The Holy Bible, Berean Standard Bible, BSB is produced in cooperation with Bible Hub, Discovery Bible, unfoldingWord, Bible Aquifer, OpenBible.com, and the Berean Bible Translation Committee. This text of God's Word has been dedicated to the public domain.", "zh": "中文经文引自和合本（新标点和合本，神版）。"},
+    "site": {"en": "berean.bible", "zh": "berean.bible"}
   }
 }

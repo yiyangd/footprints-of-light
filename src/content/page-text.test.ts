@@ -32,7 +32,7 @@ describe('fillPageText', () => {
     const verse = (ui.page.cover as { verse: { text: { en: string; zh: string } } }).verse;
     const html = fillPageText('<!--ui:page.cover.verse:blk-->', ui);
     expect(html).toBe(
-      `<span class="en">“${verse.text.en}” (Psalm 77:19, ESV)</span><span class="zh blk" lang="zh-CN">“${verse.text.zh}”（诗篇 77:19）</span>`,
+      `<span class="en">“${verse.text.en}” (Psalm 77:19, BSB)</span><span class="zh blk" lang="zh-CN">“${verse.text.zh}”（诗篇 77:19）</span>`,
     );
   });
 
@@ -46,6 +46,7 @@ describe('fillPageText', () => {
     const { readFileSync } = await import('node:fs');
     const html = fillPageText(readFileSync(new URL('../../index.html', import.meta.url), 'utf8'), ui);
     expect(html).not.toMatch(/<!--ui:|\{\{ui:/);
-    expect(html).toContain('www.esv.org');
+    expect(html).toContain('berean.bible');
+    expect(html).toContain('Berean Standard Bible');
   });
 });

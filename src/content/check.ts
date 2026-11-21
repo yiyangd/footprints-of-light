@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { fillPageText } from './page-text';
 import { bookOf } from './refs';
 import { EpisodeFileSchema, KINDS, UiFileSchema } from './schema';
+import { findScripture, sourceText, type VerseTable } from './scripture';
 import type { EpisodeFile, UiFile } from './types';
 
 /** 一个问题：在哪个文件、哪一项、怎么了 */
@@ -19,6 +20,8 @@ export interface ContentInput {
   pageHtml?: string;
   /** 代码里实现了的效果名 */
   effectNames: readonly string[];
+  /** 英文经文的原文（content/scripture/bsb.json 里的 verses）；不给就不核对 */
+  scripture?: VerseTable;
 }
 
 // —— 把 zod 报的错变成初学者看得懂的话 ——
@@ -139,6 +142,21 @@ function crossProblems(episodes: Array<{ file: string; data: EpisodeFile }>, uiF
   return problems;
 }
 
+/** 每一行经文的英文都要和 BSB 原文一模一样（AGENTS.md 第 1 条：经文一字不改） */
+function scriptureProblems(file: string, data: unknown, source: VerseTable): Problem[] {
+  const problems: Problem[] = [];
+  for (const { where, line } of findScripture(data)) {
+    try {
+      if (line.text.en !== sourceText(source, line.ref)) {
+        problems.push({ file, where, message: `${line.ref} 的英文和 BSB 原文不一样。运行 npm run fill:scripture 会照原文填好` });
+      }
+    } catch (e) {
+      problems.push({ file, where, message: (e as Error).message });
+    }
+  }
+  return problems;
+}
+
 /** 检查全部内容，返回发现的问题；一个问题都没有就是空的 */
 export function checkContent(input: ContentInput): Problem[] {
   z.config(z.locales.zhCN()); // 兜底的错误信息也用中文
@@ -151,6 +169,9 @@ export function checkContent(input: ContentInput): Problem[] {
   const episodes = Object.entries(input.episodes).map(([file, data]) => ({ file, data: data as EpisodeFile }));
   const ui = input.ui.data as UiFile;
   problems.push(...crossProblems(episodes, input.ui.file, ui, input.effectNames));
+  if (input.scripture) {
+    for (const { file, data } of [...episodes, { file: input.ui.file, data: ui }]) problems.push(...scriptureProblems(file, data, input.scripture));
+  }
   if (input.pageHtml !== undefined) {
     try { fillPageText(input.pageHtml, ui); } catch (e) { problems.push({ file: 'index.html', where: '占位符', message: (e as Error).message }); }
   }

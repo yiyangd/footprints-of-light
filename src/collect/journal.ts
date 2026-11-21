@@ -22,11 +22,11 @@ let bookTab: Tab = 'windows';
 const LOCK = '<span class="q">???</span>';
 
 /**
- * 版权声明：Crossway 要求在引用 ESV 的作品里写明（AGENTS.md 第 2 条），不能删。
+ * 经文的来源说明：英文是 BSB（公有领域），中文是和合本（AGENTS.md 第 2 条），不能删。
  * 网址只写成文字，不做成链接（AGENTS.md 第 7 条）。
  */
 const notices = (): string =>
-  `<div class="notice"><p>${esc(UI.esvNotice)} <span class="site">${esc(UI.esvSite)}</span></p><p class="zh" lang="zh-CN">${esc(UI.cuvNotice)}</p></div>`;
+  `<div class="notice"><p>${esc(UI.bibleNotice)} <span class="site">${esc(UI.bibleSite)}</span></p><p class="zh" lang="zh-CN">${esc(UI.cuvNotice)}</p></div>`;
 
 /** 打开一块知识陶片 */
 export function openCard(c: Card): void {

@@ -32,7 +32,7 @@
   },
   "text": {
     "version": {
-      "en": "ESV",
+      "en": "BSB",
       "zh": "和合本"
     },
     "toast": {
@@ -209,16 +209,16 @@
       "bi": "EN + 中"
     },
     "langNote": {
-      "en": "Scripture: ESV",
-      "bi": "Scripture: ESV · 中文经文：和合本"
+      "en": "Scripture: BSB",
+      "bi": "Scripture: BSB · 中文经文：和合本"
     },
     "title": {
       "en": "Footprints of Light · Prologue",
       "bi": "Footprints of Light 光之踪迹 · Prologue 序章"
     },
-    "esvNotice": "Scripture quotations marked (ESV) are from the ESV® Bible (The Holy Bible, English Standard Version®), © 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved.",
-    "cuvNotice": "中文经文引自和合本（新标点和合本，神版）。",
-    "esvSite": "www.esv.org"
+    "bibleNotice": "The Holy Bible, Berean Standard Bible, BSB is produced in cooperation with Bible Hub, Discovery Bible, unfoldingWord, Bible Aquifer, OpenBible.com, and the Berean Bible Translation Committee. This text of God's Word has been dedicated to the public domain.",
+    "bibleSite": "berean.bible",
+    "cuvNotice": "中文经文引自和合本（新标点和合本，神版）。"
   },
   "page": {
     "hud": {
@@ -296,7 +296,7 @@
         "kind": "scripture",
         "ref": "Ps 77:19",
         "text": {
-          "en": "Your way was through the sea, your path through the great waters; yet your footprints were unseen.",
+          "en": "Your path led through the sea, Your way through the mighty waters, but Your footprints were not to be found.",
           "zh": "你的道在海中；你的路在大水中；你的脚踪无人知道。"
         }
       },

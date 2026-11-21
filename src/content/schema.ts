@@ -137,10 +137,10 @@ export const UiTextSchema = z.strictObject({
   langShort: PerModeSchema,
   langNote: PerModeSchema,
   title: PerModeSchema,
-  /** Crossway 要求显示的 ESV 版权声明（AGENTS.md 第 2 条），不能删，不能改 */
-  esvNotice: z.string().includes('ESV').includes('Crossway').includes('All rights reserved'),
-  /** 版权声明里的网址：只写成文字，不做成链接（AGENTS.md 第 7 条） */
-  esvSite: text,
+  /** 英文经文的来源说明：BSB 的署名和公有领域声明（AGENTS.md 第 2 条），要一直留着 */
+  bibleNotice: z.string().includes('Berean Standard Bible').includes('public domain'),
+  /** 来源说明里的网址：只写成文字，不做成链接（AGENTS.md 第 7 条） */
+  bibleSite: text,
   cuvNotice: text,
 });
 

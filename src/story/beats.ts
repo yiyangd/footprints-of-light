@@ -42,7 +42,7 @@ export const story = {
     this.idx++;
     const line = this.beat.lines[this.idx];
     if (!line) { this.finish(); return; }
-    // 标签：Scripture · Genesis 1:3 · ESV ｜ 经文 · 创 1:3 · 和合本（AGENTS.md 第 2 条：每段经文旁标出译本）
+    // 标签：Scripture · Genesis 1:3 · BSB ｜ 经文 · 创 1:3 · 和合本（AGENTS.md 第 2 条：每段经文旁标出译本）
     const tag = $('story-tag'), txt = $('story-text');
     tag.dataset.k = line.kind;
     tag.innerHTML = bi(line.ref ? join(KIND_LABEL[line.kind], ' · ', refText(line.ref), ' · ', UI.version) : KIND_LABEL[line.kind]);

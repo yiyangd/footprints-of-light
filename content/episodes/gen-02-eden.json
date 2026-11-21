@@ -19,7 +19,7 @@
     "yearAM": 0
   },
   "scripture": {
-    "en": "ESV (English Standard Version, © Crossway)",
+    "en": "BSB (Berean Standard Bible, public domain)",
     "zh": "和合本（新标点和合本，神版）"
   },
   "note": "所有给玩家看的文字都是 { en, zh }。at 是地图上的 [x, z] 坐标（x 向东，z 向南）；r 是触发半径；fx 是剧情效果名；kind: scripture 经文 / history 考据 / imagination 游戏想象 / reflection 思考；ref 写成 Gen 1:3；hint 是这个节点结束后出现的操作提示（可以分 touch 手机 / desk 电脑两种）",
@@ -46,7 +46,7 @@
           "kind": "scripture",
           "ref": "Gen 2:8",
           "text": {
-            "en": "And the LORD God planted a garden in Eden, in the east, and there he put the man whom he had formed.",
+            "en": "And the LORD God planted a garden in Eden, in the east, where He placed the man He had formed.",
             "zh": "耶和华神在东方的伊甸立了一个园子，把所造的人安置在那里。"
           },
           "fx": "eden"
@@ -55,7 +55,7 @@
           "kind": "scripture",
           "ref": "Gen 2:9",
           "text": {
-            "en": "And out of the ground the LORD God made to spring up every tree that is pleasant to the sight and good for food. The tree of life was in the midst of the garden, and the tree of the knowledge of good and evil.",
+            "en": "Out of the ground the LORD God gave growth to every tree that is pleasing to the eye and good for food. And in the middle of the garden were the tree of life and the tree of the knowledge of good and evil.",
             "zh": "耶和华神使各样的树从地里长出来，可以悦人的眼目，其上的果子好作食物。园子当中又有生命树和分别善恶的树。"
           }
         }
@@ -94,7 +94,7 @@
           "kind": "scripture",
           "ref": "Gen 2:10",
           "text": {
-            "en": "A river flowed out of Eden to water the garden, and there it divided and became four rivers.",
+            "en": "Now a river flowed out of Eden to water the garden, and from there it branched into four headwaters:",
             "zh": "有河从伊甸流出来滋润那园子，从那里分为四道："
           }
         },
@@ -148,7 +148,7 @@
           "kind": "scripture",
           "ref": "Gen 2:15",
           "text": {
-            "en": "The LORD God took the man and put him in the garden of Eden to work it and keep it.",
+            "en": "Then the LORD God took the man and placed him in the Garden of Eden to cultivate and keep it.",
             "zh": "耶和华神将那人安置在伊甸园，使他修理看守。"
           }
         },
@@ -156,7 +156,7 @@
           "kind": "scripture",
           "ref": "Gen 2:16–17",
           "text": {
-            "en": "And the LORD God commanded the man, saying, “You may surely eat of every tree of the garden, but of the tree of the knowledge of good and evil you shall not eat, for in the day that you eat of it you shall surely die.”",
+            "en": "And the LORD God commanded him, “You may eat freely from every tree of the garden, but you must not eat from the tree of the knowledge of good and evil; for in the day that you eat of it, you will surely die.”",
             "zh": "耶和华神吩咐他说：“园中各样树上的果子，你可以随意吃，只是分别善恶树上的果子，你不可吃，因为你吃的日子必定死。”"
           }
         }
@@ -195,7 +195,7 @@
           "kind": "scripture",
           "ref": "Gen 2:18",
           "text": {
-            "en": "Then the LORD God said, “It is not good that the man should be alone; I will make him a helper fit for him.”",
+            "en": "The LORD God also said, “It is not good for the man to be alone. I will make for him a suitable helper.”",
             "zh": "耶和华神说：“那人独居不好，我要为他造一个配偶帮助他。”"
           }
         },
@@ -203,7 +203,7 @@
           "kind": "scripture",
           "ref": "Gen 2:19",
           "text": {
-            "en": "Now out of the ground the LORD God had formed every beast of the field and every bird of the heavens and brought them to the man to see what he would call them. And whatever the man called every living creature, that was its name.",
+            "en": "And out of the ground the LORD God formed every beast of the field and every bird of the air, and He brought them to the man to see what he would name each one. And whatever the man called each living creature, that was its name.",
             "zh": "耶和华神用土所造成的野地各样走兽和空中各样飞鸟都带到那人面前，看他叫什么。那人怎样叫各样的活物，那就是它的名字。"
           },
           "fx": "naming"
@@ -212,7 +212,7 @@
           "kind": "scripture",
           "ref": "Gen 2:20",
           "text": {
-            "en": "The man gave names to all livestock and to the birds of the heavens and to every beast of the field. But for Adam there was not found a helper fit for him.",
+            "en": "The man gave names to all the livestock, to the birds of the air, and to every beast of the field. But for Adam no suitable helper was found.",
             "zh": "那人便给一切牲畜和空中飞鸟、野地走兽都起了名；只是那人没有遇见配偶帮助他。"
           }
         },
@@ -268,7 +268,7 @@
           "kind": "scripture",
           "ref": "Gen 2:21",
           "text": {
-            "en": "So the LORD God caused a deep sleep to fall upon the man, and while he slept took one of his ribs and closed up its place with flesh.",
+            "en": "So the LORD God caused the man to fall into a deep sleep, and while he slept, He took one of the man’s ribs and closed up the area with flesh.",
             "zh": "耶和华神使他沉睡，他就睡了；于是取下他的一条肋骨，又把肉合起来。"
           },
           "fx": "sleep"
@@ -277,7 +277,7 @@
           "kind": "scripture",
           "ref": "Gen 2:22",
           "text": {
-            "en": "And the rib that the LORD God had taken from the man he made into a woman and brought her to the man.",
+            "en": "And from the rib that the LORD God had taken from the man, He made a woman and brought her to him.",
             "zh": "耶和华神就用那人身上所取的肋骨造成一个女人，领她到那人跟前。"
           },
           "fx": "eve"
@@ -286,7 +286,7 @@
           "kind": "scripture",
           "ref": "Gen 2:23",
           "text": {
-            "en": "Then the man said, “This at last is bone of my bones and flesh of my flesh; she shall be called Woman, because she was taken out of Man.”",
+            "en": "And the man said: “This is now bone of my bones and flesh of my flesh; she shall be called ‘woman,’ for out of man she was taken.”",
             "zh": "那人说：“这是我骨中的骨，肉中的肉，可以称她为女人，因为她是从男人身上取出来的。”"
           }
         }
@@ -321,7 +321,7 @@
           "kind": "scripture",
           "ref": "Gen 3:1",
           "text": {
-            "en": "Now the serpent was more crafty than any other beast of the field that the LORD God had made. He said to the woman, “Did God actually say, ‘You shall not eat of any tree in the garden’?”",
+            "en": "Now the serpent was more crafty than any beast of the field that the LORD God had made. And he said to the woman, “Did God really say, ‘You must not eat from any tree in the garden?’”",
             "zh": "耶和华神所造的，惟有蛇比田野一切的活物更狡猾。蛇对女人说：“神岂是真说不许你们吃园中所有树上的果子吗？”"
           },
           "fx": "serpent"
@@ -379,7 +379,7 @@
         "zh": "第一个“不好”"
       },
       "text": {
-        "en": "After so many “good”s, “not good” appears for the first time: “It is not good that the man should be alone” (Genesis 2:18). God made us to love and help one another. Who around you needs a companion?",
+        "en": "After so many “good”s, “not good” appears for the first time: “It is not good for the man to be alone” (Genesis 2:18). God made us to love and help one another. Who around you needs a companion?",
         "zh": "在一连串的“好”之后，第一次出现了“不好”：“那人独居不好”（创 2:18）。神造我们，是要我们彼此相爱、彼此帮助。你身边有谁需要一个同伴？"
       },
       "at": [
@@ -430,7 +430,7 @@
       "ref": "Gen 2:12",
       "kind": "history",
       "desc": {
-        "en": "The Pishon flows around the land of Havilah, “where there is gold… bdellium and onyx stone are there” (Genesis 2:11–12). Later, each shoulder piece of the high priest’s ephod held an onyx stone engraved with the names of the sons of Israel (Exodus 28:9–12).",
+        "en": "The Pishon flows around the land of Havilah, “where there is gold… and bdellium and onyx are found there” (Genesis 2:11–12). Later, each shoulder piece of the high priest’s ephod held an onyx stone engraved with the names of the sons of Israel (Exodus 28:9–12).",
         "zh": "比逊河环绕的哈腓拉地，“在那里有金子……又有珍珠和红玛瑙”（创 2:11–12）。后来大祭司以弗得的两条肩带上，也各镶着一块红玛瑙，上面刻着以色列儿子的名字（出 28:9–12）。"
       }
     }

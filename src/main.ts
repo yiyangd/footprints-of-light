@@ -14,7 +14,7 @@ import { bindJournalUi, closeModals, openBook } from './collect/journal';
 import { updatePickups } from './collect/pickups';
 import { refreshCounts } from './collect/rewards';
 import { clearSave, isDone, loadSave, persist } from './collect/save';
-import { GESTURES, UI } from './content';
+import { DRAFT_FIRST_BEAT, DRAFT_ID, GESTURES, UI } from './content';
 import type { Lang } from './content/types';
 import { bindSoundButton, initAudio, music } from './core/audio';
 import { $, DEBUG, IS_TOUCH } from './core/env';
@@ -25,7 +25,7 @@ import { camera, renderer, scene } from './core/renderer';
 import { game, U, W } from './core/state';
 import { updateTweens } from './core/tween';
 import { initDebug, updateFps } from './debug';
-import { EPISODE_MODULES } from './episodes';
+import { EPISODE_MODULES, loadDraftModule } from './episodes';
 import { cam, updateCamera } from './player/camera';
 import { doGesture, labelGestureButtons, updateGestureButtons } from './player/gestures';
 import { startGuideNear, updateGuide } from './player/guide';
@@ -33,7 +33,7 @@ import { player, updatePlayer } from './player/player';
 import { bindStoryUi, story, tryStartBeat } from './story/beats';
 import { registerEffects } from './story/effects';
 import { setDays } from './story/hud';
-import { restoreFromSave } from './story/restore';
+import { restoreFromSave, saveJustBefore } from './story/restore';
 import { updateAnimals } from './world/animals';
 import { updateBirds } from './world/birds';
 import { updateFish } from './world/fish';
@@ -43,9 +43,6 @@ import { updateSky } from './world/sky';
 import { updateTerrain } from './world/terrain';
 import { updateWater } from './world/water';
 import { updateWind } from './world/wind';
-
-// 把每一章的世界效果登记起来，剧情里写的 fx 名字才找得到对应的函数
-for (const episode of EPISODE_MODULES) registerEffects(episode.effects);
 
 /* ---------- 主循环：每一帧做一遍 ---------- */
 let lastNow = performance.now();
@@ -92,6 +89,9 @@ function startGame(fromSave: boolean): void {
   if (fromSave) {
     const loaded = loadSave();
     if (loaded) restoreFromSave(loaded);
+  } else if (DRAFT_FIRST_BEAT) {
+    // 开发时预览草稿：前面的章节都算走过了，直接从草稿那一章开始
+    restoreFromSave(saveJustBefore(DRAFT_FIRST_BEAT));
   }
   updateGestureButtons();
   refreshCounts();
@@ -146,21 +146,31 @@ function bindMapButtons(): void {
 // 姿态的按键来自内容数据：例如“安息”的 key 是 R，对应键盘上的 KeyR
 const gestureKeys = Object.fromEntries(Object.values(GESTURES).map((g) => ['Key' + g.key, g.id]));
 
-initInput({
-  toggleLang,
-  advanceStory: () => story.advance(),
-  closeModals,
-  openJournal: () => openBook(),
-  gesture: doGesture,
-  gestureKeys,
-});
-labelGestureButtons();
-bindStoryUi();
-bindJournalUi();
-bindSoundButton();
-bindTitleScreen();
-bindLanguageButtons();
-initLang();
-bindMapButtons();
-if (DEBUG) initDebug(startGame);
-frame();
+/** 把所有东西接起来，开始每一帧的循环 */
+function boot(): void {
+  // 把每一章的世界效果登记起来，剧情里写的 fx 名字才找得到对应的函数
+  for (const episode of EPISODE_MODULES) registerEffects(episode.effects);
+  initInput({
+    toggleLang,
+    advanceStory: () => story.advance(),
+    closeModals,
+    openJournal: () => openBook(),
+    gesture: doGesture,
+    gestureKeys,
+  });
+  labelGestureButtons();
+  bindStoryUi();
+  bindJournalUi();
+  bindSoundButton();
+  bindTitleScreen();
+  bindLanguageButtons();
+  initLang();
+  bindMapButtons();
+  if (DEBUG) initDebug(startGame);
+  frame();
+}
+
+// 开发时预览草稿（网址带 ?draft=...）：先把那一章的代码加载进来再开始。
+// 打包发布的版本里 import.meta.env.DEV 是 false，这一段连同草稿章节的代码都不会被打包进去。
+if (import.meta.env.DEV && DRAFT_ID) void loadDraftModule(DRAFT_ID).then(boot);
+else boot();

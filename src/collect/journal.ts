@@ -77,7 +77,7 @@ function relicsPage(body: HTMLElement): void {
     const it = document.createElement('div');
     it.className = 'item' + (on ? '' : ' locked');
     const title = on ? `${bi(r.name)}<span class="ref">${bi(refText(r.ref))}</span>` : bi(UI.notFound);
-    const text = on ? bi(r.desc, 'blk') : bi(UI.relicHint[id], 'blk');
+    const text = on ? bi(r.desc, 'blk') : bi(UI.relicHint[id] ?? UI.notFound, 'blk'); // 草稿里的信物还没写提示时，先显示“还没找到”
     it.innerHTML = `<div class="ico">${on ? relicIcon(id) : '?'}</div><div><h4>${title}</h4><p>${text}</p></div>`;
     list.appendChild(it);
   }

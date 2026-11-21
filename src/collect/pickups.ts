@@ -20,14 +20,21 @@ const pickups = CARDS.map((card) => {
   return { card, sprite };
 });
 
+/** 这一章的陶片，要等哪个剧情节点完成以后才出现：章的代号 → 节点的 id */
+const CARD_GATE: Record<string, string> = {
+  eden: 'e1',    // 走进园子之后
+  promise: 'e6', // 第 3 章（草稿）：第 2 章走完之后
+};
+
 /**
  * 这块陶片现在能不能捡：
- * - 伊甸的陶片：走进园子（完成节点 e1）之后才出现；
+ * - 伊甸和它之后的章节：等 CARD_GATE 里写的那个节点完成才出现；
  * - 放在光之路上的：一开始就在；
  * - 其余的：要等陆地升起来。
  */
 function cardAvailable(c: Card): boolean {
-  if (c.ep === 'eden') return isDone('e1');
+  const gate = CARD_GATE[c.ep];
+  if (gate) return isDone(gate);
   return c.onPath ? true : W.land > 0.97;
 }
 

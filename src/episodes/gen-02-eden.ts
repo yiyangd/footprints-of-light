@@ -43,9 +43,41 @@ interface Person {
   asleep: boolean;
   /** 躺下的进度，0 到 1 */
   lying: number;
+  /** 现在站的位置，和要去的位置（平时两个一样） */
+  x: number;
+  z: number;
+  goal: [number, number];
+  /** 去新位置的方式：走过去，还是身形暗下去、在新的地方再亮起来 */
+  move: 'walk' | 'fade';
+  /** 正在走的时候朝哪边；没有在走就是 null */
+  heading: number | null;
+  /** 第 3 章用：无花果树叶和皮衣（平时都看不见） */
+  leaves: THREE.Mesh;
+  robe: THREE.Mesh;
 }
 
-function makePerson(female: boolean): Person {
+/**
+ * 第 3 章也要用到伊甸的人和蛇。这几个数值像“旋钮”：默认值就是第 2 章的样子，
+ * 第 3 章的代码（gen-03-fall.ts）会去调它们。
+ */
+export const cast = {
+  /** 人身上的光：1 = 披着光，0 = 光不见了 */
+  glow: 1,
+  /** 夏娃伸手的程度，0 到 1 */
+  reach: 0,
+  /** 无花果树叶：0 没有，1 遮上了 */
+  leaves: 0,
+  /** 皮衣：0 没有，1 穿好了 */
+  clothed: 0,
+  /** 蛇说话时晃动的幅度，0 到 1 */
+  serpentTalk: 0,
+  /** 蛇从树上落到地上的进度，0 到 1 */
+  serpentDown: 0,
+  /** 蛇在地上爬走的进度，0 到 1 */
+  serpentAway: 0,
+};
+
+function makePerson(female: boolean, at: [number, number]): Person {
   const group = new THREE.Group();
   const mat = new THREE.MeshLambertMaterial({ color: '#fff6e2', emissive: '#ffd99a', emissiveIntensity: 0.85 });
   const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.24, female ? 0.85 : 0.95, 4, 10), mat);
@@ -71,11 +103,30 @@ function makePerson(female: boolean): Person {
   const halo = glowSprite('#ffe3b0', 2.6, 0.55);
   halo.position.y = 1.1;
   group.add(halo);
+  // 第 3 章的无花果树叶和皮衣：先做好藏着，用到的时候才显示
+  const leaves = new THREE.Mesh(new THREE.CylinderGeometry(0.27, 0.33, 0.42, 8), new THREE.MeshLambertMaterial({ color: '#5c7f3f', flatShading: true }));
+  leaves.position.y = 0.72;
+  const robe = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.4, 1.3, 8), new THREE.MeshLambertMaterial({ color: '#7d5f43', flatShading: true }));
+  robe.position.y = 0.74;
+  for (const cover of [leaves, robe]) { cover.visible = false; group.add(cover); }
   group.visible = false;
   scene.add(group);
-  return { group, mat, halo, armR: arms[1], appear: 1, asleep: false, lying: 0 };
+  return { group, mat, halo, armR: arms[1], appear: 1, asleep: false, lying: 0, x: at[0], z: at[1], goal: [at[0], at[1]], move: 'walk', heading: null, leaves, robe };
 }
-const adam = makePerson(false), eve = makePerson(true);
+const adam = makePerson(false, ADAM_POS), eve = makePerson(true, EVE_POS);
+
+/**
+ * 让亚当或夏娃去一个新的位置。
+ * how：'walk' 走过去；'fade' 身形暗下去、在新的地方再亮起来；'instant' 立刻就在那里（读档时用）
+ */
+export function sendPerson(who: 'adam' | 'eve', to: [number, number], how: 'walk' | 'fade' | 'instant'): void {
+  const p = who === 'adam' ? adam : eve;
+  p.goal = [to[0], to[1]];
+  if (how === 'instant') { p.x = to[0]; p.z = to[1]; } else p.move = how;
+}
+
+/** 分别善恶的树和生命树的位置（第 3 章也要用） */
+export const TREE_SPOTS_EDEN = { know: TREE_KNOW_POS, life: TREE_LIFE_POS };
 
 // —— 伊甸的两棵树：生命树（发着光）和分别善恶的树（结着金色的果子）——
 interface GardenTree { group: THREE.Group; grow: number }
@@ -278,21 +329,63 @@ function updateTree(tree: GardenTree, at: [number, number], dt: number): void {
   tree.group.position.set(at[0], terrainY(at[0], at[1]) - 0.1, at[1]);
 }
 
-function updatePerson(p: Person, at: [number, number], isAdam: boolean, dt: number, t: number): void {
+/** 人走路的速度（米/秒） */
+const WALK_SPEED = 1.7;
+
+/** 如果要去的位置和现在站的不一样，就往那边去（平时两个一样，这里什么都不做） */
+function movePerson(p: Person, dt: number): void {
+  const dx = p.goal[0] - p.x, dz = p.goal[1] - p.z, d = Math.hypot(dx, dz);
+  p.heading = null;
+  if (d === 0) return;
+  if (p.move === 'fade') {
+    // 身形先暗下去；完全暗了就换到新的位置，之后会自己再亮起来
+    p.appear -= dt * 1.7;
+    if (p.appear <= 0) { p.appear = 0; p.x = p.goal[0]; p.z = p.goal[1]; }
+    return;
+  }
+  const step = Math.min(d, WALK_SPEED * dt);
+  p.x += dx / d * step;
+  p.z += dz / d * step;
+  p.heading = Math.atan2(dx, dz);
+}
+
+function updatePerson(p: Person, isAdam: boolean, dt: number, t: number): void {
   if (!p.group.visible) return;
+  movePerson(p, dt);
   p.appear = Math.min(1, p.appear + dt * 0.5);
   const k = smooth(0, 1, p.appear);
   p.lying = damp(p.lying, p.asleep ? 1 : 0, 2.5, dt);
-  p.group.position.set(at[0], terrainY(at[0], at[1]) + p.lying * 0.25, at[1]);
+  p.group.position.set(p.x, terrainY(p.x, p.z) + p.lying * 0.25, p.z);
   p.group.scale.setScalar(Math.max(0.001, k));
   p.group.rotation.z = p.lying * 1.45;
-  // 平时面向玩家；起名的时候，亚当转过去面向走兽
-  const facePlayer = Math.atan2(player.pos.x - at[0], player.pos.z - at[1]);
-  p.group.rotation.y = damp(p.group.rotation.y, naming && isAdam ? Math.atan2(-2, 1) : facePlayer, 2, dt);
-  p.mat.emissiveIntensity = 0.85 + Math.sin(t * 1.3 + (isAdam ? 0 : 1)) * 0.1; // 身上的光轻轻起伏
-  p.halo.material.opacity = 0.5 * k;
+  // 平时面向玩家；起名的时候，亚当转过去面向走兽；正在走路就朝着走的方向
+  const facePlayer = Math.atan2(player.pos.x - p.x, player.pos.z - p.z);
+  p.group.rotation.y = damp(p.group.rotation.y, p.heading ?? (naming && isAdam ? Math.atan2(-2, 1) : facePlayer), 2, dt);
+  p.mat.emissiveIntensity = (0.85 + Math.sin(t * 1.3 + (isAdam ? 0 : 1)) * 0.1) * cast.glow; // 身上的光轻轻起伏
+  p.halo.material.opacity = 0.5 * k * cast.glow;
   // 起名时亚当抬起右手指着
   if (isAdam && naming) p.armR.rotation.z = -0.12 - smooth(0, 0.8, t - namingStart) * 1.0;
+  // 第 3 章：夏娃伸手；无花果树叶和皮衣
+  if (!isAdam) p.armR.rotation.z = 0.12 - cast.reach * 2.3;
+  p.leaves.visible = cast.leaves > 0.01 && cast.clothed < 0.99;
+  p.leaves.scale.setScalar(Math.max(0.001, cast.leaves));
+  p.robe.visible = cast.clothed > 0.01;
+  p.robe.scale.set(1, Math.max(0.001, cast.clothed), 1);
+}
+
+/** 蛇落到地上以后停在树的哪一边、再往哪里爬走（相对树的 [x, z]） */
+const SERPENT_GROUND: [number, number] = [2.4, 1.3], SERPENT_AWAY: [number, number] = [7, 4.5];
+
+function updateSerpent(dt: number, t: number): void {
+  serpentGrow = Math.min(1, serpentGrow + dt * 0.4);
+  // 平时盘在树上。第 3 章：落到地上时被压扁，贴着地；爬走时越来越小
+  const down = smooth(0, 1, cast.serpentDown), away = smooth(0, 1, cast.serpentAway);
+  const size = Math.max(0.001, smooth(0, 1, serpentGrow)) * (1 - away * 0.97);
+  serpent.scale.set(size, size * (1 - down * 0.9), size);
+  const x = TREE_KNOW_POS[0] + down * SERPENT_GROUND[0] + away * SERPENT_AWAY[0];
+  const z = TREE_KNOW_POS[1] + down * SERPENT_GROUND[1] + away * SERPENT_AWAY[1];
+  serpent.position.set(x, terrainY(x, z), z);
+  serpent.rotation.y = Math.sin(t * 0.4) * 0.08 + Math.sin(t * 2.3) * 0.12 * cast.serpentTalk + away * 4;
 }
 
 function updateOnyx(t: number): void {
@@ -308,14 +401,9 @@ function updateOnyx(t: number): void {
 export function update(dt: number, t: number): void {
   updateTree(treeLife, TREE_LIFE_POS, dt);
   updateTree(treeKnow, TREE_KNOW_POS, dt);
-  updatePerson(adam, ADAM_POS, true, dt, t);
-  updatePerson(eve, EVE_POS, false, dt, t);
-  if (serpent.visible) {
-    serpentGrow = Math.min(1, serpentGrow + dt * 0.4);
-    serpent.scale.setScalar(Math.max(0.001, smooth(0, 1, serpentGrow)));
-    serpent.position.set(TREE_KNOW_POS[0], terrainY(TREE_KNOW_POS[0], TREE_KNOW_POS[1]), TREE_KNOW_POS[1]);
-    serpent.rotation.y = Math.sin(t * 0.4) * 0.08;
-  }
+  updatePerson(adam, true, dt, t);
+  updatePerson(eve, false, dt, t);
+  if (serpent.visible) updateSerpent(dt, t);
   if (dove.visible) dove.rotation.y = Math.sin(t * 0.6) * 0.5;
   updateOnyx(t);
 }

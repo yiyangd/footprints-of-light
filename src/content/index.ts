@@ -12,8 +12,22 @@ import uiJson from '../../content/ui.json';
 import { refText as refTextWith } from './refs';
 import type { AnimalName, Beat, Bi, BookName, Card, EpisodeFile, EpisodeInfo, Gesture, Kind, Relic, UiFile, UiText, WindowDef } from './types';
 
+// —— 开发时预览草稿 ——
+// content/drafts/ 下的草稿还没有进游戏。开发时（npm run dev）在网址后面加 ?draft=草稿的文件名，
+// 例如 ?draft=gen-03-fall，就把那份草稿接在已有的章节后面，方便边做边看。
+// 打包发布的版本里 import.meta.env.DEV 是 false：草稿不会被打包进去，网址里写了也没有用。
+const DRAFTS: Record<string, unknown> = import.meta.env.DEV ? import.meta.glob('../../content/drafts/*.json', { eager: true, import: 'default' }) : {};
+const wantedDraft = import.meta.env.DEV && typeof location !== 'undefined' ? new URLSearchParams(location.search).get('draft') : null;
+const draftFile = wantedDraft ? DRAFTS[`../../content/drafts/${wantedDraft}.json`] as EpisodeFile | undefined : undefined;
+
+/** 正在预览的草稿的文件名；没有在预览就是 null */
+export const DRAFT_ID: string | null = draftFile ? wantedDraft : null;
+
 // 章节文件，按游戏里的先后顺序排。做了新的一章，就在这里加一行
-const FILES = [creationJson, edenJson] as unknown as EpisodeFile[];
+const FILES = [creationJson, edenJson, ...(draftFile ? [draftFile] : [])] as unknown as EpisodeFile[];
+
+/** 正在预览的草稿的第一个剧情节点的 id（预览时直接从这里开始）；没有在预览就是 null */
+export const DRAFT_FIRST_BEAT: string | null = draftFile?.beats[0]?.id ?? null;
 const ui = uiJson as unknown as UiFile;
 
 // 章的代号就用这一章彩窗的 id（creation、eden）：奖励里的 win、存档里的 pieces 用的都是它

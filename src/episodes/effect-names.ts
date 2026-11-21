@@ -10,5 +10,13 @@ export const CREATION_EFFECTS = [
 /** 第 2 章《伊甸园》的效果 */
 export const EDEN_EFFECTS = ['eden', 'rivers', 'naming', 'sleep', 'eve', 'serpent', 'end'] as const;
 
-/** 所有章节的效果名 */
+/** 第 3 章《你在哪里？》的效果。这一章还是草稿（content/drafts/），所以不算进下面的 EFFECT_NAMES */
+export const FALL_EFFECTS = [
+  'serpentSpeaks', 'eatFruit', 'lightFades', 'coolWind', 'silence', 'serpentCursed', 'goldenThread', 'thorns', 'clothe', 'leaveEden', 'cherubim',
+] as const;
+
+/** 已经进游戏的章节的效果名 */
 export const EFFECT_NAMES: readonly string[] = [...CREATION_EFFECTS, ...EDEN_EFFECTS];
+
+/** 草稿里可以用的效果名：已经进游戏的，加上草稿章节自己的 */
+export const DRAFT_EFFECT_NAMES: readonly string[] = [...EFFECT_NAMES, ...FALL_EFFECTS];

@@ -31,7 +31,7 @@ const motes = buildMotes();
 export function updateWind(dt: number, t: number, cx: number, cz: number): void {
   const wp = motes.geometry.attributes.position;
   for (let i = 0; i < wp.count; i++) {
-    let x = wp.getX(i) + dt * (2.2 + (i % 5) * 0.3);
+    let x = wp.getX(i) + dt * (2.2 + (i % 5) * 0.3) * (1 + W.gust * 2.5); // 起风时飘得更快
     let z = wp.getZ(i) + Math.sin(t * 0.7 + i) * dt * 0.6;
     let y = wp.getY(i);
     if (x - cx > 35) x -= 70;
@@ -44,5 +44,5 @@ export function updateWind(dt: number, t: number, cx: number, cz: number): void 
     wp.setXYZ(i, x, y, z);
   }
   wp.needsUpdate = true;
-  motes.material.opacity = (1 - W.light) * 0.75 * W.wind + W.light * 0.07;
+  motes.material.opacity = (1 - W.light) * 0.75 * W.wind + W.light * 0.07 + W.gust * 0.45;
 }

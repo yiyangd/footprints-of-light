@@ -124,7 +124,7 @@ function updateNight(dt: number): void {
 // 每一帧都要用到的临时变量，先建好，免得每帧新建一堆
 const WHITE = new THREE.Color('#ffffff');
 const GROUND_LIT = new THREE.Color('#5a4a38'), GROUND_DARK = new THREE.Color('#1a1712');
-const SUN_WHITE = new THREE.Color('#fff2dc'), SUN_WARM = new THREE.Color('#ffc98a');
+const SUN_WHITE = new THREE.Color('#fff2dc'), SUN_WARM = new THREE.Color('#ffc98a'), SUN_COLD = new THREE.Color('#aeb9c9');
 const now: Palette = palette('#000000', '#000000', '#000000', '#000000');
 
 /** 把现在的颜色朝 target 这一组颜色混过去 k 那么多 */
@@ -142,6 +142,15 @@ function computeSkyColors(): void {
   blendToward(PAL.night, W.night * W.light);
   const shade = 1 - W.shadow * 0.18;
   for (const c of now) c.multiplyScalar(shade);
+  if (W.fade > 0) for (const c of now) fadeColor(c);
+}
+
+const GREY = new THREE.Color();
+
+/** 第 3 章：颜色褪去。把一个颜色往同样亮度的灰色靠过去一些，再暗一点 */
+function fadeColor(c: THREE.Color): void {
+  const brightness = c.r * 0.3 + c.g * 0.59 + c.b * 0.11;
+  c.lerp(GREY.setScalar(brightness), W.fade * 0.6).multiplyScalar(1 - W.fade * 0.14);
 }
 
 /** 每一帧：更新天空、雾、日月星云和灯光 */
@@ -183,4 +192,11 @@ export function updateSky(dt: number): void {
   if (W.lights > 0.01) sunLight.position.copy(sunDirection).multiplyScalar(100);
   else sunLight.position.set(10, 100, 20);
   sunLight.color.copy(SUN_WHITE).lerp(SUN_WARM, W.rest * 0.6);
+  if (W.fade > 0) {
+    // 颜色褪去：灯光也变灰、变冷、变暗，地上的草木就跟着失了颜色
+    fadeColor(hemi.color);
+    fadeColor(sunLight.color);
+    sunLight.color.lerp(SUN_COLD, W.fade * 0.5);
+    sunLight.intensity *= 1 - W.fade * 0.25;
+  }
 }

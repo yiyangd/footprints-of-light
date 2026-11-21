@@ -12,3 +12,18 @@ export interface EpisodeModule {
 }
 
 export const EPISODE_MODULES: EpisodeModule[] = [creation, eden];
+
+/** 草稿章节的代码：草稿的文件名（content/drafts/ 下）→ 怎么加载它 */
+const DRAFT_MODULES: Record<string, () => Promise<EpisodeModule>> = {
+  'gen-03-fall': () => import('./gen-03-fall'),
+};
+
+/**
+ * 开发时预览草稿（网址带 ?draft=gen-03-fall）：把那一章的代码也加载进来。
+ * 打包发布的版本不会走到这里，草稿章节的代码也不会被打包进去（见 main.ts）。
+ */
+export async function loadDraftModule(draftId: string): Promise<void> {
+  const load = DRAFT_MODULES[draftId];
+  if (load) EPISODE_MODULES.push(await load());
+  else console.warn(`草稿 "${draftId}" 还没有对应的代码（见 src/episodes/index.ts）`);
+}

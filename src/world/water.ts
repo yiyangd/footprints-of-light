@@ -8,7 +8,7 @@ import { baseHeight, T_CX, T_CZ } from './heightmap';
 
 const waterUniforms = { uLand: { value: 0 } };
 
-function buildWater(): void {
+function buildWater(): THREE.Mesh<THREE.PlaneGeometry, THREE.MeshPhongMaterial> {
   const geo = new THREE.PlaneGeometry(700, 700, 140, 140);
   geo.rotateX(-Math.PI / 2);
   const pos = geo.attributes.position, n = pos.count;
@@ -37,14 +37,17 @@ function buildWater(): void {
       .replace('#include <color_vertex>', '#include <color_vertex>\n vColor.rgb = mix(vColor.rgb, color2, uLand);');
   };
   mat.customProgramCacheKey = () => 'water';
-  const water = new THREE.Mesh(geo, mat);
-  water.position.set(T_CX, 0, T_CZ);
-  water.renderOrder = 2;
-  scene.add(water);
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(T_CX, 0, T_CZ);
+  mesh.renderOrder = 2;
+  scene.add(mesh);
+  return mesh;
 }
-buildWater();
+const water = buildWater();
 
 /** 每一帧：陆地升起多少，浅滩的颜色就显出多少 */
 export function updateWater(): void {
   waterUniforms.uLand.value = W.land;
+  water.position.y = W.flood;
+  water.material.opacity = 0.86 + 0.12 * Math.min(1, W.flood / 2);
 }

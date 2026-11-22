@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import { rng } from '../core/math';
 import { scene } from '../core/renderer';
-import { U } from '../core/state';
+import { U, W } from '../core/state';
 
 const COUNT = 34;
 
@@ -56,7 +56,7 @@ export function updateBirds(dt: number, t: number): void {
     const x = b.cx + Math.cos(a) * b.r, z = b.cz + Math.sin(a) * b.r, y = b.h + Math.sin(t * 0.8 + b.ph) * 1.5;
     const yaw = Math.atan2(-Math.sin(a) * b.sp, Math.cos(a) * b.sp); // 头朝着飞的方向
     quat.setFromEuler(euler.set(0, yaw, Math.sign(b.sp) * 0.25));     // 转弯时身体稍微倾斜
-    m4.compose(vPos.set(x, y, z), quat, vScale.setScalar(fade * 1.15));
+    m4.compose(vPos.set(x, y, z), quat, vScale.setScalar(Math.max(0.001, fade * 1.15 * (1 - W.flooded)))); // 洪水的时候飞鸟也藏起来
     mesh.setMatrixAt(i, m4);
   });
   mesh.instanceMatrix.needsUpdate = true;

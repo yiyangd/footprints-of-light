@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { angleDiff, damp } from '../core/math';
 import { scene } from '../core/renderer';
+import { W } from '../core/state';
 import { player } from '../player/player';
 import { terrainY } from './heightmap';
 
@@ -49,6 +50,10 @@ export interface Figure {
   face: Spot | null;
   /** 走路的速度（米/秒） */
   speed: number;
+  /** 洪水以后还在（第 6 章方舟里的人）。其余的人洪水以后不再出现 */
+  survivor: boolean;
+  /** 脚下有多高：不写就是地面；走在方舟的跳板上时用跳板的高度（第 6 章） */
+  ground?: (x: number, z: number) => number;
 }
 
 const SKIN = '#ead8bc';
@@ -65,7 +70,7 @@ export function makeFigure(robe: string, female = false): Figure {
   mesh.rotation.order = 'YXZ'; // 先转身，再低头
   mesh.visible = false;
   scene.add(mesh);
-  return { mesh, x: 0, z: 0, goal: [0, 0], size: 1, sizeGoal: 1, shown: 0, showGoal: 0, bow: 0, bowGoal: 0, face: null, speed: 1.6 };
+  return { mesh, x: 0, z: 0, goal: [0, 0], size: 1, sizeGoal: 1, shown: 0, showGoal: 0, bow: 0, bowGoal: 0, face: null, speed: 1.6, survivor: false };
 }
 
 /** 让一个人出现在某个地方（不走过去，直接在那里慢慢显出来） */
@@ -92,7 +97,8 @@ export function vanish(f: Figure, instant: boolean): void {
 }
 
 export function updateFigure(f: Figure, dt: number, t: number): void {
-  f.shown = damp(f.shown, f.showGoal, 1.4, dt);
+  // 第 6 章洪水以后（W.perished = 1），前几章的人不再出现（不画死亡，只是不在了）
+  f.shown = damp(f.shown, !f.survivor && W.perished > 0.5 ? 0 : f.showGoal, 1.4, dt);
   f.mesh.visible = f.shown > 0.01;
   if (!f.mesh.visible) return;
   const dx = f.goal[0] - f.x, dz = f.goal[1] - f.z, d = Math.hypot(dx, dz);
@@ -105,7 +111,7 @@ export function updateFigure(f: Figure, dt: number, t: number): void {
   f.size = damp(f.size, f.sizeGoal, 0.5, dt);
   f.bow = damp(f.bow, f.bowGoal, 1.5, dt);
   const bob = walking ? Math.abs(Math.sin(t * 7 + f.x)) * 0.04 : 0;
-  f.mesh.position.set(f.x, terrainY(f.x, f.z) + bob, f.z);
+  f.mesh.position.set(f.x, (f.ground ? f.ground(f.x, f.z) : terrainY(f.x, f.z)) + bob, f.z);
   f.mesh.scale.setScalar(Math.max(0.001, f.size));
   // 走路时朝着走的方向；站着时面向 face 那一点，没有就面向玩家
   const look = f.face ?? [player.pos.x, player.pos.z];

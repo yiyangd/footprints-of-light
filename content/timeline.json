@@ -17,13 +17,14 @@
   ],
   "books": [
     { "id": "gen", "name": { "en": "Genesis", "zh": "创世记" }, "abbr": { "en": "Gen", "zh": "创" }, "testament": "OT", "type": "trunk", "season": 1, "parts": [{ "season": 1, "ch": "1–11" }, { "season": 2, "ch": "12–50" }], "start": null, "end": -1805, "when": { "en": "The beginning – c. 1805 BC", "zh": "太初—约前 1805 年" }, "maps": ["eden", "ararat-shinar", "ur-haran", "patriarchs-road", "jerusalem", "goshen"], "size": "L",
-      "play": { "url": "./play/", "beats": 39, "maps": ["eden"], "saveKey": "guangzhiyue-proto-v1", "title": { "en": "Chapters 1–5 (Genesis 1–5)", "zh": "第 1—5 章（创 1—5 章）" },
+      "play": { "url": "./play/", "beats": 51, "maps": ["eden"], "saveKey": "guangzhiyue-proto-v1", "title": { "en": "Chapters 1–6 (Genesis 1–8)", "zh": "第 1—6 章（创 1—8 章）" },
         "chapters": [
           {"n": 1, "title": {"en": "Seven Days of Creation", "zh": "创造七日"}, "ref": {"en": "Genesis 1:1–2:3", "zh": "创 1:1—2:3"}, "beats": ["begin", "day1", "day2", "day3", "day4", "day5", "day6", "day7"]},
           {"n": 2, "title": {"en": "The Garden of Eden", "zh": "伊甸园"}, "ref": {"en": "Genesis 2:4–25", "zh": "创 2:4—25"}, "beats": ["e1", "e2", "e3", "e4", "e5"]},
           {"n": 3, "title": {"en": "Where Are You?", "zh": "你在哪里？"}, "ref": {"en": "Genesis 3", "zh": "创 3 章"}, "beats": ["f1", "f2", "f3", "f4", "f5", "f6", "f7"]},
           {"n": 4, "title": {"en": "Brothers", "zh": "兄弟"}, "ref": {"en": "Genesis 4", "zh": "创 4 章"}, "beats": ["g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8", "g9"]},
-          {"n": 5, "title": {"en": "Walking with God", "zh": "与神同行"}, "ref": {"en": "Genesis 5", "zh": "创 5 章"}, "beats": ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9", "h10"]}
+          {"n": 5, "title": {"en": "Walking with God", "zh": "与神同行"}, "ref": {"en": "Genesis 5", "zh": "创 5 章"}, "beats": ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9", "h10"]},
+          {"n": 6, "title": {"en": "The Ark", "zh": "方舟"}, "ref": {"en": "Genesis 6–8", "zh": "创 6—8 章"}, "beats": ["n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12"]}
         ] } },
     { "id": "job", "name": { "en": "Job", "zh": "约伯记" }, "abbr": { "en": "Job", "zh": "伯" }, "testament": "OT", "type": "insert", "season": 2, "start": null, "end": null, "when": { "en": "Age of the patriarchs; year unknown", "zh": "族长时代，年份不详" }, "anchor": { "en": "Between Genesis 11 and 12", "zh": "创 11 与创 12 之间" }, "maps": ["edom-uz"], "size": "M" },
 

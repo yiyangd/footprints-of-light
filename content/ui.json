@@ -129,6 +129,10 @@
       "enoch-footprints": {
         "en": "Hint: watch the one who walked with God.",
         "zh": "提示：留意那位与神同行的人。"
+      },
+      "olive-leaf": {
+        "en": "Hint: watch the dove.",
+        "zh": "提示：留意那只鸽子。"
       }
     },
     "legend": {
@@ -229,8 +233,8 @@
       "bi": "Scripture: BSB · 中文经文：和合本"
     },
     "title": {
-      "en": "Footprints of Light · Genesis 1–5",
-      "bi": "Footprints of Light 光之踪迹 · Genesis 1–5 创世记 1—5 章"
+      "en": "Footprints of Light · Genesis 1–8",
+      "bi": "Footprints of Light 光之踪迹 · Genesis 1–8 创世记 1—8 章"
     },
     "bibleNotice": "The Holy Bible, Berean Standard Bible, BSB is produced in cooperation with Bible Hub, Discovery Bible, unfoldingWord, Bible Aquifer, OpenBible.com, and the Berean Bible Translation Committee. This text of God's Word has been dedicated to the public domain.",
     "bibleSite": "berean.bible",
@@ -275,16 +279,16 @@
     },
     "end": {
       "title": {
-        "en": "Genesis 1–5 Complete",
-        "zh": "创世记 1—5 章完"
+        "en": "Genesis 1–8 Complete",
+        "zh": "创世记 1—8 章完"
       },
       "line1": {
-        "en": "You witnessed the seven days of creation, walked into the garden in the east, went out with them to the east of Eden, saw what happened between two brothers, and walked the road of ten generations, from Adam to Noah.",
-        "zh": "你见证了创造的七日，走进了东方的园子，陪他们走到了伊甸的东边，看见了两兄弟之间发生的事，又走过了从亚当到挪亚的十代人。"
+        "en": "You witnessed the seven days of creation, walked into the garden in the east, went out with them to the east of Eden, saw what happened between two brothers, walked the road of ten generations, from Adam to Noah, and rode out the flood on the ark.",
+        "zh": "你见证了创造的七日，走进了东方的园子，陪他们走到了伊甸的东边，看见了两兄弟之间发生的事，走过了从亚当到挪亚的十代人，又在方舟上度过了洪水。"
       },
       "line2": {
-        "en": "The next chapter, “The Ark” (Genesis 6–8), is being made by all of us together.",
-        "zh": "下一章《方舟》（创世记 6—8 章），正在由我们一起制作。"
+        "en": "The next chapter, “The Rainbow” (Genesis 9), is being made by all of us together.",
+        "zh": "下一章《彩虹之约》（创世记 9 章），正在由我们一起制作。"
       },
       "openJournal": {
         "en": "Open Journal",
@@ -305,8 +309,8 @@
         "zh": "光之踪迹"
       },
       "sub": {
-        "en": "Genesis 1–5 · In the Beginning",
-        "zh": "创世记 1—5 章 · 起初"
+        "en": "Genesis 1–8 · In the Beginning",
+        "zh": "创世记 1—8 章 · 起初"
       },
       "verse": {
         "kind": "scripture",
@@ -337,8 +341,8 @@
         "zh": "手机：左下角摇杆移动，右半边屏幕拖动看四周，右下角按钮跳跃。建议戴上耳机。"
       },
       "credit": {
-        "en": "Genesis 1–5 v0.7 · A church youth project",
-        "zh": "创世记 1—5 章 v0.7 · 教会青少年项目"
+        "en": "Genesis 1–8 v0.8 · A church youth project",
+        "zh": "创世记 1—8 章 v0.8 · 教会青少年项目"
       },
       "langNames": {
         "en": "English",

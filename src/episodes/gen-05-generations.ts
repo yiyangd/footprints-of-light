@@ -58,13 +58,15 @@ function houseGeometry(at: Spot, door: Spot): THREE.BufferGeometry {
   return g;
 }
 
+const houseMat = new THREE.MeshLambertMaterial({ vertexColors: true, flatShading: true });
+
 const houses = GENERATIONS.map((gen) => {
   if (!gen.house) return null;
   const geo = houseGeometry(gen.house, gen.stand);
   // 原点放在房子最低处，往上长的时候是从地面长出来的
   const base = geo.boundingBox?.min.y ?? 0;
   geo.translate(0, -base, 0);
-  const mesh = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ vertexColors: true, flatShading: true }));
+  const mesh = new THREE.Mesh(geo, houseMat);
   mesh.position.y = base;
   mesh.visible = false;
   scene.add(mesh);
@@ -72,6 +74,23 @@ const houses = GENERATIONS.map((gen) => {
   TREE_SPOTS.push([gen.house[0], gen.house[1], 'east']);
   return mesh;
 });
+
+// 已经长好的房子合成一个网格来画：十座房子只算一次绘制（AGENTS.md 第 10 条）。
+// 还在长的房子照样一座一座画（它们要一点点变高）。
+const grownHouses = new THREE.Mesh(new THREE.BufferGeometry(), houseMat);
+grownHouses.visible = false;
+scene.add(grownHouses);
+/** 现在合在一起的是哪几座（例如 "0,1,2"）；变了才重新合 */
+let grownKey = '';
+
+/** 把长好的那几座房子重新合成一个网格 */
+function mergeGrownHouses(grown: number[]): void {
+  grownHouses.geometry.dispose();
+  grownHouses.geometry = grown.length
+    ? merge(grown.map((i) => (houses[i] as THREE.Mesh).geometry.clone().translate(0, (houses[i] as THREE.Mesh).position.y, 0)))
+    : new THREE.BufferGeometry();
+  grownHouses.visible = grown.length > 0;
+}
 
 // —— 人：第 2 代到第 10 代（亚当是第 2 章那个发光的人），还有挪亚的三个儿子 ——
 
@@ -211,6 +230,12 @@ export const effects: Record<(typeof GENERATIONS_EFFECTS)[number], Effect> = {
   },
 };
 
+/** 第 6 章开始时：挪亚一家搬走了（第 6 章在挪亚的地上另有他们一家） */
+export function noahMovesAway(instant: boolean): void {
+  alive[9] = false;
+  for (const f of [elders[9], ...sons]) if (f) vanish(f, instant);
+}
+
 /** 以诺走了多远（0 到 1）：脚印随着他走一个一个出现 */
 function enochProgress(): number {
   if (S.prints >= 1) return 1;
@@ -220,12 +245,18 @@ function enochProgress(): number {
 
 /** 每一帧：更新这一章的房子、人、脚印和升上去的光 */
 export function update(dt: number, t: number): void {
+  const grown: number[] = [];
   houses.forEach((mesh, i) => {
     if (!mesh) return;
     const k = smooth(0, 1, S.houses[i]);
-    mesh.visible = k > 0.001;
+    if (k >= 1) grown.push(i); // 长好了：画在合起来的那个网格里
+    mesh.visible = k > 0.001 && k < 1;
     mesh.scale.y = Math.max(0.001, k);
   });
+  if (grown.join() !== grownKey) {
+    grownKey = grown.join();
+    mergeGrownHouses(grown);
+  }
   for (const f of [...elders, ...sons]) if (f) updateFigure(f, dt, t);
   const shown = Math.floor(enochProgress() * PRINT_N);
   prints.visible = shown > 0;

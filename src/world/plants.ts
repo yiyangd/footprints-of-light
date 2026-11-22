@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { BEATS } from '../content';
 import { CLEAR_SPOTS } from '../episodes/gen-04-spots';
 import { CLEAR_SPOTS_5 } from '../episodes/gen-05-spots';
+import { CLEAR_SPOTS_6 } from '../episodes/gen-06-spots';
 import { IS_TOUCH } from '../core/env';
 import { rng } from '../core/math';
 import { U } from '../core/state';
@@ -12,8 +13,8 @@ import { baseHeight, EDEN, riverMeander, RIVERS, T_CX, T_CZ, T_D, T_W } from './
 import { pathDist } from './path';
 import { terrainGroup } from './terrain';
 
-/** 三片植被：主岛（第三日长出来）、伊甸（走进园子时长出来）、伊甸的东边（和主岛一起，第三日长出来） */
-export type Region = 'main' | 'eden' | 'east';
+/** 四片植被：主岛（第三日长出来）、伊甸（走进园子时长出来），伊甸的东边和挪亚的地（和主岛一起，第三日长出来） */
+export type Region = 'main' | 'eden' | 'east' | 'noah';
 
 /** 主岛和伊甸东边一起长 */
 const mainGrowth = { start: { value: 1e6 }, dur: { value: 2.2 } };
@@ -22,6 +23,7 @@ const mainGrowth = { start: { value: 1e6 }, dur: { value: 2.2 } };
 export const growth: Record<Region, { start: { value: number }; dur: { value: number } }> = {
   main: mainGrowth,
   east: mainGrowth,
+  noah: mainGrowth,
   eden: { start: { value: 1e6 }, dur: { value: 2.4 } },
 };
 
@@ -67,8 +69,11 @@ function scatter(count: number, seed: number, accept: (x: number, z: number, h: 
 /** (x, z) 在不在伊甸园里（离泉源 rad 米以内） */
 const inEden = (x: number, z: number, rad = 25): boolean => Math.hypot(x - EDEN.x, z - EDEN.z) < rad;
 
-/** (x, z) 在不在伊甸东边那块地上（第 4 章） */
-const inEastLand = (x: number, z: number): boolean => x > 86 && !inEden(x, z, 27);
+/** (x, z) 在不在伊甸东边那块地（第 4 章）和再往北那块地（第 5 章）上。z < 25：东南边挪亚的地（第 6 章）另外算 */
+const inEastLand = (x: number, z: number): boolean => x > 86 && !inEden(x, z, 27) && z < 25;
+
+/** (x, z) 在不在东南边挪亚的地上（第 6 章） */
+const inNoahLand = (x: number, z: number): boolean => z > 25 && x > 50;
 
 /** (x, z) 是不是离泉源和四道河都够远（河里不长草） */
 function notRiver(x: number, z: number): boolean {
@@ -179,7 +184,8 @@ function buildRocks(): void {
   const old = scatter(60, 303, coast, (x, z) => baseHeight(x, z, false))
     .filter((s) => Math.abs(baseHeight(s.x, s.z) - s.h) < 0.2);
   const east = scatter(16, 304, (x, z, h) => coast(x, z, h) && inEastLand(x, z));
-  const items = [...old, ...east];
+  const noah = scatter(14, 305, (x, z, h) => coast(x, z, h) && inNoahLand(x, z));
+  const items = [...old, ...east, ...noah];
   const mesh = new THREE.InstancedMesh(new THREE.DodecahedronGeometry(0.6, 0), new THREE.MeshLambertMaterial({ color: '#a79e92', flatShading: true }), items.length);
   items.forEach((s, i) => {
     const size = 0.4 + s.R * 1.1;
@@ -200,4 +206,7 @@ buildVegetation('eden', [42, -15], (x, z) => inEden(x, z, 25) && notRiver(x, z),
 // 伊甸的东边和再往北的那块地（第 4、5 章）：草和花少一些，树更少；房子、田、坛、城那些地方不种树
 buildVegetation('east', [90, -15], inEastLand,
   { grass: Math.round(VEG.grass * 0.22), flowers: Math.round(VEG.flowers * 0.15), trees: 14 }, 404, [...CLEAR_SPOTS, ...CLEAR_SPOTS_5]);
+// 挪亚的地和亚拉腊山（第 6 章）：方舟、房子、坛那些地方不种树
+buildVegetation('noah', [69, 44], inNoahLand,
+  { grass: Math.round(VEG.grass * 0.3), flowers: Math.round(VEG.flowers * 0.2), trees: 18 }, 505, CLEAR_SPOTS_6);
 buildRocks();

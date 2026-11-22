@@ -5,6 +5,7 @@ import * as eden from './gen-02-eden';
 import * as fall from './gen-03-fall';
 import * as brothers from './gen-04-brothers';
 import * as generations from './gen-05-generations';
+import * as ark from './gen-06-ark';
 
 /** 一章要提供的两样东西 */
 export interface EpisodeModule {
@@ -14,7 +15,7 @@ export interface EpisodeModule {
   update(dt: number, t: number): void;
 }
 
-export const EPISODE_MODULES: EpisodeModule[] = [creation, eden, fall, brothers, generations];
+export const EPISODE_MODULES: EpisodeModule[] = [creation, eden, fall, brothers, generations, ark];
 
 /** 草稿章节的代码：草稿的文件名（content/drafts/ 下）→ 怎么加载它 */
 // 现在没有草稿章节。写第 4 章的草稿时，在这里加一行，例如：

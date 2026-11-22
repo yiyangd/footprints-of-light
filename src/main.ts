@@ -22,6 +22,7 @@ import { flash } from './core/flash';
 import { bi, fill, initLang, onLangChange, setLang, toggleLang } from './core/i18n';
 import { initInput } from './core/input';
 import { camera, renderer, scene } from './core/renderer';
+import { hideUnseen, restoreUnseen } from './core/skip-unseen';
 import { game, U, W } from './core/state';
 import { updateTweens } from './core/tween';
 import { initDebug, updateFps } from './debug';
@@ -59,7 +60,9 @@ function frame(): void {
   updateWorld(dt, t);
   updateCamera(dt, moving);
   updateLabels();
+  hideUnseen(scene); // 透明度是 0 或缩没了的东西这一帧不画（画面不变，绘制次数少一些）
   renderer.render(scene, camera);
+  restoreUnseen();
   if (DEBUG) updateFps(dt);
 }
 

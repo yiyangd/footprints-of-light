@@ -27,8 +27,16 @@ export const GENERATIONS_EFFECTS = [
   'bornEnoch', 'diedJared', 'bornMethuselah', 'walkWithGod', 'enochTaken', 'bornLamech', 'diedMethuselah', 'bornNoah', 'diedLamech', 'noahSons',
 ] as const;
 
+/** 第 6 章《方舟》的效果 */
+export const ARK_EFFECTS = [
+  'manyYearsLater', 'darkness', 'favor', 'noahFamily', 'violence', 'arkPlan', 'arkDecks', 'gatherFood', 'arkBuilt', 'familyEnters', 'animalsEnter',
+  'floodgates', 'heavyRain', 'doorShut', 'waterRises', 'arkFloats', 'mountainsCovered', 'perishedAll', 'onlyNoah', 'windOver', 'rainStops', 'waterRecedes',
+  'arkRests', 'peaksAppear', 'openWindow', 'raven', 'doveOut', 'doveBack', 'doveAgain', 'oliveLeaf', 'doveGone', 'dryGround', 'familyOut', 'animalsOut',
+  'noahAltar', 'pleasingAroma', 'seasons',
+] as const;
+
 /** 已经进游戏的章节的效果名 */
-export const EFFECT_NAMES: readonly string[] = [...CREATION_EFFECTS, ...EDEN_EFFECTS, ...FALL_EFFECTS, ...BROTHERS_EFFECTS, ...GENERATIONS_EFFECTS];
+export const EFFECT_NAMES: readonly string[] = [...CREATION_EFFECTS, ...EDEN_EFFECTS, ...FALL_EFFECTS, ...BROTHERS_EFFECTS, ...GENERATIONS_EFFECTS, ...ARK_EFFECTS];
 
 /** 草稿里可以用的效果名：已经进游戏的，加上草稿章节自己的（现在没有草稿章节） */
 export const DRAFT_EFFECT_NAMES: readonly string[] = [...EFFECT_NAMES];

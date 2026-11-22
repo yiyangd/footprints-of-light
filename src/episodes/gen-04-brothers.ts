@@ -182,7 +182,7 @@ const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(
 
 function updateFlocks(t: number): void {
   for (const f of flocks) {
-    const k = smooth(0, 1, S[f.key]);
+    const k = smooth(0, 1, S[f.key]) * (1 - W.perished); // 洪水以后这些羊群不再出现
     f.mesh.visible = k > 0.001;
     if (!f.mesh.visible) continue;
     f.seeds.forEach((s, i) => {

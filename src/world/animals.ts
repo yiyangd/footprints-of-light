@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import { angleDiff, clamp, rng } from '../core/math';
 import { scene } from '../core/renderer';
+import { W } from '../core/state';
 import { terrainY } from './heightmap';
 import { groundAt } from './path';
 import { leg, mergeParts, placeAt } from './shapes';
@@ -146,7 +147,8 @@ export function updateAnimals(dt: number, t: number): void {
     if (a.summon && d < 0.3) {
       a.yaw += angleDiff(Math.atan2(a.summon.faceX - a.x, a.summon.faceZ - a.z), a.yaw) * (1 - Math.exp(-3 * dt));
     }
-    const gy = terrainY(a.x, a.z), size = clamp(a.appear, 0, 1);
+    // 第 6 章洪水的时候走兽藏起来（W.flooded = 1），出方舟以后又回来
+    const gy = terrainY(a.x, a.z), size = Math.max(0.001, clamp(a.appear, 0, 1) * (1 - W.flooded));
     const hop = moving ? Math.abs(Math.sin(t * 7 + a.phase)) * 0.06 : 0;                               // 走路时一颠一颠
     const graze = !moving && !a.summon ? Math.max(0, Math.sin(t * 0.5 + a.phase)) * 0.12 : 0;        // 站着时低头吃草
     quat.setFromEuler(euler.set(graze, a.yaw, 0));

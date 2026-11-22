@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { rng } from '../core/math';
 import { scene } from '../core/renderer';
 import { W } from '../core/state';
+import { platformHeight } from './platforms';
 import { riverPoint, RIVERS, terrainY } from './heightmap';
 
 /** 离路的中心线多近算是踩在石头上（米） */
@@ -95,17 +96,22 @@ function onBridge(b: Bridge, x: number, z: number): boolean {
  */
 export function groundAt(x: number, z: number): number | null {
   let best: number | null = null;
+  // 比水面低 0.3 米以上的地方是水，不能站（第 6 章洪水的时候，水面会涨高）
+  const wet = W.flood - 0.3;
   if (W.land > 0.02) {
     const h = terrainY(x, z);
-    if (h > -0.3) best = h;
+    if (h > wet) best = h;
   }
   if (pathDist(x, z) < PATH_W) {
     const s = stoneY(x, z);
-    if (best === null || s > best) best = s;
+    if (s > wet && (best === null || s > best)) best = s;
   }
   if (W.land > 0.9) {
-    for (const b of bridges) if (onBridge(b, x, z) && (best === null || b.y > best)) best = b.y;
+    for (const b of bridges) if (onBridge(b, x, z) && b.y > wet && (best === null || b.y > best)) best = b.y;
   }
+  // 方舟这样能站上去的东西
+  const p = platformHeight(x, z);
+  if (p !== null && (best === null || p > best)) best = p;
   return best;
 }
 

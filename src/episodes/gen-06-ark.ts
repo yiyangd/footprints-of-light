@@ -453,12 +453,22 @@ function flightPos(k: number, back: boolean, side: number, out: THREE.Vector3): 
   return out.set(ark.x + Math.cos(a) * reach * 16, ark.y + H + 1 + reach * 6, ark.z + Math.sin(a) * reach * 16);
 }
 
+/** 镜头这几秒跟着哪只鸟看（放乌鸦、放鸽子的时候）；null 就是不跟 */
+let watching: 'raven' | 'dove' | null = null;
+
+/** 让镜头转过去看着这只鸟飞，看 sec 秒 */
+function watchBird(which: 'raven' | 'dove', sec: number): void {
+  watching = which;
+  setFocus(ark.x, ark.y + H + 2, ark.z, 0.6, sec);
+}
+
 function updateBirds(t: number): void {
   const flap = (wings: THREE.Mesh[]): void => wings.forEach((w, i) => { w.rotation.z = (i ? 1 : -1) * Math.sin(t * 14) * 0.6; });
   raven.group.visible = S.raven > 0.01 && S.raven < 0.99;
   if (raven.group.visible) {
     flightPos(S.raven, false, 0.4, birdAt);
     raven.group.position.copy(birdAt);
+    if (watching === 'raven') W.focus.copy(birdAt); // 镜头跟着乌鸦
     raven.group.rotation.y = 0.4 + S.raven * 2.6 + Math.PI / 2;
     flap(raven.wings);
   }
@@ -468,6 +478,7 @@ function updateBirds(t: number): void {
   if (dove.group.visible) {
     flightPos(k, trip < 2, 2.2 + trip, birdAt);
     dove.group.position.copy(birdAt);
+    if (watching === 'dove') W.focus.copy(birdAt); // 镜头跟着鸽子
     dove.group.rotation.y = 2.2 + trip + k * 2.6 + Math.PI / 2;
     dove.leaf.visible = trip === 1 && k > 0.5; // 第二次飞回来时，嘴里叼着橄榄叶（创 8:11）
     flap(dove.wings);
@@ -653,29 +664,34 @@ export const effects: Record<(typeof ARK_EFFECTS)[number], Effect> = {
   /** 创 8:7：放出一只乌鸦，飞来飞去 */
   raven(instant) {
     set('raven', 1, 9, instant);
+    if (!instant) watchBird('raven', 7);
   },
   /** 创 8:8：放出一只鸽子去 */
   doveOut(instant) {
     set('dove', 0.5, 3, instant);
+    if (!instant) watchBird('dove', 4);
   },
   /** 创 8:9：鸽子找不着落脚之地，就回到方舟 */
   doveBack(instant) {
     set('dove', 1, 3, instant);
+    if (!instant) watchBird('dove', 4);
   },
   /** 创 8:10：又等了七天，再把鸽子放出去 */
   doveAgain(instant) {
     flood(4.5, 6, instant);
     set('dove', 1.5, 3, instant);
+    if (!instant) watchBird('dove', 4);
   },
   /** 创 8:11：鸽子嘴里叼着一个新拧下来的橄榄叶子回来 */
   oliveLeaf(instant) {
     set('dove', 2, 3, instant);
-    if (!instant) setFocus(ark.x, ark.y + H + 1, ark.z, 0.6, 5);
+    if (!instant) watchBird('dove', 4); // 看着它叼着橄榄叶飞回方舟
   },
   /** 创 8:12：再放出鸽子去，鸽子不再回来了 */
   doveGone(instant) {
     flood(2.5, 6, instant);
     set('dove', 3, 6, instant);
+    if (!instant) watchBird('dove', 6);
   },
   /** 创 8:13：地上的水都干了 */
   dryGround(instant) {

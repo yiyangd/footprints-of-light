@@ -19,6 +19,7 @@ import { player } from '../player/player';
 import type { Effect } from '../story/effects';
 import { animals, showSpecies, type Species } from '../world/animals';
 import { riverPoint, RIVERS, terrainY } from '../world/heightmap';
+import { merge } from '../world/figures';
 import { addLabel } from '../world/labels';
 import { showBridges } from '../world/path';
 import { growth } from '../world/plants';
@@ -154,24 +155,31 @@ function makeTree(kind: 'life' | 'know'): GardenTree {
   group.add(trunk);
   const leafMat = new THREE.MeshLambertMaterial({ color: isLife ? '#86cf6c' : '#4f8f4a', flatShading: true, emissive: isLife ? '#ffd36b' : '#000000', emissiveIntensity: isLife ? 0.22 : 0 });
   const R = rng(isLife ? 31 : 32);
-  // 树冠：一圈六团叶子，顶上再加一团
+  // 树冠：一圈六团叶子，顶上再加一团。七团叶子合成一个网格，画的时候只算一次（AGENTS.md 第 10 条）
+  const leafGeos: THREE.BufferGeometry[] = [];
   for (let i = 0; i < 6; i++) {
-    const leaves = new THREE.Mesh(new THREE.IcosahedronGeometry(1.5 + R() * 0.8, 0), leafMat);
+    const geo = new THREE.IcosahedronGeometry(1.5 + R() * 0.8, 0);
     const a = i / 6 * 6.28;
-    leaves.position.set(Math.cos(a) * 1.6, 4.6 + R() * 1.4, Math.sin(a) * 1.6);
-    group.add(leaves);
+    leafGeos.push(geo.translate(Math.cos(a) * 1.6, 4.6 + R() * 1.4, Math.sin(a) * 1.6));
   }
-  const top = new THREE.Mesh(new THREE.IcosahedronGeometry(2.0, 0), leafMat);
-  top.position.y = 6.0;
-  group.add(top);
+  leafGeos.push(new THREE.IcosahedronGeometry(2.0, 0).translate(0, 6.0, 0));
+  group.add(new THREE.Mesh(merge(leafGeos), leafMat));
   // 果子。圣经没有说分别善恶树的果子是什么（不是苹果），所以这里只是一种金色的果子
-  // 生命树上是一点点光，分别善恶的树上是金色的果子
-  const fruitMat = isLife ? null : new THREE.MeshLambertMaterial({ color: '#f0a83a', emissive: '#7a4a10', emissiveIntensity: 0.35 });
+  // 生命树上是一点点光，分别善恶的树上是金色的果子（金色的果子也合成一个网格）
+  const fruitGeos: THREE.BufferGeometry[] = [];
   for (let i = 0; i < (isLife ? 10 : 14); i++) {
     const a = R() * 6.28, rr = 1.6 + R() * 1.6, y = 3.8 + R() * 2.6;
-    const fruit = fruitMat ? new THREE.Mesh(new THREE.SphereGeometry(0.17, 8, 6), fruitMat) : glowSprite('#ffd36b', 0.7, 0.9);
-    fruit.position.set(Math.cos(a) * rr, y, Math.sin(a) * rr);
-    group.add(fruit);
+    if (isLife) {
+      const glow = glowSprite('#ffd36b', 0.7, 0.9);
+      glow.position.set(Math.cos(a) * rr, y, Math.sin(a) * rr);
+      group.add(glow);
+    } else {
+      fruitGeos.push(new THREE.SphereGeometry(0.17, 8, 6).translate(Math.cos(a) * rr, y, Math.sin(a) * rr));
+    }
+  }
+  if (!isLife) {
+    const fruitMat = new THREE.MeshLambertMaterial({ color: '#f0a83a', emissive: '#7a4a10', emissiveIntensity: 0.35 });
+    group.add(new THREE.Mesh(merge(fruitGeos), fruitMat));
   }
   if (isLife) {
     const halo = glowSprite('#ffe7a8', 8.5, 0.35);
@@ -229,6 +237,11 @@ function makeDove(): THREE.Group {
   return group;
 }
 const dove = makeDove();
+
+/** 第 6 章洪水“凡在地上有血肉的都死了”（创 7:21）：石头上的鸽子不见了，石头还留着 */
+export function retireDove(): void {
+  for (const part of dove.children) if (!((part as THREE.Mesh).geometry instanceof THREE.DodecahedronGeometry)) part.visible = false;
+}
 
 // —— 红玛瑙（创 2:12）：藏在比逊河边，走进园子以后才出现 ——
 const ONYX_POS = riverPoint(RIVERS[0], 15.5, 2.6);

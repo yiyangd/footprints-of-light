@@ -30,7 +30,14 @@ const BLOBS = [
 export const EAST_LAND = { x: 100, z: -6, rx: 14, rz: 27 };
 /** 再往北：沿着比逊河的一条长路（第 5 章，亚当的家谱） */
 export const NORTH_LAND = { x: 104, z: -50, rx: 11, rz: 20 };
-const LATER_LANDS = [EAST_LAND, NORTH_LAND];
+/** 东南边的海里：挪亚造方舟的地方，南边是亚拉腊山（第 6 章） */
+export const NOAH_LAND = { x: 84, z: 52, rx: 22, rz: 22 };
+const LATER_LANDS = [EAST_LAND, NORTH_LAND, NOAH_LAND];
+/**
+ * 亚拉腊山（创 8:4）：一座顶上平平的大山，方舟最后停在山顶上。
+ * top 以内是平顶，base 以外是平地，中间是山坡；h 是比周围高出多少米
+ */
+export const ARARAT = { x: 88, z: 59, top: 10, base: 15.5, h: 7 };
 /** 以诺走上去的那座小山（第 5 章） */
 export const ENOCH_HILL = { x: 111, z: -50, r: 4.6, h: 3 };
 
@@ -82,7 +89,10 @@ export function baseHeight(x: number, z: number, later = true): number {
   h += smooth(0.12, 0.5, m) * (fbm(x * 0.035 + 10, z * 0.035 - 5) - 0.45) * 4.5;
   h += hill(x, z, -5, -30, 9.5, 5.5) + hill(x, z, -24, 13, 10, 3.2) + hill(x, z, 22, 26, 9, 2.6);
   h -= hill(x, z, -16, -5, 7, 3.4); // 第五日的小湖
-  if (later) h += hill(x, z, ENOCH_HILL.x, ENOCH_HILL.z, ENOCH_HILL.r, ENOCH_HILL.h);
+  if (later) {
+    h += hill(x, z, ENOCH_HILL.x, ENOCH_HILL.z, ENOCH_HILL.r, ENOCH_HILL.h);
+    h += ARARAT.h * (1 - smooth(ARARAT.top, ARARAT.base, Math.hypot(x - ARARAT.x, z - ARARAT.z)));
+  }
   // 伊甸：平缓的园子 + 中央泉源 + 四道河
   const dx = x - EDEN.x, dz = z - EDEN.z, r = Math.hypot(dx, dz);
   const flat = 1 - smooth(16, 27, r);

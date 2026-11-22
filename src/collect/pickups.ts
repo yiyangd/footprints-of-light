@@ -3,7 +3,8 @@ import * as THREE from 'three';
 import { CARDS } from '../content';
 import type { Card } from '../content/types';
 import { sfx } from '../core/audio';
-import { scene } from '../core/renderer';
+import { clamp } from '../core/math';
+import { camera, scene } from '../core/renderer';
 import { game, W } from '../core/state';
 import { TEX } from '../core/textures';
 import { player } from '../player/player';
@@ -31,12 +32,20 @@ function cardAvailable(c: Card): boolean {
   return c.onPath ? true : W.land > 0.97;
 }
 
+/**
+ * 离镜头多远开始淡出、多远就不画了（米）。
+ * 地图越来越大，远处没捡的陶片只剩一个小点，却每块都要占一次绘制（AGENTS.md 第 10 条），所以远了就不画。
+ */
+const FADE_FROM = 40, FADE_TO = 55;
+
 /** 每一帧：让陶片上下浮动；玩家走到跟前就捡起来并打开 */
 export function updatePickups(t: number): void {
   for (const { card, sprite } of pickups) {
     const [x, z] = card.at;
-    sprite.visible = !save.cards.includes(card.id) && cardAvailable(card);
+    const far = clamp((FADE_TO - Math.hypot(camera.position.x - x, camera.position.z - z)) / (FADE_TO - FADE_FROM), 0, 1);
+    sprite.visible = far > 0 && !save.cards.includes(card.id) && cardAvailable(card);
     if (!sprite.visible) continue;
+    sprite.material.opacity = far;
     const gy = groundAt(x, z) ?? 0.2;
     sprite.position.set(x, gy + 0.9 + Math.sin(t * 2 + x) * 0.12, z);
     const near = Math.hypot(player.pos.x - x, player.pos.z - z) < 1.6 && Math.abs(player.pos.y - gy) < 3;

@@ -12,6 +12,7 @@ import { glowSprite, TEX } from '../core/textures';
 import { hint } from '../story/hint';
 import { EDEN_GATE_X } from '../world/heightmap';
 import { groundAt } from '../world/path';
+import { platformUnder, refugeSpot } from '../world/platforms';
 
 /** 玩家的状态 */
 export const player = {
@@ -26,7 +27,7 @@ export const player = {
   safe: new THREE.Vector3(0, 0.22, 49),  // 最后站过的安全位置（掉进水里就回到这里）
   safeT: 0,
   walkT: 0,        // 走路动画的进度
-  gesture: null as string | null,        // 正在做的姿态（rest 安息 / name 命名 / offer 献上 / walkwith 同行）
+  gesture: null as string | null,        // 正在做的姿态（rest 安息 / name 命名 / offer 献上 / walkwith 同行 / build 建造）
   gestureT: 0,
 };
 
@@ -174,6 +175,12 @@ export function updatePlayer(dt: number, camYaw: number): boolean {
   player.vel.z = damp(player.vel.z, wish.z * speed, grip, dt);
   if (mi.mag > 0.05) player.facing += angleDiff(Math.atan2(wish.x, wish.z), player.facing) * (1 - Math.exp(-12 * dt));
 
+  // 站在会动的东西上（第 6 章漂着的方舟）：跟着它一起挪
+  if (player.onGround) {
+    const pf = platformUnder(player.pos.x, player.pos.y, player.pos.z);
+    if (pf) { player.pos.x += pf.dx; player.pos.z += pf.dz; }
+  }
+
   // 2. 试着走过去；被挡住时试试只走 x 或只走 z（这样可以贴着边滑过去）
   const nx = player.pos.x + player.vel.x * dt, nz = player.pos.z + player.vel.z * dt;
   if (canGo(nx, nz)) { player.pos.x = nx; player.pos.z = nz; }
@@ -216,15 +223,17 @@ export function updatePlayer(dt: number, camYaw: number): boolean {
     player.energy = Math.min(1, player.energy + dt * 0.6);
   }
 
-  // 4. 掉进深水：回到最后站过的安全位置
-  if (player.pos.y < -1.4) {
+  // 4. 掉进深水：回到最后站过的安全位置（洪水的时候回到方舟上）
+  if (player.pos.y < W.flood - 1.4) {
     flash('black', 1, 0.5);
-    player.pos.copy(player.safe);
+    const refuge = refugeSpot();
+    if (refuge) player.pos.set(refuge[0], refuge[1], refuge[2]);
+    else player.pos.copy(player.safe);
     player.vel.set(0, 0, 0);
     player.onGround = true;
   }
   player.safeT -= dt;
-  if (player.onGround && g !== null && g > 0.05 && player.safeT <= 0) { player.safe.copy(player.pos); player.safeT = 0.4; }
+  if (player.onGround && g !== null && g > W.flood + 0.05 && player.safeT <= 0) { player.safe.copy(player.pos); player.safeT = 0.4; }
 
   const speedNow = Math.hypot(player.vel.x, player.vel.z);
   animateHero(dt, speedNow, g);
@@ -241,6 +250,7 @@ function animateHero(dt: number, speedNow: number, ground: number | null): void 
   const sit = player.gesture === 'rest' ? smooth(0, 0.6, player.gestureT) : 0;     // 安息：坐下
   const point = player.gesture === 'name' ? smooth(0, 0.4, player.gestureT) : 0;   // 命名：抬手指向前方
   const lift = player.gesture === 'offer' ? smooth(0, 0.7, player.gestureT) : 0;   // 献上：把灯举过头顶
+  const hammer = player.gesture === 'build' ? smooth(0, 0.3, player.gestureT) * Math.sin(player.gestureT * 9) : 0; // 建造：抡锤子
   hero.position.set(player.pos.x, player.pos.y + bob - sit * 0.32, player.pos.z);
   hero.rotation.y = player.facing;
 
@@ -248,7 +258,7 @@ function animateHero(dt: number, speedNow: number, ground: number | null): void 
   parts.robe.rotation.z = Math.sin(player.walkT) * 0.04 * stride;
   parts.cape.rotation.x = player.gliding ? -1.2 : damp(parts.cape.rotation.x, -0.12 - clamp(speedNow / 7, 0, 1) * 0.45, 6, dt);
   parts.cape.scale.x = player.gliding ? 1.9 : damp(parts.cape.scale.x, 1, 6, dt);
-  parts.arm.rotation.x = 1.25 + point * 0.25 - lift * 1.1;
+  parts.arm.rotation.x = 1.25 + point * 0.25 - lift * 1.1 - hammer * 0.7;
   parts.arm.position.y = 0.78 + point * 0.25 + lift * 0.42;
   parts.lamp.position.y = 0.72 + point * 0.3 - sit * 0.05 + lift * 0.86 + Math.sin(player.walkT * 0.5) * 0.015;
   parts.lamp.position.z = 0.42 - lift * 0.18;

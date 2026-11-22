@@ -10,9 +10,9 @@ const isBi = (t: unknown): boolean =>
   && (t as { en: string }).en.length > 0 && (t as { zh: string }).zh.length > 0;
 
 describe('剧情节点', () => {
-  it('创世记 1—5 章一共 39 段，和主页 timeline.json 里的 play.beats 一样（主页靠它算“走过几段”）', () => {
+  it('创世记第 1—6 章一共 51 段，和主页 timeline.json 里的 play.beats 一样（主页靠它算“走过几段”）', () => {
     const genesis = timelineJson.books.find((b) => b.id === 'gen') as { play?: { beats: number } } | undefined;
-    expect(BEATS).toHaveLength(39);
+    expect(BEATS).toHaveLength(51);
     expect(genesis?.play?.beats).toBe(BEATS.length);
   });
 

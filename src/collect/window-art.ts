@@ -212,6 +212,45 @@ function generationsWindowSVG(got: number[], label: string): string {
   return s + '</svg>';
 }
 
+/**
+ * 方舟之窗（第 6 章）：上半是天，下半是水。外圈六块从左上起顺时针是第 1、2、3、4、5、6 片，
+ * 中间是第 7 片“坛”：一座坛和笔直往上的烟。集齐了，水面上方出现一道淡淡的弧（下一章的彩虹）。
+ */
+function arkWindowSVG(got: number[], label: string): string {
+  const cols = ['#c8a46a', '#8a6a46', '#a89070', '#3f5f7a', '#6e7f58', '#7fa04a'];
+  const icons: Icon[] = [
+    // 一个义人：一个人，身上一点光
+    (x, y) => `<circle cx="${x}" cy="${y - 8}" r="4" fill="#fff6e2"/><path d="M${x - 6} ${y + 10}l3 -14h6l3 14z" fill="#fff6e2"/><circle cx="${x}" cy="${y - 2}" r="12" fill="#ffe7a0" opacity=".25"/>`,
+    // 方舟的造法：一个框，三层线
+    (x, y) => `<rect x="${x - 16}" y="${y - 7}" width="32" height="14" fill="none" stroke="#ffe7a0" stroke-width="2"/><path d="M${x - 16} ${y - 2}h32M${x - 16} ${y + 3}h32" stroke="#ffe7a0" stroke-width="1.2"/>`,
+    // 一对一对：两只走兽
+    (x, y) => `<ellipse cx="${x - 7}" cy="${y + 3}" rx="7" ry="4.5" fill="#f3ead8"/><circle cx="${x - 1}" cy="${y - 1}" r="2.6" fill="#3d3430"/><ellipse cx="${x + 7}" cy="${y + 5}" rx="7" ry="4.5" fill="#f3ead8"/><circle cx="${x + 13}" cy="${y + 1}" r="2.6" fill="#3d3430"/>`,
+    // 关门：方舟，门关上，下着雨
+    (x, y) => `<rect x="${x - 15}" y="${y - 2}" width="30" height="10" fill="#6b4e32"/><rect x="${x - 3}" y="${y}" width="6" height="7" fill="#3a2a1c"/>` + [-12, -4, 4, 12].map((d) => `<line x1="${x + d}" y1="${y - 14}" x2="${x + d - 2}" y2="${y - 6}" stroke="#d4dceb" stroke-width="1.5"/>`).join(''),
+    // 亚拉腊山：山顶上停着方舟
+    (x, y) => `<path d="M${x - 17} ${y + 10}l12 -12h10l12 12z" fill="#5a6a48"/><rect x="${x - 9}" y="${y - 7}" width="18" height="5" fill="#6b4e32"/>`,
+    // 橄榄叶：一只鸽子叼着叶子
+    (x, y) => `<ellipse cx="${x - 2}" cy="${y}" rx="8" ry="5" fill="#fbfaf5"/><path d="M${x - 4} ${y - 2}l-8 -7l4 9z" fill="#fbfaf5"/><ellipse cx="${x + 9}" cy="${y + 2}" rx="5" ry="2" fill="#4f7a2e"/>`,
+  ];
+  let s = `<svg viewBox="0 0 240 240" role="img" aria-label="${label}"><circle cx="120" cy="120" r="114" fill="#15161c" stroke="#3a3326" stroke-width="4"/>`;
+  for (let i = 0; i < 6; i++) {
+    const a0 = Math.PI + i * Math.PI / 3, a1 = a0 + Math.PI / 3, on = got.includes(i);
+    s += `<path d="${sector(42, 108, a0 + 0.02, a1 - 0.02)}" fill="${on ? cols[i] : DARK_GLASS}" stroke="#141414" stroke-width="3.5"/>`;
+    const [x, y] = polar(76, (a0 + a1) / 2);
+    s += on ? icons[i](x, y) : numberMark(x, y, i + 1);
+  }
+  const on7 = got.includes(6);
+  s += `<circle cx="120" cy="120" r="40" fill="${on7 ? '#2f2a1e' : DARK_GLASS}" stroke="#141414" stroke-width="3.5"/>`;
+  if (on7) {
+    s += '<rect x="108" y="128" width="24" height="10" rx="3" fill="#8f877b"/><path d="M120 126c-6 -5 -5 -12 0 -18c5 6 6 13 0 18z" fill="#ffcf5a"/>'
+      + '<path d="M120 106q-4 -8 0 -14t0 -12" fill="none" stroke="#cfc6b8" stroke-width="2.5" stroke-linecap="round"/>';
+  } else {
+    s += numberMark(120, 120, 7);
+  }
+  if (got.length === 7) s += '<path d="M40 120a80 80 0 0 1 160 0" fill="none" stroke="#ffe7a0" stroke-width="2" opacity=".5"/>' + GOLD_RIM;
+  return s + '</svg>';
+}
+
 /** 每扇彩窗怎么画，按彩窗的 id 查。label 是彩窗的名字，给读屏软件念 */
 export const WINDOW_ART: Record<string, (got: number[], label: string) => string> = {
   creation: creationWindowSVG,
@@ -219,6 +258,7 @@ export const WINDOW_ART: Record<string, (got: number[], label: string) => string
   promise: promiseWindowSVG,
   offering: offeringWindowSVG,
   generations: generationsWindowSVG,
+  ark: arkWindowSVG,
 };
 
 /** 每件信物的图标，按信物的 id 查 */
@@ -227,6 +267,7 @@ const RELIC_ICONS: Record<string, string> = {
   onyx: `<svg viewBox="0 0 48 48" width="40" height="40"><path d="M24 8l13 8v16l-13 8l-13-8V16z" fill="#b3242c"/><path d="M18 18l8-4l-3 9z" fill="#ffffff" opacity=".55"/></svg>`,
   'firstborn-lamb': `<svg viewBox="0 0 48 48" width="40" height="40"><ellipse cx="22" cy="27" rx="13" ry="9" fill="#f3efe6"/><circle cx="35" cy="21" r="6" fill="#f3efe6"/><circle cx="37" cy="20" r="1.4" fill="#3b332e"/><path d="M14 35v6M20 35v6M26 35v6M31 34v6" stroke="#cfc6b8" stroke-width="2.4" stroke-linecap="round"/></svg>`,
   'enoch-footprints': `<svg viewBox="0 0 48 48" width="40" height="40"><circle cx="24" cy="24" r="20" fill="#ffe7a0" opacity=".15"/><ellipse cx="18" cy="31" rx="4" ry="7" fill="#ffe7a0"/><ellipse cx="29" cy="18" rx="4" ry="7" fill="#fff4d6"/></svg>`,
+  'olive-leaf': `<svg viewBox="0 0 48 48" width="40" height="40"><path d="M10 38q14 -6 28 -28" fill="none" stroke="#6b5434" stroke-width="2"/><ellipse cx="22" cy="24" rx="5" ry="12" transform="rotate(40 22 24)" fill="#6f9a3a"/><ellipse cx="32" cy="15" rx="4" ry="9" transform="rotate(50 32 15)" fill="#8ab64a"/></svg>`,
   garments: `<svg viewBox="0 0 48 48" width="40" height="40"><path d="M18 8h12l9 9l-6 4v20H15V21l-6-4z" fill="#8a6440"/><path d="M20 8q4 6 8 0" fill="none" stroke="#4a3220" stroke-width="2"/><path d="M15 30h18" stroke="#6d4d31" stroke-width="2"/></svg>`,
 };
 

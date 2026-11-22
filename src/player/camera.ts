@@ -74,7 +74,8 @@ export function updateCamera(dt: number, moving: boolean): void {
   desired.copy(target).addScaledVector(offset, pullInFromTrees());
   // 镜头不能钻到地底下
   const gy = groundAt(desired.x, desired.z);
-  const minY = gy === null ? 0.3 : gy + 0.6;
+  // 镜头不能钻到地底下，也不能钻到水面下（第 6 章洪水的时候水面会涨高；平时 W.flood 是 0，和原来一样）
+  const minY = gy === null ? 0.3 + W.flood : Math.max(gy + 0.6, W.flood + 0.3);
   if (desired.y < minY) desired.y = minY;
   cam.pos.lerp(desired, 1 - Math.exp(-9 * dt));
   camera.position.copy(cam.pos);

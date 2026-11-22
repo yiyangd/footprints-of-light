@@ -9,7 +9,8 @@ import { baseHeight, T_CX, T_CZ } from './heightmap';
 const waterUniforms = { uLand: { value: 0 } };
 
 function buildWater(): THREE.Mesh<THREE.PlaneGeometry, THREE.MeshPhongMaterial> {
-  const geo = new THREE.PlaneGeometry(700, 700, 140, 140);
+  // 每小格 5 米。1300 米见方，南边第 6 章那块地（亚拉腊山）也在海的中间，看不到海的边
+  const geo = new THREE.PlaneGeometry(1300, 1300, 260, 260);
   geo.rotateX(-Math.PI / 2);
   const pos = geo.attributes.position, n = pos.count;
   const dark = new Float32Array(n * 3), tinted = new Float32Array(n * 3);

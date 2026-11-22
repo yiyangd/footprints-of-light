@@ -22,7 +22,7 @@
     "en": "BSB (Berean Standard Bible, public domain)",
     "zh": "和合本（新标点和合本，神版）"
   },
-  "note": "所有给玩家看的文字都是 { en, zh }。at 是地图上的 [x, z] 坐标（x 向东，z 向南）；r 是触发半径；fx 是剧情效果名；kind: scripture 经文 / history 考据 / imagination 游戏想象 / reflection 思考；ref 写成 Gen 1:3；hint 是这个节点结束后出现的操作提示（可以分 touch 手机 / desk 电脑两种）；card 的 after 是“哪个节点完成以后这块陶片才出现”；after（节点上的）是这个节点结束后触发的效果。第 3 章依据 docs/设计方案.md 第 4 节，创 3:1–24 一节不缺；用的是伊甸的地图。；第 6 章依据 docs/设计方案.md 第 4 节“第 6–8 章概要”里的方舟，创 6:1–8:22 一节不缺。地点在东南边的海里新加的一块地（heightmap.ts 的 NOAH_LAND），南边是亚拉腊山（ARARAT）；位置在 src/episodes/gen-06-spots.ts。洪水淹过整个世界：水面涨起来，方舟漂在水上，玩家站在方舟顶上跟着漂。创 7:21–23 不画死亡：只有经文，水面以下什么都看不清。",
+  "note": "所有给玩家看的文字都是 { en, zh }。at 是地图上的 [x, z] 坐标（x 向东，z 向南）；r 是触发半径；fx 是剧情效果名；kind: scripture 经文 / history 考据 / imagination 游戏想象 / reflection 思考；ref 写成 Gen 1:3；hint 是这个节点结束后出现的操作提示（可以分 touch 手机 / desk 电脑两种）；card 的 after 是“哪个节点完成以后这块陶片才出现”；after（节点上的）是这个节点结束后触发的效果。第 3 章依据 docs/设计方案.md 第 4 节，创 3:1–24 一节不缺；用的是伊甸的地图。；第 6 章依据 docs/设计方案.md 第 4 节“第 6–8 章概要”里的方舟，创 6:1–8:22 一节不缺。地点在原来那张图南边另加的一块地（heightmap.ts 的 FLOOD_MAP）：北边是挪亚的地（NOAH_LAND），南边是亚拉腊山（ARARAT）；位置和方舟的尺寸在 src/episodes/gen-06-spots.ts。方舟照真实的大小造（300 × 50 × 30 肘，大约 137 × 23 × 14 米），人也是真人的大小。洪水淹过整个世界：水面涨起来，方舟跟着水浮起来、漂在水上，玩家站在方舟顶上跟着漂；方舟只在浮着的时候漂，不会从还没淹过的山顶上滑过去。n7–n10 在方舟顶上（n10 靠近顶的北边，从地上贴着墙也能走到）；陶片 remembered 也在方舟顶上。创 7:21–23 不画死亡：只有经文，水面以下什么都看不清。",
   "beats": [
     {
       "id": "n1",
@@ -127,8 +127,8 @@
     {
       "id": "n2",
       "at": [
-        73.5,
-        43.6
+        92,
+        126
       ],
       "r": 3,
       "hud": {
@@ -188,8 +188,8 @@
     {
       "id": "n3",
       "at": [
-        77,
-        44.4
+        104,
+        126
       ],
       "r": 3,
       "hud": {
@@ -249,8 +249,8 @@
     {
       "id": "n4",
       "at": [
-        87.5,
-        44.4
+        122,
+        126
       ],
       "r": 3,
       "hud": {
@@ -346,8 +346,8 @@
     {
       "id": "n5",
       "at": [
-        89.5,
-        35.6
+        148,
+        128
       ],
       "r": 3,
       "hud": {
@@ -415,8 +415,8 @@
     {
       "id": "n6",
       "at": [
-        86,
-        33.3
+        168,
+        128
       ],
       "r": 2.6,
       "hud": {
@@ -473,17 +473,17 @@
         }
       ],
       "hint": {
-        "en": "Walk up the ramp onto the roof of the ark.",
-        "zh": "沿着跳板走上方舟的顶。"
+        "en": "Walk up the long ramp on the north side of the ark onto its roof.",
+        "zh": "沿着方舟北边的长坡，走上方舟的顶。"
       }
     },
     {
       "id": "n7",
       "at": [
-        83.5,
-        40
+        135,
+        150
       ],
-      "r": 2.2,
+      "r": 3,
       "hud": {
         "label": {
           "en": "The Door Is Shut",
@@ -558,10 +558,10 @@
     {
       "id": "n8",
       "at": [
-        83.5,
-        40
+        135,
+        150
       ],
-      "r": 2.2,
+      "r": 3,
       "hud": {
         "label": {
           "en": "The Waters Rose",
@@ -648,10 +648,10 @@
     {
       "id": "n9",
       "at": [
-        88,
-        59
+        135,
+        285
       ],
-      "r": 2.4,
+      "r": 3,
       "hud": {
         "label": {
           "en": "God Remembered Noah",
@@ -724,10 +724,10 @@
     {
       "id": "n10",
       "at": [
-        88,
-        59
+        123,
+        275.3
       ],
-      "r": 2.4,
+      "r": 3.5,
       "hud": {
         "label": {
           "en": "The Dove",
@@ -815,15 +815,21 @@
         }
       ],
       "hint": {
-        "en": "Jump down from the ark onto the mountain.",
-        "zh": "从方舟上跳下来，到山顶上去。"
+        "touch": {
+          "en": "Jump down from the roof of the ark onto the mountain. Hold the button at the bottom right to glide down.",
+          "zh": "从方舟顶上跳下去，到山顶上。按住右下角的按钮，可以慢慢滑下去"
+        },
+        "desk": {
+          "en": "Jump down from the roof of the ark onto the mountain. Hold Space to glide down.",
+          "zh": "从方舟顶上跳下去，到山顶上。按住空格，可以慢慢滑下去"
+        }
       }
     },
     {
       "id": "n11",
       "at": [
-        85.5,
-        49
+        126,
+        264
       ],
       "r": 3,
       "hud": {
@@ -902,8 +908,8 @@
     {
       "id": "n12",
       "at": [
-        80.6,
-        55
+        146,
+        258
       ],
       "r": 3,
       "hud": {
@@ -971,8 +977,8 @@
       "id": "cubits",
       "kind": "history",
       "at": [
-        74.6,
-        36.2
+        108,
+        116
       ],
       "after": "n3",
       "title": {
@@ -980,16 +986,16 @@
         "zh": "方舟有多大？"
       },
       "text": {
-        "en": "“300 cubits long, 50 cubits wide, and 30 cubits high” (Genesis 6:15). A cubit is the length from the elbow to the tip of the middle finger, about 45 cm. So the ark was about 137 m long, 23 m wide and 14 m high: longer than a football field. Its length was six times its width. The ark in this game is much smaller.",
-        "zh": "“要长三百肘，宽五十肘，高三十肘”（创 6:15）。一肘是从手肘到中指尖的长度，大约 45 厘米。算下来方舟大约长 137 米、宽 23 米、高 14 米，比一个足球场还长；长是宽的六倍。游戏里的方舟小得多。"
+        "en": "“300 cubits long, 50 cubits wide, and 30 cubits high” (Genesis 6:15). A cubit is the length from the elbow to the tip of the middle finger, about 45 cm. So the ark was about 137 m long, 23 m wide and 14 m high: longer than a football field. Its length was six times its width. The ark in this game is built at this real size, and the people beside it are life-size too. Walk all the way along it and see!",
+        "zh": "“要长三百肘，宽五十肘，高三十肘”（创 6:15）。一肘是从手肘到中指尖的长度，大约 45 厘米。算下来方舟大约长 137 米、宽 23 米、高 14 米，比一个足球场还长；长是宽的六倍。游戏里的方舟就是照这个真实的大小造的，旁边的人也是真人的大小。沿着它走一趟看看吧！"
       }
     },
     {
       "id": "remembered",
       "kind": "reflection",
       "at": [
-        93.5,
-        55.5
+        165,
+        288
       ],
       "after": "n9",
       "title": {
@@ -1005,8 +1011,8 @@
       "id": "olive-branch",
       "kind": "history",
       "at": [
-        90.5,
-        51.5
+        112,
+        262
       ],
       "after": "n10",
       "title": {
@@ -1022,8 +1028,8 @@
       "id": "seasons",
       "kind": "reflection",
       "at": [
-        76.5,
-        52.2
+        132,
+        256
       ],
       "after": "n12",
       "title": {

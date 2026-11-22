@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { nextBeat } from '../collect/save';
 import { clamp, damp, easeInOut } from '../core/math';
 import { scene } from '../core/renderer';
-import { game } from '../core/state';
+import { game, W } from '../core/state';
 import { glowSprite, TEX } from '../core/textures';
 import { groundAt } from '../world/path';
 import { player } from './player';
@@ -27,9 +27,9 @@ function buildTrail(): THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial> 
 }
 const trail = buildTrail();
 
-/** 光该悬在节点上方多高的地方 */
+/** 光该悬在节点上方多高的地方（第 6 章洪水的时候不沉到水下：例如方舟还没漂到亚拉腊山，光就在那里的水面上等着） */
 function hoverHeight(at: [number, number]): number {
-  return Math.max(groundAt(at[0], at[1]) ?? 0.22, 0.22) + 1.7;
+  return Math.max(groundAt(at[0], at[1]) ?? 0.22, 0.22, W.flood) + 1.7;
 }
 
 /** 让光飞向下一个剧情节点；全部完成了就把光收起来 */

@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { fbm, smooth } from '../core/math';
 import { scene } from '../core/renderer';
 import { W } from '../core/state';
-import { baseHeight, EDEN, landOffset, T_CX, T_CZ, T_D, T_W } from './heightmap';
+import { baseHeight, EDEN, FLOOD_MAP, landOffset, T_CX, T_CZ, T_D, T_W } from './heightmap';
 
 /** 地形和长在地上的东西（草、树、石头）都放在这一组里，陆地升起时整组一起往上抬 */
 export const terrainGroup = new THREE.Group();
@@ -12,12 +12,16 @@ scene.add(terrainGroup);
 
 const terrainUniforms = { uGreen: { value: 0 } };
 
-function buildTerrain(): void {
-  const geo = new THREE.PlaneGeometry(T_W, T_D, 210, 176);
+/**
+ * 做一块地形：中心 (cx, cz)，东西宽 w、南北长 d，分成 segW × segD 个小格。
+ * 地图上现在有两块：原来那张图（第 1—5 章）和它南边第 6 章的那块（方舟按真实的大小造，原来那张图装不下）
+ */
+function buildTerrain(cx: number, cz: number, w: number, d: number, segW: number, segD: number): void {
+  const geo = new THREE.PlaneGeometry(w, d, segW, segD);
   geo.rotateX(-Math.PI / 2);
   const pos = geo.attributes.position, n = pos.count;
   for (let i = 0; i < n; i++) {
-    const x = pos.getX(i) + T_CX, z = pos.getZ(i) + T_CZ;
+    const x = pos.getX(i) + cx, z = pos.getZ(i) + cz;
     pos.setY(i, baseHeight(x, z));
   }
   geo.computeVertexNormals();
@@ -31,7 +35,7 @@ function buildTerrain(): void {
   const sand = C('#e2d1a2'), grassA = C('#86c062'), grassB = C('#6fae55'), grassHi = C('#a9c46c');
   const rock = C('#9b958c'), edenG = C('#5fb85a'), tmp = new THREE.Color();
   for (let i = 0; i < n; i++) {
-    const x = pos.getX(i) + T_CX, z = pos.getZ(i) + T_CZ, h = pos.getY(i), ny = nor.getY(i);
+    const x = pos.getX(i) + cx, z = pos.getZ(i) + cz, h = pos.getY(i), ny = nor.getY(i);
     const v = fbm(x * 0.15, z * 0.15), steep = ny < 0.78;
     // —— 光秃 ——
     if (h < -0.2) tmp.copy(wetB);
@@ -65,10 +69,13 @@ function buildTerrain(): void {
   };
   mat.customProgramCacheKey = () => 'terrain';
   const mesh = new THREE.Mesh(geo, mat);
-  mesh.position.set(T_CX, 0, T_CZ);
+  mesh.position.set(cx, 0, cz);
   terrainGroup.add(mesh);
 }
-buildTerrain();
+// 原来那张图：每小格大约 0.9 米
+buildTerrain(T_CX, T_CZ, T_W, T_D, 210, 176);
+// 第 6 章那块（挪亚的地和亚拉腊山）：地方大、平地多，每小格 1.5 米
+buildTerrain(FLOOD_MAP.cx, FLOOD_MAP.cz, FLOOD_MAP.w, FLOOD_MAP.d, FLOOD_MAP.w / 1.5, FLOOD_MAP.d / 1.5);
 
 /** 每一帧：让陆地升到该在的高度，草色变到该有的绿 */
 export function updateTerrain(): void {

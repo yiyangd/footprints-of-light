@@ -30,14 +30,28 @@ const BLOBS = [
 export const EAST_LAND = { x: 100, z: -6, rx: 14, rz: 27 };
 /** 再往北：沿着比逊河的一条长路（第 5 章，亚当的家谱） */
 export const NORTH_LAND = { x: 104, z: -50, rx: 11, rz: 20 };
-/** 东南边的海里：挪亚造方舟的地方，南边是亚拉腊山（第 6 章） */
-export const NOAH_LAND = { x: 84, z: 52, rx: 22, rz: 22 };
+/**
+ * 第 6 章的地图：在原来那张图的南边另加的一块地形（中心 cx, cz，东西宽 w、南北长 d）。
+ * 方舟要照真实的大小造（137 米长，见 episodes/gen-06-spots.ts），原来那张图装不下，所以挪亚的地和亚拉腊山都在这里。
+ * 它的北边正好接着原来那张图的南边（z = 82），两块不重叠。
+ */
+export const FLOOD_MAP = { cx: 135, cz: 214, w: 240, d: 264 };
+/** 挪亚造方舟的地（第 6 章）：一大块岛 */
+export const NOAH_LAND = { x: 135, z: 150, rx: 105, rz: 58 };
 const LATER_LANDS = [EAST_LAND, NORTH_LAND, NOAH_LAND];
 /**
- * 亚拉腊山（创 8:4）：一座顶上平平的大山，方舟最后停在山顶上。
- * top 以内是平顶，base 以外是平地，中间是山坡；h 是比周围高出多少米
+ * 造方舟的场地：一块压平的长方形。中心 (x, z)，东西半长 hx、南北半宽 hz，地面高 y。
+ * 方舟长 137 米、宽 23 米，场地四边都比它大出几米
  */
-export const ARARAT = { x: 88, z: 59, top: 10, base: 15.5, h: 7 };
+export const ARK_YARD = { x: 135, z: 150, hx: 76, hz: 17, y: 1.2 };
+/**
+ * 亚拉腊山（创 8:4）：挪亚的地南边海里的一座大山，顶上是一块东西长的平地，方舟最后停在上面。
+ * 平顶的形状像操场的跑道：中间一个东西半长 hx、南北半宽 hz 的长方形，再往外 top 米以内都是平顶；
+ * 从平顶的边再往外 base 米是山坡，一直下到海底。y 是平顶的高度（米）
+ */
+export const ARARAT = { x: 135, z: 285, hx: 54, hz: 4, top: 26, base: 52, y: 18 };
+/** 亚拉腊山旁边两座矮一些的山（创 8:5“山顶都现出来了”）：中心 (x, z)、半径 r、山顶的高度 y。都比亚拉腊山矮 */
+export const LOW_PEAKS = [{ x: 44, z: 236, r: 26, y: 13 }, { x: 228, z: 238, r: 26, y: 15 }];
 /** 以诺走上去的那座小山（第 5 章） */
 export const ENOCH_HILL = { x: 111, z: -50, r: 4.6, h: 3 };
 
@@ -66,6 +80,31 @@ function hill(x: number, z: number, cx: number, cz: number, rad: number, h: numb
   return d >= 1 ? 0 : h * (1 - d * d) * (1 - d * d);
 }
 
+/** 离一个长方形（中心 cx, cz，半长 hx、半宽 hz）有多远；在长方形里面是 0 */
+function rectDist(x: number, z: number, cx: number, cz: number, hx: number, hz: number): number {
+  return Math.hypot(Math.max(0, Math.abs(x - cx) - hx), Math.max(0, Math.abs(z - cz) - hz));
+}
+
+/** 造方舟的场地：场地里面压成平地，往外 8 米慢慢回到原来的地形 */
+function arkYard(x: number, z: number, h: number): number {
+  const Y = ARK_YARD, e = rectDist(x, z, Y.x, Y.z, Y.hx, Y.hz);
+  return lerp(h, Y.y, 1 - smooth(0, 8, e));
+}
+
+/** 亚拉腊山：平顶上几乎是平的（只在靠边的地方有一点起伏），往外是山坡，一直下到原来的高度（海底） */
+function ararat(x: number, z: number, h: number): number {
+  const A = ARARAT, d = rectDist(x, z, A.x, A.z, A.hx, A.hz);
+  if (d >= A.top + A.base) return h;
+  const top = A.y + (fbm(x * 0.05 + 7, z * 0.05 + 2) - 0.5) * 1.6 * smooth(A.top - 10, A.top, d);
+  return lerp(h, top, 1 - smooth(A.top, A.top + A.base, d));
+}
+
+/** 一座从海底（-7.5 米）升起的尖一些的山，山顶高 p.y */
+function peak(x: number, z: number, p: { x: number; z: number; r: number; y: number }): number {
+  const d = Math.hypot(x - p.x, z - p.z) / p.r;
+  return d >= 1 ? -7.5 : -7.5 + (p.y + 7.5) * (1 - d * d) * (1 - d * d);
+}
+
 /** 这个位置离海岸有多远：大于 0 是陆地，小于 0 是海。加了一点噪声，海岸线才不会太圆 */
 function islandMask(x: number, z: number, later: boolean): number {
   let m = -1;
@@ -91,7 +130,9 @@ export function baseHeight(x: number, z: number, later = true): number {
   h -= hill(x, z, -16, -5, 7, 3.4); // 第五日的小湖
   if (later) {
     h += hill(x, z, ENOCH_HILL.x, ENOCH_HILL.z, ENOCH_HILL.r, ENOCH_HILL.h);
-    h += ARARAT.h * (1 - smooth(ARARAT.top, ARARAT.base, Math.hypot(x - ARARAT.x, z - ARARAT.z)));
+    h = arkYard(x, z, h);
+    h = ararat(x, z, h);
+    for (const p of LOW_PEAKS) h = Math.max(h, peak(x, z, p));
   }
   // 伊甸：平缓的园子 + 中央泉源 + 四道河
   const dx = x - EDEN.x, dz = z - EDEN.z, r = Math.hypot(dx, dz);

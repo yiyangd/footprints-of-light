@@ -9,7 +9,7 @@ import { CLEAR_SPOTS_6 } from '../episodes/gen-06-spots';
 import { IS_TOUCH } from '../core/env';
 import { rng } from '../core/math';
 import { U } from '../core/state';
-import { baseHeight, EDEN, riverMeander, RIVERS, T_CX, T_CZ, T_D, T_W } from './heightmap';
+import { baseHeight, EDEN, FLOOD_MAP, riverMeander, RIVERS, T_CX, T_CZ, T_D, T_W } from './heightmap';
 import { pathDist } from './path';
 import { terrainGroup } from './terrain';
 
@@ -50,16 +50,22 @@ function growMaterial<T extends THREE.Material>(base: T, key: string, region: Re
   return base;
 }
 
+/** 在哪一块地形上撒点：中心 (cx, cz)，东西宽 w、南北长 d */
+interface Area { cx: number; cz: number; w: number; d: number }
+/** 原来那张图（第 1—5 章） */
+const OLD_MAP: Area = { cx: T_CX, cz: T_CZ, w: T_W, d: T_D };
+
 /**
- * 在整张地图上随机撒点，只留下 accept 说“可以”的那些，直到凑够 count 个。
+ * 在一块地图上随机撒点，只留下 accept 说“可以”的那些，直到凑够 count 个。
  * 用带种子的随机数，所以每次打开游戏撒出来的位置都一样。
+ * area 不写就是原来那张图；第 6 章那块地（挪亚的地和亚拉腊山）写 FLOOD_MAP
  */
-function scatter(count: number, seed: number, accept: (x: number, z: number, h: number) => boolean, height: (x: number, z: number) => number = baseHeight): Spot[] {
+function scatter(count: number, seed: number, accept: (x: number, z: number, h: number) => boolean, height: (x: number, z: number) => number = baseHeight, area: Area = OLD_MAP): Spot[] {
   const R = rng(seed), out: Spot[] = [];
   let tries = 0;
   while (out.length < count && tries < count * 60) {
     tries++;
-    const x = T_CX - T_W / 2 + R() * T_W, z = T_CZ - T_D / 2 + R() * T_D;
+    const x = area.cx - area.w / 2 + R() * area.w, z = area.cz - area.d / 2 + R() * area.d;
     const h = height(x, z);
     if (accept(x, z, h)) out.push({ x, z, h, R: R() });
   }
@@ -72,8 +78,8 @@ const inEden = (x: number, z: number, rad = 25): boolean => Math.hypot(x - EDEN.
 /** (x, z) 在不在伊甸东边那块地（第 4 章）和再往北那块地（第 5 章）上。z < 25：东南边挪亚的地（第 6 章）另外算 */
 const inEastLand = (x: number, z: number): boolean => x > 86 && !inEden(x, z, 27) && z < 25;
 
-/** (x, z) 在不在东南边挪亚的地上（第 6 章） */
-const inNoahLand = (x: number, z: number): boolean => z > 25 && x > 50;
+/** (x, z) 在不在第 6 章那块地上（挪亚的地和亚拉腊山，在原来那张图的南边） */
+const inNoahLand = (_x: number, z: number): boolean => z > FLOOD_MAP.cz - FLOOD_MAP.d / 2;
 
 /** (x, z) 是不是离泉源和四道河都够远（河里不长草） */
 function notRiver(x: number, z: number): boolean {
@@ -98,7 +104,7 @@ interface Counts { grass: number; flowers: number; trees: number }
  * @param origin 从哪里开始长：离这个点越远的植物长出来得越晚
  * @param filter 哪些位置可以种
  */
-function buildVegetation(region: Region, origin: [number, number], filter: (x: number, z: number) => boolean, counts: Counts, seed: number, clear: Array<{ at: [number, number]; r: number }> = []): void {
+function buildVegetation(region: Region, origin: [number, number], filter: (x: number, z: number) => boolean, counts: Counts, seed: number, clear: Array<{ at: [number, number]; r: number }> = [], area: Area = OLD_MAP): void {
   const group = new THREE.Group();
   terrainGroup.add(group);
   const delayFrom = (s: Spot): number => Math.hypot(s.x - origin[0], s.z - origin[1]) / 14 + s.R * 0.6;
@@ -120,7 +126,7 @@ function buildVegetation(region: Region, origin: [number, number], filter: (x: n
   blade.setAttribute('position', new THREE.Float32BufferAttribute([-0.05, 0, 0, 0.05, 0, 0, 0, 0.42, 0, 0, 0, -0.05, 0, 0, 0.05, 0, 0.38, 0], 3));
   blade.setAttribute('color', new THREE.Float32BufferAttribute([0.55, 0.62, 0.45, 0.55, 0.62, 0.45, 1, 1, 0.85, 0.55, 0.62, 0.45, 0.55, 0.62, 0.45, 1, 1, 0.85], 3));
   blade.computeVertexNormals();
-  const grassItems = scatter(counts.grass, seed, (x, z, h) => h > 0.45 && filter(x, z) && pathDist(x, z) > 0.9);
+  const grassItems = scatter(counts.grass, seed, (x, z, h) => h > 0.45 && filter(x, z) && pathDist(x, z) > 0.9, baseHeight, area);
   make(blade, growMaterial(new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide }), 'grass-' + region, region, true), grassItems, (s, i, mesh) => {
     const size = 0.55 + s.R * 0.6;
     quat.setFromEuler(euler.set(0, s.R * 6.28, 0));
@@ -130,7 +136,7 @@ function buildVegetation(region: Region, origin: [number, number], filter: (x: n
   });
 
   // —— 花：五种颜色的小球 ——
-  const flowerItems = scatter(counts.flowers, seed + 1, (x, z, h) => h > 0.5 && filter(x, z));
+  const flowerItems = scatter(counts.flowers, seed + 1, (x, z, h) => h > 0.5 && filter(x, z), baseHeight, area);
   const flowerGeo = new THREE.IcosahedronGeometry(0.065, 0);
   flowerGeo.translate(0, 0.22, 0);
   const FLOWER_COLORS = ['#fff6e8', '#ffd56b', '#f49ac1', '#b9a4ff', '#ff8f6b'];
@@ -144,7 +150,7 @@ function buildVegetation(region: Region, origin: [number, number], filter: (x: n
   // 树不种在路边，也不种在剧情节点旁边，免得挡住视线
   const treeItems = scatter(counts.trees, seed + 2, (x, z, h) =>
     h > 0.9 && filter(x, z) && pathDist(x, z) > 5.5 && BEATS.every((b) => Math.hypot(b.at[0] - x, b.at[1] - z) > 6)
-    && clear.every((c) => Math.hypot(c.at[0] - x, c.at[1] - z) > c.r));
+    && clear.every((c) => Math.hypot(c.at[0] - x, c.at[1] - z) > c.r), baseHeight, area);
   for (const t of treeItems) TREE_SPOTS.push([t.x, t.z, region]);
   const trunkGeo = new THREE.CylinderGeometry(0.13, 0.22, 1.7, 6);
   trunkGeo.translate(0, 0.85, 0);
@@ -184,7 +190,7 @@ function buildRocks(): void {
   const old = scatter(60, 303, coast, (x, z) => baseHeight(x, z, false))
     .filter((s) => Math.abs(baseHeight(s.x, s.z) - s.h) < 0.2);
   const east = scatter(16, 304, (x, z, h) => coast(x, z, h) && inEastLand(x, z));
-  const noah = scatter(14, 305, (x, z, h) => coast(x, z, h) && inNoahLand(x, z));
+  const noah = scatter(40, 305, (x, z, h) => coast(x, z, h) && inNoahLand(x, z), baseHeight, FLOOD_MAP);
   const items = [...old, ...east, ...noah];
   const mesh = new THREE.InstancedMesh(new THREE.DodecahedronGeometry(0.6, 0), new THREE.MeshLambertMaterial({ color: '#a79e92', flatShading: true }), items.length);
   items.forEach((s, i) => {
@@ -206,7 +212,7 @@ buildVegetation('eden', [42, -15], (x, z) => inEden(x, z, 25) && notRiver(x, z),
 // 伊甸的东边和再往北的那块地（第 4、5 章）：草和花少一些，树更少；房子、田、坛、城那些地方不种树
 buildVegetation('east', [90, -15], inEastLand,
   { grass: Math.round(VEG.grass * 0.22), flowers: Math.round(VEG.flowers * 0.15), trees: 14 }, 404, [...CLEAR_SPOTS, ...CLEAR_SPOTS_5]);
-// 挪亚的地和亚拉腊山（第 6 章）：方舟、房子、坛那些地方不种树
-buildVegetation('noah', [69, 44], inNoahLand,
-  { grass: Math.round(VEG.grass * 0.3), flowers: Math.round(VEG.flowers * 0.2), trees: 18 }, 505, CLEAR_SPOTS_6);
+// 挪亚的地和亚拉腊山（第 6 章，原来那张图南边的一块大地）：草比别处稀一些；方舟、房子、坛那些地方不种树
+buildVegetation('noah', [70, 122], inNoahLand,
+  { grass: Math.round(VEG.grass * 0.6), flowers: Math.round(VEG.flowers * 0.4), trees: 45 }, 505, CLEAR_SPOTS_6, FLOOD_MAP);
 buildRocks();

@@ -16,6 +16,9 @@ import { setDays, setHud } from './hud';
 /** 一行字幕至少显示这么久（毫秒）才能翻到下一行，免得连按时一下子跳过好几行 */
 const MIN_LINE_MS = 380;
 
+/** 一段放完后，等黑边滑出去（0.5 秒）才把字幕层真正藏起来：这是那个计时器 */
+let hideTimer = 0;
+
 export const story = {
   /** 正在播放的节点；没有在播放就是 null */
   beat: null as Beat | null,
@@ -30,6 +33,10 @@ export const story = {
     this.idx = -1;
     game.state = 'story';
     document.body.classList.add('in-story');
+    // 两段离得很近时，上一段刚放完、字幕层还没藏起来，这一段就开始了（例如第 3 章的第 3、4 段）。
+    // 这时要取消“过一会儿藏起字幕层”的计时器：不然它会在这一段放到一半时把字幕藏掉，
+    // 玩家看不到字幕、点不了“继续”，也走不动，就卡住了。
+    clearTimeout(hideTimer);
     $('story').hidden = false;
     requestAnimationFrame(() => $('story').classList.add('on'));
     setHud(b);
@@ -77,7 +84,7 @@ export const story = {
     this.beat = null;
     $('story').classList.remove('on');
     document.body.classList.remove('in-story');
-    setTimeout(() => { $('story').hidden = true; }, 500);
+    hideTimer = window.setTimeout(() => { $('story').hidden = true; }, 500);
     if (game.state === 'story') game.state = 'play';
     save.done.push(b.id);
     b.rewards.forEach((r, i) => setTimeout(() => grant(r), 300 + i * 650)); // 奖励一个一个地弹出来
